@@ -1,8 +1,10 @@
-package com.bergburg.bergburg;
+package com.bergburg.bergburg.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.bergburg.bergburg.R;
 
 public class EnviarComandaActivity extends AppCompatActivity {
 

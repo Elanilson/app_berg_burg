@@ -14,7 +14,24 @@
         android:theme="@style/Theme.BergBurg"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.activity.EnviarComandaActivity"
+
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.PrincipalActivity"
+            android:parentActivityName=".view.activity.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.MesaActivity"
+            android:theme="@style/Theme.BergBurg_NoActionBar"
+            android:parentActivityName=".view.activity.SelecionarMesaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.SelecionarMesaActivity"
+            android:parentActivityName=".view.activity.PrincipalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

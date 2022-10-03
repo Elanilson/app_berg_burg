@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Berg burg</string>
+    <string name="entrar">Entrar</string>
+    <string name="controle_de_acesso">Controle de acesso</string>
+    <string name="fazer_pedido">Fazer pedido</string>
+    <string name="consultar_pedido">Consultar pedido</string>
+    <string name="sair">Sair</string>
+    <string name="adicionar_produtos">Adicionar produtos</string>
+    <string name="total">Total</string>
+    <string name="enviar_comanda">Enviar comanda</string>
+    <string name="menu_principal">Menu principal</string>
+    <string name="selecionar_mesa">Selecionar mesa</string>
 </resources>
