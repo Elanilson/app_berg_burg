@@ -12,4 +12,6 @@
     <color name="cinza">#EBE7E7</color>
     <color name="marrom">#541e35</color>
     <color name="laranja">#df5d2e</color>
+    <color name="text">#202020</color>
+    <color name="verde">#2ECF0A</color>
 </resources>

@@ -3,7 +3,7 @@ package com.bergburg.bergburg.repositorio;
 import android.content.Context;
 
 import com.bergburg.bergburg.model.Produto;
-import com.bergburg.bergburg.repositorio.banco.BancoRoom;
+import com.bergburg.bergburg.repositorio.local.BancoRoom;
 import com.bergburg.bergburg.repositorio.interfaces.ProdutoDAO;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class ProdutosRepositorio {
     public Produto getProduto(int id){
         return produtoDAO.getProduto(id);
     }
-    public List<Produto> produtosPorCategoria(int idCategoria){
+    public List<Produto> produtosPorCategoria(Long idCategoria){
         return produtoDAO.getProdutosPorCategoria(idCategoria);
     }
     public  List<Produto> produtos(){

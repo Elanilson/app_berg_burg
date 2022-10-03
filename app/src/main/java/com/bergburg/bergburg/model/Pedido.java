@@ -1,2 +1,4 @@
-package com.bergburg.bergburg.model;public class Pedido {
+package com.bergburg.bergburg.model;
+
+public class Pedido {
 }

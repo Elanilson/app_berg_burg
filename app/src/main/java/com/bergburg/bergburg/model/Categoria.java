@@ -4,8 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 @Entity(tableName = "categorias")
-public class Categoria {
+public class Categoria  implements Serializable {
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -13,6 +15,10 @@ public class Categoria {
     private String titulo;
 
     public Categoria() {
+    }
+
+    public Categoria(String titulo) {
+        this.titulo = titulo;
     }
 
     public Categoria(Long id, String titulo) {

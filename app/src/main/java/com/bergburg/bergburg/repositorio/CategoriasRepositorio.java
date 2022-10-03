@@ -3,17 +3,16 @@ package com.bergburg.bergburg.repositorio;
 import android.content.Context;
 
 import com.bergburg.bergburg.model.Categoria;
-import com.bergburg.bergburg.repositorio.banco.BancoRoom;
+import com.bergburg.bergburg.repositorio.local.BancoRoom;
 import com.bergburg.bergburg.repositorio.interfaces.CategoriaDAO;
 
 import java.util.List;
 
 public class CategoriasRepositorio {
-    private Context context;
+
     private CategoriaDAO categoriaDAO;
 
     public CategoriasRepositorio(Context context) {
-        this.context = context;
         BancoRoom db = BancoRoom.getInstance(context);
         categoriaDAO = db.categoriaDAO();
     }
@@ -32,6 +31,7 @@ public class CategoriasRepositorio {
     public Categoria getCategoria(int id){
         return categoriaDAO.getCategoria(id);
     }
+
     public List<Categoria> categorias(){
         return categoriaDAO.categorias();
     }
