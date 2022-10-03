@@ -29,6 +29,9 @@ public abstract class BancoRoom extends RoomDatabase {
                         @Override
                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
                             super.onCreate(db);
+                            getInstance(context).categoriaDAO().insert(new Categoria());
+                            getInstance(context).produtoDAO().insert(new Produto());
+
                         }
                     })
                     .addMigrations(MIGRATION_1_2)
