@@ -9,27 +9,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
-import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.Produto;
-import com.bergburg.bergburg.view.viewholder.CardapioViewHolder;
 import com.bergburg.bergburg.view.viewholder.ItemCardapioViewHolder;
+import com.bergburg.bergburg.view.viewholder.MesaViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemCardapioAdapter extends RecyclerView.Adapter<ItemCardapioViewHolder> {
+public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
     private List<Produto> produtos = new ArrayList<>();
     private OnListenerAcao<Produto> onListenerAcao;
 
     @NonNull
     @Override
-    public ItemCardapioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public MesaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout__item_cardapio,parent,false);
-        return new ItemCardapioViewHolder(layout);
+        return new MesaViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemCardapioViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MesaViewHolder holder, int position) {
         holder.bind(produtos.get(position),onListenerAcao);
 
     }
@@ -40,6 +39,7 @@ public class ItemCardapioAdapter extends RecyclerView.Adapter<ItemCardapioViewHo
     }
 
     public void attackProdutos(List<Produto> produtos){
+
         this.produtos = produtos;
         notifyDataSetChanged();
     }

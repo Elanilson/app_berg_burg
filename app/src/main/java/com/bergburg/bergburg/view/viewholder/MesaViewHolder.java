@@ -9,25 +9,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
-import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.Produto;
 
-public class ItemCardapioViewHolder extends RecyclerView.ViewHolder {
-    TextView textViewNomeItem,textViewValor;
+public class MesaViewHolder extends RecyclerView.ViewHolder {
+    TextView textViewNomeItem,textViewValor, textViewQuantidade;
     LinearLayout layout;
 
-    public ItemCardapioViewHolder(@NonNull View itemView) {
+
+    public MesaViewHolder(@NonNull View itemView) {
         super(itemView);
         textViewNomeItem = itemView.findViewById(R.id.textViewNomeItem);
         textViewValor = itemView.findViewById(R.id.textViewValorItem);
+        textViewQuantidade = itemView.findViewById(R.id.textViewQuantidadeItem);
         layout = itemView.findViewById(R.id.layoutITem);
     }
     public void bind(Produto produto, OnListenerAcao<Produto> onListenerAcao){
         textViewNomeItem.setText(produto.getTitulo());
-        textViewValor.setText("R$ "+produto.getPreco());
+        textViewValor.setText(calcular(produto));
+        textViewQuantidade.setText(produto.getQuantidade()+"x");
         layout.setOnClickListener(v -> {
           onListenerAcao.onClick(produto);
         });
 
+    }
+
+    private String calcular(Produto produto){
+        return  "R$ "+(produto.getQuantidade() * produto.getPreco());
     }
 }

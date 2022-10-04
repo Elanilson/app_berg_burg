@@ -21,6 +21,8 @@ public class Produto implements Serializable {
     private String urlImagem;
     @ColumnInfo(name = "preco")
     private Float preco;
+    @ColumnInfo(name = "quantidade")
+    private int quantidade;
 
     public Produto() {
     }
@@ -79,5 +81,13 @@ public class Produto implements Serializable {
 
     public void setPreco(Float preco) {
         this.preco = preco;
+    }
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
     }
 }

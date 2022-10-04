@@ -11,8 +11,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.model.ItemDePedido;
+import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.repositorio.interfaces.CategoriaDAO;
+import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
+import com.bergburg.bergburg.repositorio.interfaces.PedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.ProdutoDAO;
 
 import java.util.ArrayList;
@@ -20,12 +24,15 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database( entities = {Categoria.class, Produto.class},version = 1)
+@Database( entities = {Categoria.class, Produto.class, Pedido.class, ItemDePedido.class},version = 1)
 public abstract class BancoRoom extends RoomDatabase {
     public static BancoRoom INSTACE;
 
     public abstract CategoriaDAO categoriaDAO();
     public abstract ProdutoDAO produtoDAO();
+    public abstract PedidoDAO pedidoDAO();
+    public abstract ItemDePedidoDAO itemDePedidoDAO();
+
     private static Executor mExecutor = Executors.newSingleThreadExecutor();
     public static BancoRoom getInstance(Context context){
         if(INSTACE == null){

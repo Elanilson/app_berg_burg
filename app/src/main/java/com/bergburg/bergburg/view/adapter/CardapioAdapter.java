@@ -38,6 +38,7 @@ public class CardapioAdapter extends RecyclerView.Adapter<CardapioViewHolder> {
     }
 
     public void attackCategorias(List<Categoria> categorias){
+
         this.categorias = categorias;
         notifyDataSetChanged();
     }

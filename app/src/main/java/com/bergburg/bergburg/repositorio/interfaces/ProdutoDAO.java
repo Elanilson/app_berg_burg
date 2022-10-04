@@ -20,7 +20,7 @@ public interface ProdutoDAO {
     public int delete(Produto produto);
 
     @Query("select * from produtos where id = :id")
-    public Produto getProduto (int id);
+    public Produto getProduto (Long id);
 
     @Query("select * from produtos where idCategoria = :idCategoria")
     public List<Produto> getProdutosPorCategoria (Long idCategoria);

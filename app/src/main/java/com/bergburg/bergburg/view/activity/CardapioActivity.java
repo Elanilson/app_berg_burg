@@ -22,6 +22,7 @@ public class CardapioActivity extends AppCompatActivity {
     private ActivityCardapioBinding binding;
     private CardapioAdapter adapter = new CardapioAdapter();
     private CardapioViewModel viewModel;
+    private int numeroMesa = 0;
 
 
     @Override
@@ -31,11 +32,18 @@ public class CardapioActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(CardapioViewModel.class);
-        viewModel.getCategorias();
 
+        recuperar();
         configurarrRecyclerView();
         adapteListener();
         observe();
+    }
+
+    private void recuperar(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            this.numeroMesa = bundle.getInt("numeroMesa");
+        }
     }
 
     private void adapteListener(){
@@ -46,6 +54,7 @@ public class CardapioActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putLong("idCategoria",obj.getId());
                     bundle.putString("tituloCategoria",obj.getTitulo());
+                    bundle.putInt("numeroMesa",numeroMesa);
                     Intent intent = new Intent(CardapioActivity.this,ItemCardapioActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
@@ -70,5 +79,11 @@ public class CardapioActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewCardPio.setLayoutManager(manager);
         binding.recyclerViewCardPio.setAdapter(adapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.getCategorias();
     }
 }

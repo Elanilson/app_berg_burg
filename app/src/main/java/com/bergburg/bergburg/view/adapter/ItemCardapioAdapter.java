@@ -40,6 +40,7 @@ public class ItemCardapioAdapter extends RecyclerView.Adapter<ItemCardapioViewHo
     }
 
     public void attackProdutos(List<Produto> produtos){
+
         this.produtos = produtos;
         notifyDataSetChanged();
     }

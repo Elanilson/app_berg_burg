@@ -8,14 +8,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.repositorio.CategoriasRepositorio;
+import com.bergburg.bergburg.repositorio.PedidoRepositorio;
 import com.bergburg.bergburg.repositorio.ProdutosRepositorio;
 
 import java.util.List;
 
 public class ItemCardapioViewModel extends AndroidViewModel {
     private ProdutosRepositorio repositorio;
+
 
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
     public LiveData<List<Produto>> produtos = _Produtos;
@@ -24,10 +27,16 @@ public class ItemCardapioViewModel extends AndroidViewModel {
         super(application);
 
        repositorio = new ProdutosRepositorio(application.getApplicationContext());
+
     }
 
     public  void produtosPorCategoria(Long idCategoria){
         _Produtos.setValue(repositorio.produtosPorCategoria(idCategoria));
     }
+    public void salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade){
+        repositorio.salvarProdutoSelecionado(numeroMesa, idProduto,quantidade);
+
+    }
+
 
 }

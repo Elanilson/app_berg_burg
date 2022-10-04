@@ -6,26 +6,30 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 
 import java.util.List;
 
 @Dao
-public interface ProdutoDAO {
+public interface PedidoDAO {
     @Insert
-    public Long insert(Produto produto);
+    public Long insert(Pedido pedido);
     @Update
-    public int update(Produto produto);
+    public int update(Pedido pedido);
     @Delete
-    public int delete(Produto produto);
+    public int delete(Pedido pedido);
 
-    @Query("select * from produtos where id = :id")
-    public Produto getProduto (int id);
+    @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberto = 1")
+    public Pedido getPedido (int numeroMesa);
 
-    @Query("select * from produtos where idCategoria = :idCategoria")
-    public List<Produto> getProdutosPorCategoria (Long idCategoria);
 
-    @Query("select * from produtos")
-    public List<Produto> produtos();
+    @Query("select id from pedidos where numeroMesa = :numeroMesa and aberto = 1")
+    public Long getIdPedido(int numeroMesa);
+
+
+
+    @Query("select * from pedidos")
+    public List<Pedido> pedidos();
 
 }

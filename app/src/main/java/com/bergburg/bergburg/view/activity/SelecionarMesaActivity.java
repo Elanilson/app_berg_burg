@@ -40,7 +40,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         onListenerAcao = obj -> startActivity(new Intent(SelecionarMesaActivity.this,MesaActivity.class));
 
         mesasAdapte.attackListener(onListenerAcao);
-        viewModel.listaDeMesas();
+
 
         observe();
         configurarRecyclerview();
@@ -82,4 +82,9 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        viewModel.listaDeMesas();
+    }
 }
