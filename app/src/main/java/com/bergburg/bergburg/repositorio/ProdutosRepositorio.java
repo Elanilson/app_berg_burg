@@ -51,4 +51,16 @@ public class ProdutosRepositorio {
         Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
         return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade)) > 0;
     }
+
+    public Boolean atualizarQuantidadeDoItemPedido(int numeroMesa,Long idProduto,int quantidade){
+        Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
+        ItemDePedido item  = new ItemDePedido();
+        item = itemDePedidoDAO.getItemDoPedido(idPedido,idProduto);
+        item.setQuantidade(quantidade);
+        return itemDePedidoDAO.update(item) > 0;
+    }
+    public Boolean removerProdutoDoPedido(int numeroMesa,Long idProduto){
+        Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
+        return itemDePedidoDAO.delete(itemDePedidoDAO.getItemDoPedido(idPedido,idProduto)) > 0;
+    }
 }

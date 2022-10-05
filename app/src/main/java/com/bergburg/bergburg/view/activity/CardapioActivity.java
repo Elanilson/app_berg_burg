@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.bergburg.bergburg.R;
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivityCardapioBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Categoria;
@@ -42,7 +43,7 @@ public class CardapioActivity extends AppCompatActivity {
     private void recuperar(){
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            this.numeroMesa = bundle.getInt("numeroMesa");
+            this.numeroMesa = bundle.getInt(Constantes.NUMERO_MESA);
         }
     }
 
@@ -52,13 +53,18 @@ public class CardapioActivity extends AppCompatActivity {
             public void onClick(Categoria obj) {
                 if(obj != null){
                     Bundle bundle = new Bundle();
-                    bundle.putLong("idCategoria",obj.getId());
-                    bundle.putString("tituloCategoria",obj.getTitulo());
-                    bundle.putInt("numeroMesa",numeroMesa);
+                    bundle.putLong(Constantes.ID_CATEGORIA,obj.getId());
+                    bundle.putString(Constantes.TITULO_CATEGORIA,obj.getTitulo());
+                    bundle.putInt(Constantes.NUMERO_MESA,numeroMesa);
                     Intent intent = new Intent(CardapioActivity.this,ItemCardapioActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
                 }
+
+            }
+
+            @Override
+            public void onLongClick(Categoria obj) {
 
             }
         };

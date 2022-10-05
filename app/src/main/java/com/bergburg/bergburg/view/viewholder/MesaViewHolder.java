@@ -27,6 +27,13 @@ public class MesaViewHolder extends RecyclerView.ViewHolder {
         textViewNomeItem.setText(produto.getTitulo());
         textViewValor.setText(calcular(produto));
         textViewQuantidade.setText(produto.getQuantidade()+"x");
+        layout.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onListenerAcao.onLongClick(produto);
+                return false;
+            }
+        });
         layout.setOnClickListener(v -> {
           onListenerAcao.onClick(produto);
         });

@@ -65,6 +65,10 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
         this.mesas = mesas;
         notifyDataSetChanged();
     }
+    public void limparMesas(){
+        this.mesas.clear();
+        notifyDataSetChanged();
+    }
     public void attackListener(OnListenerAcao<Integer> onListenerAcao){
         this.onListenerAcao = onListenerAcao;
     }

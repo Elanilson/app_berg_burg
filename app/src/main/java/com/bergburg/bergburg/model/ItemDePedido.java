@@ -19,11 +19,18 @@ public class ItemDePedido {
     public ItemDePedido() {
     }
 
+    public ItemDePedido(Long idPedido, Long idProduto) {
+        this.idPedido = idPedido;
+        this.idProduto = idProduto;
+    }
+
     public ItemDePedido(Long idPedido, Long idProduto, int quantidade) {
         this.idPedido = idPedido;
         this.idProduto = idProduto;
         this.quantidade = quantidade;
     }
+
+
 
     public Long getId() {
         return id;

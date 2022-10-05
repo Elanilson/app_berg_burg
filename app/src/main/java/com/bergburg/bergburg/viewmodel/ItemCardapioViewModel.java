@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.repositorio.CategoriasRepositorio;
 import com.bergburg.bergburg.repositorio.PedidoRepositorio;
 import com.bergburg.bergburg.repositorio.ProdutosRepositorio;
@@ -23,6 +24,9 @@ public class ItemCardapioViewModel extends AndroidViewModel {
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
     public LiveData<List<Produto>> produtos = _Produtos;
 
+    private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
+    public LiveData<Resposta> resposta = _Resposta;
+
     public ItemCardapioViewModel(@NonNull Application application) {
         super(application);
 
@@ -34,8 +38,21 @@ public class ItemCardapioViewModel extends AndroidViewModel {
         _Produtos.setValue(repositorio.produtosPorCategoria(idCategoria));
     }
     public void salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade){
-        repositorio.salvarProdutoSelecionado(numeroMesa, idProduto,quantidade);
+        if(repositorio.salvarProdutoSelecionado(numeroMesa, idProduto,quantidade)){
+            _Resposta.setValue(new Resposta("Salvo",true));
+        }
+    }
+    public void atualizarQuantidadeDoPedido(int numeroMesa,Long idProduto,int quantidade){
 
+        if( repositorio.atualizarQuantidadeDoItemPedido(numeroMesa, idProduto,quantidade)){
+            _Resposta.setValue(new Resposta("Atualizado",true));
+        }
+    }
+    public void removerProdutoDoPedido(int numeroMesa,Long idProduto){
+
+        if(repositorio.removerProdutoDoPedido(numeroMesa, idProduto)){
+            _Resposta.setValue(new Resposta("Removido",true));
+        }
     }
 
 

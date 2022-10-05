@@ -4,46 +4,68 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivityMesaBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.MesaAdapter;
+import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
 import com.bergburg.bergburg.viewmodel.MesaViewModel;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
 public class MesaActivity extends AppCompatActivity {
     private ActivityMesaBinding binding;
     private MesaViewModel viewModel;
+    private ItemCardapioViewModel itemCardapioViewModel;
     private MesaAdapter adapter = new MesaAdapter();
-    private int numeroMesa = 25;
-
+    private int numeroMesa = 0;
+    private int quantidade = 1; // padrao
+    private ConstraintLayout layout;
+    private TextView textViewTotalDaMesa;
+    private Pedido pedidoDaMesa = new Pedido();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMesaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
         viewModel = new ViewModelProvider(this).get(MesaViewModel.class);
+        itemCardapioViewModel = new ViewModelProvider(this).get(ItemCardapioViewModel.class);
+        layout = binding.constraintMesa;
+        textViewTotalDaMesa = binding.textViewTotalDaMesa;
+
+
 
 
         binding.buttonAdicionarProdutos.setOnClickListener(v -> abriCardapio());
 
-        configuracaoToolbar();
+
+
         observe();
         configurarrRecyclerView();
         adapteListener();
@@ -54,10 +76,15 @@ public class MesaActivity extends AppCompatActivity {
     private void adapteListener() {
         OnListenerAcao<Produto> onListenerAcao = new OnListenerAcao<Produto>() {
             @Override
-            public void onClick(Produto obj) {
+            public void onClick(Produto produto) {
                // viewModel.salvarProdutoSelecionado(numeroMesa,obj.getId());
               //  finish();
+                alertaAleterarQuantidade(produto);
+            }
 
+            @Override
+            public void onLongClick(Produto produto) {
+                alertaRemocao(produto);
             }
         };
         adapter.attackOnListener(onListenerAcao);
@@ -75,6 +102,13 @@ public class MesaActivity extends AppCompatActivity {
         viewModel.produtos.observe(this, new Observer<List<Produto>>() {
             @Override
             public void onChanged(List<Produto> produtos) {
+                if(produtos.size() > 0){
+                    binding.linearLayoutTotal.setVisibility(View.VISIBLE);
+                }else{
+                    binding.linearLayoutTotal.setVisibility(View.GONE);
+
+                }
+                calcularTotalDaMesa(produtos);
                 adapter.attackProdutos(produtos);
             }
         });
@@ -83,6 +117,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(Pedido pedido) {
                 if(pedido != null){
+                    pedidoDaMesa = pedido;
                     if(pedido.getAberto() == 0){
                         //solicito a abertura do pedido
                         solicitarAberturaDoPedido();
@@ -99,61 +134,227 @@ public class MesaActivity extends AppCompatActivity {
                 //e se nao tiver pedido aberto ele nao retorna nada ne
             }
         });
+        viewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(resposta.getStatus()){
+                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    if(resposta.getMensagem().equals(Constantes.PEDIDO_FECHADO)){
+                        finish();
+                    }
+
+                }else{
+                    Toast.makeText(MesaActivity.this, getString(R.string.erro), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        itemCardapioViewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(resposta.getStatus()){
+                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    adapter.limparProdutos();
+                    viewModel.getPedido(numeroMesa);
+                }else{
+                    Toast.makeText(MesaActivity.this, getString(R.string.erro), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     private void configuracaoToolbar(){
         // getSupportActionBar().setTitle("Mesa 25");
-        Toolbar toolbar = binding.toolbarMesa.toolbarCentralizado;
-        binding.toolbarMesa.textViewToolbarTitulo.setText("Mesa "+numeroMesa);
-        binding.toolbarMesa.imageButtonMesaVoltar.setOnClickListener(v -> voltarTela());
+        Toolbar toolbar = binding.includeToolbar.toolbarCentralizado;
+        toolbar.setTitle("");
+           binding.includeToolbar.textViewToolbarTitulo.setText("Mesa "+numeroMesa);
+        /*   binding.includeToolbar.textViewEnviarComanda.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Toast.makeText(MesaActivity.this, "Aqui você envia o pedido", Toast.LENGTH_SHORT).show();
+               }
+           });*/
+        binding.includeToolbar.imageButtonMesaVoltar.setOnClickListener(v -> voltarTela());
         setSupportActionBar(toolbar);
     }
 
     private void abriCardapio(){
         Bundle bundle = new Bundle();
-        bundle.putInt("numeroMesa",numeroMesa);
+        bundle.putInt(Constantes.NUMERO_MESA,numeroMesa);
         Intent intent = new Intent(this,CardapioActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
-
     }
+    private void recuperar(){
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null){
+            this.numeroMesa = bundle.getInt(Constantes.NUMERO_MESA);
+        }
+    }
+
 
     private void voltarTela() {
         onBackPressed();
     }
 
-    private void solicitarAberturaDoPedido(){
-        new AlertDialog.Builder(this)
-                .setTitle("Abertura de Pedido")
-                .setMessage("Continuar com abertura do pedido ?")
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+    private void alertaAleterarQuantidade(Produto produto){
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_quantidade_pedido);
+        dialog.setCancelable(false);
+        EditText editCampoQuantidade = dialog.findViewById(R.id.editQuantidade);
+        Button btnConfirmar = dialog.findViewById(R.id.buttonConfirmarQuantidade);
+        Button btnCancelar = dialog.findViewById(R.id.buttonCancelar);
+        editCampoQuantidade.setText(""+produto.getQuantidade());
+        btnConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String campo = "";
+                campo = editCampoQuantidade.getText().toString();
+                if(campo != null && campo != "" && !campo.equalsIgnoreCase(" ")){
+                    quantidade = Integer.parseInt(campo);
+                    itemCardapioViewModel.atualizarQuantidadeDoPedido(numeroMesa,produto.getId(),quantidade);
+                    // configurarSnackBar(layout,"Sucesso");
+                    dialog.dismiss();
+
+                }else{
+                    configurarSnackBar(layout,"Informe a quantidade nescessária");
+                }
+
+            }
+        });
+
+        btnCancelar.setOnClickListener( v -> dialog.dismiss());
+
+        //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.show();
+
+    }
+
+    private void configurarSnackBar(View view, String mensagem){
+        Snackbar.make(view, mensagem, Snackbar.LENGTH_LONG)
+                .setAction("CLOSE", new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        viewModel.abrirPedido(1l,numeroMesa);
-                        viewModel.getPedido(numeroMesa);
+                    public void onClick(View view) {
 
                     }
                 })
-                .setNeutralButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
+                .show();
+    }
+
+    private void alertaRemocao(Produto produto){
+        new AlertDialog.Builder(binding.getRoot().getContext())
+                .setTitle("Remoção de item")
+                .setMessage("Proseguir com a remoção")
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        itemCardapioViewModel.removerProdutoDoPedido(numeroMesa,produto.getId());
+                    }
+                })
+                .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
                 })
                 .show();
     }
 
+    private void alertaCancelamento(){
+        new AlertDialog.Builder(binding.getRoot().getContext())
+                .setTitle("Cancelamento de pedido")
+                .setMessage("O pedido será excluido")
+                .setCancelable(false)
+                .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        pedidoDaMesa.setAberto(0);
+                        viewModel.fecharPedido(pedidoDaMesa);
+                    }
+                })
+                .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+    private void alertaEnVioDeComanda(){
+        new AlertDialog.Builder(binding.getRoot().getContext())
+                .setTitle("Comanda")
+                .setCancelable(false)
+                .setMessage("A Comanda será enviada.")
+                .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+    private void solicitarAberturaDoPedido(){
+        new AlertDialog.Builder(this)
+                .setTitle("Abertura de Pedido")
+                .setCancelable(false)
+                .setMessage("Continuar com abertura do pedido ?")
+                .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        viewModel.abrirPedido(1l,numeroMesa);
+                        viewModel.getPedido(numeroMesa);
+                    }
+                })
+                .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+
+                    }
+                })
+                .show();
+    }
+    private void calcularTotalDaMesa(List<Produto> itens){
+        Float total = 0f;
+        for (Produto produto : itens){
+            total += produto.getQuantidade() * produto.getPreco();
+        }
+        textViewTotalDaMesa.setText("R$ "+total);
+
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_principal,menu);
-        return true;
+        inflater.inflate(R.menu.menu_mesa,menu);
+
+        return super.onCreateOptionsMenu(menu);
        // return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        super.onOptionsItemSelected(item);
+
+        switch (item.getItemId()){
+            case R.id.enviarComanda:
+                alertaEnVioDeComanda();
+                break;
+            case R.id.menuCancelar:
+                alertaCancelamento();
+
+                break;
+        }
+        return true;
     }
 
 
@@ -161,6 +362,9 @@ public class MesaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        recuperar();
+        adapter.limparProdutos();
         viewModel.getPedido(numeroMesa);
+        configuracaoToolbar();
     }
 }

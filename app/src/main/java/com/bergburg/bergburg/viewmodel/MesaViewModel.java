@@ -7,9 +7,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.repositorio.PedidoRepositorio;
 import com.bergburg.bergburg.repositorio.ProdutosRepositorio;
 
@@ -25,6 +27,9 @@ public class MesaViewModel extends AndroidViewModel {
 
     private MutableLiveData<Pedido> _Pedido = new MutableLiveData<>();
     public LiveData<Pedido> pedido = _Pedido;
+
+    private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
+    public LiveData<Resposta> resposta = _Resposta;
 
     private List<Produto> produtoList = new ArrayList<>();
 
@@ -54,10 +59,14 @@ public class MesaViewModel extends AndroidViewModel {
     }
 
     public void abrirPedido(Long idUsuario,int numeroMesa){
-        pedidoRepositorio.insert(new Pedido(idUsuario,numeroMesa,1));
+       if( pedidoRepositorio.insert(new Pedido(idUsuario,numeroMesa,1))){
+           _Resposta.setValue(new Resposta(Constantes.PEDIDO_ABERTO,true));
+       }
     }
-    public void fecharPedido(Long idPedido,int numeroMesa){
-        pedidoRepositorio.update(new Pedido(idPedido,numeroMesa,0));
+    public void fecharPedido(Pedido pedido){
+        if(pedidoRepositorio.update(pedido)){
+            _Resposta.setValue(new Resposta(Constantes.PEDIDO_FECHADO,true));
+        }
     }
 
 }

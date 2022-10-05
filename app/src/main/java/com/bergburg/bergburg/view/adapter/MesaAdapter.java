@@ -14,7 +14,9 @@ import com.bergburg.bergburg.view.viewholder.ItemCardapioViewHolder;
 import com.bergburg.bergburg.view.viewholder.MesaViewHolder;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
     private List<Produto> produtos = new ArrayList<>();
@@ -39,8 +41,12 @@ public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
     }
 
     public void attackProdutos(List<Produto> produtos){
-
         this.produtos = produtos;
+        notifyDataSetChanged();
+
+    }
+    public void limparProdutos(){
+        this.produtos.clear();
         notifyDataSetChanged();
     }
     public void attackOnListener(OnListenerAcao<Produto> onListenerAcao){

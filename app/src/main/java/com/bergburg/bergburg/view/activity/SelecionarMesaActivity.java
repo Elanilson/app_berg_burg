@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.bergburg.bergburg.R;
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivitySelecionarMesaBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.view.adapter.SelecionarMesaGridAdapter;
@@ -36,9 +37,25 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.selecionar_mesa);
         viewModel = new ViewModelProvider(this).get(SelecionarMesaViewModel.class);
         mesasAdapte = new SelecionarMesaGridAdapter(getApplicationContext());
+        viewModel.listaDeMesas();
 
-        onListenerAcao = obj -> startActivity(new Intent(SelecionarMesaActivity.this,MesaActivity.class));
+        onListenerAcao = new OnListenerAcao<Integer>() {
+            @Override
+            public void onClick(Integer numeroMesa) {
+                Bundle bundle = new Bundle();
+                bundle.putInt(Constantes.NUMERO_MESA,numeroMesa);
+                Intent intent = new Intent(SelecionarMesaActivity.this,MesaActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
 
+               // startActivity(new Intent(SelecionarMesaActivity.this,MesaActivity.class));
+            }
+
+            @Override
+            public void onLongClick(Integer obj) {
+
+            }
+        };
         mesasAdapte.attackListener(onListenerAcao);
 
 
@@ -53,7 +70,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         viewModel.mesas.observe(this, new Observer<List<Integer>>() {
             @Override
             public void onChanged(List<Integer> integers) {
-
+                mesasAdapte.limparMesas();
                 mesasAdapte.attackMesas(integers);
             }
         });
@@ -85,6 +102,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        viewModel.listaDeMesas();
+
+
     }
 }

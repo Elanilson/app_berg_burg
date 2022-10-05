@@ -23,6 +23,9 @@ public interface ItemDePedidoDAO {
     @Query("select * from itemDePedido where idPedido = :id")
     public List<ItemDePedido> getItensDoPedido (Long id);
 
+    @Query("select * from itemDePedido where idProduto = :idProduto and idPedido = :idPedido")
+    public ItemDePedido getItemDoPedido (Long idPedido,Long idProduto);
+
 
 
 }

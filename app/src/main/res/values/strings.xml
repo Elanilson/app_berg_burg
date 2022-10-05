@@ -7,8 +7,15 @@
     <string name="sair">Sair</string>
     <string name="adicionar_produtos">Adicionar produtos</string>
     <string name="total">Total</string>
+    <string name="sucesso">Sucesso</string>
+    <string name="erro">Erro</string>
+    <string name="removido">Removido</string>
+    <string name="pedido_confirmado">Pedido confirmado</string>
     <string name="cardapio">Cardapio</string>
     <string name="enviar_comanda">Enviar comanda</string>
     <string name="menu_principal">Menu principal</string>
     <string name="selecionar_mesa">Selecionar mesa</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="confirmar_quantidade">Confirmar quantidade</string>
+    <string name="cancelar">Cancelar</string>
 </resources>
