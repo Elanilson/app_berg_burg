@@ -70,14 +70,22 @@ public class MesaViewModel extends AndroidViewModel {
 
     public void abrirPedido(Long idUsuario, Mesa mesa){
        if( pedidoRepositorio.insert(new Pedido(idUsuario,mesa.getNumero(),Constantes.ABERTO,Constantes.NAO_ENVIADO))){
-           mesa.setLivre(Constantes.OCULPADO); //1 muda para ocupado
+           mesa.setLivre(Constantes.OCUPADO);
            mesaRepositorio.update(mesa); //atualiza a mesa
            _Resposta.setValue(new Resposta(Constantes.PEDIDO_ABERTO,true));
        }
     }
     public void fecharPedido(Pedido pedido,Mesa mesa){
         if(pedidoRepositorio.update(pedido)){
-            mesa.setLivre(Constantes.LIVRE); // 0 muda para livre
+            mesa.setLivre(Constantes.LIVRE);
+            mesaRepositorio.update(mesa); //atualiza
+            _Resposta.setValue(new Resposta(Constantes.PEDIDO_FECHADO,true));
+        }
+    }
+
+    public void cancelarPedido(Pedido pedido,Mesa mesa){
+        if(pedidoRepositorio.update(pedido)){
+            mesa.setLivre(Constantes.LIVRE);
             mesaRepositorio.update(mesa); //atualiza
             _Resposta.setValue(new Resposta(Constantes.PEDIDO_FECHADO,true));
         }

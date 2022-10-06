@@ -170,7 +170,7 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(Pedido pedido) {
                 if(pedido != null){
                     pedidoDaMesa = pedido;
-                    if(pedido.getAberto() == 0){
+                    if(pedido.getAberto().equalsIgnoreCase(Constantes.FECHADO)){
                         //solicito a abertura do pedido
                         solicitarAberturaDoPedido();
                     }else{
@@ -322,8 +322,9 @@ public class MesaActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        pedidoDaMesa.setAberto(0);
-                        viewModel.fecharPedido(pedidoDaMesa,mesa);
+                        pedidoDaMesa.setAberto(Constantes.FECHADO);
+                        pedidoDaMesa.setStatus(Constantes.CANCELADO);
+                        viewModel.cancelarPedido(pedidoDaMesa,mesa);
                     }
                 })
                 .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
@@ -405,7 +406,11 @@ public class MesaActivity extends AppCompatActivity {
                 alertaEnVioDeComanda();
                 break;
             case R.id.menuCancelar:
-                alertaCancelamento();
+                if(pedidoDaMesa.getStatus().equalsIgnoreCase(getString(R.string.preparando))){
+                    Toast.makeText(this, "Não é possível cancelar, o pedido está sendo preparado", Toast.LENGTH_SHORT).show();
+                }else{
+                    alertaCancelamento();
+                }
 
                 break;
         }

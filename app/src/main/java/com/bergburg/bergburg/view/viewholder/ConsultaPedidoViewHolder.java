@@ -8,6 +8,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
@@ -28,17 +29,17 @@ public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
     }
     public void bind(Pedido pedido, OnListenerAcao<Pedido> onListenerAcao){
         String status = "";
-        if(pedido.getStatus() == 0){
+        if(pedido.getStatus().equalsIgnoreCase(Constantes.PENDENTE)){
             status = view.getContext().getString(R.string.pendente);
-        }else if(pedido.getStatus() == 1){
+        }else if(pedido.getStatus().equalsIgnoreCase(Constantes.CANCELADO)){
             status = view.getContext().getString(R.string.cancelado);
-        }else if(pedido.getStatus() == 2){
+        }else if(pedido.getStatus().equalsIgnoreCase(Constantes.PREPARANDO)){
             status = view.getContext().getString(R.string.preparando);
-        }else if(pedido.getStatus() == 3){
+        }else if(pedido.getStatus().equalsIgnoreCase(Constantes.PRONTO)){
             status = view.getContext().getString(R.string.pronto);
-        }else if(pedido.getStatus() == 4){
+        }else if(pedido.getStatus().equalsIgnoreCase(Constantes.ENTREGUE)){
             status = view.getContext().getString(R.string.entregue);
-        }else if(pedido.getStatus() == 5){
+        }else if(pedido.getStatus().equalsIgnoreCase(Constantes.NAO_ENVIADO)){
             status = view.getContext().getString(R.string.naoEnviado);
         }
 

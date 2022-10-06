@@ -38,13 +38,19 @@ public class Produto implements Serializable {
 
     @ColumnInfo(name = "quantidade")
     @SerializedName("quantidade")
-    private int quantidade;
+    private int quantidade ;
 
     @ColumnInfo(name = "observacao")
     @SerializedName("observacao")
     private String observacao;
 
     public Produto() {
+    }
+
+    public Produto( String titulo, Float preco,int idCategoria) {
+        this.idCategoria = idCategoria;
+        this.titulo = titulo;
+        this.preco = preco;
     }
 
     public Produto(int idCategoria, String titulo, String descricao, String urlImagem, Float preco) {

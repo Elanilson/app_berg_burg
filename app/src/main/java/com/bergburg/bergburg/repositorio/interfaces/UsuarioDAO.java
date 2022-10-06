@@ -21,19 +21,19 @@ public interface PedidoDAO {
     @Delete
     public int delete(Pedido pedido);
 
-    @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberto = 'Aberto' ")
+    @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberturaPedido = 'Aberto' and status != 'Cancelado' ")
     public Pedido getPedido (int numeroMesa);
 
-    @Query("select * from pedidos where numeroMesa like  '%' || :numeroMesa || '%'and  aberto = 'Aberto'")
+    @Query("select * from pedidos where numeroMesa like  '%' || :numeroMesa || '%'and  aberturaPedido = 'Aberto' and status != 'Cancelado'")
     public List<Pedido> consultarPedido (int numeroMesa);
 
 
-    @Query("select id from pedidos where numeroMesa = :numeroMesa and aberto = 'Aberto'")
+    @Query("select id from pedidos where numeroMesa = :numeroMesa and aberturaPedido = 'Aberto' and status != 'Cancelado'")
     public Long getIdPedido(int numeroMesa);
 
 
 
-    @Query("select * from pedidos")
+    @Query("select * from pedidos where aberturaPedido = 'Aberto' and status != 'Cancelado' ")
     public List<Pedido> pedidos();
 
 }

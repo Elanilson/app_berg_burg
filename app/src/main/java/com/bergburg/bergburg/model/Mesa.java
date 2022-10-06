@@ -20,7 +20,7 @@ public class Mesa implements Serializable {
     private int numero;
     @SerializedName("livre")
     @ColumnInfo(name = "livre")
-    private int livre = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
+    private String livre = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
 
     public Mesa() {
     }
@@ -29,12 +29,12 @@ public class Mesa implements Serializable {
         this.numero = numero;
     }
 
-    public Mesa(int numero, int livre) {
+    public Mesa(int numero, String livre) {
         this.numero = numero;
         this.livre = livre;
     }
 
-    public Mesa(int id, int numero, int livre) {
+    public Mesa(int id, int numero, String livre) {
         this.id = id;
         this.numero = numero;
         this.livre = livre;
@@ -65,11 +65,11 @@ public class Mesa implements Serializable {
         this.numero = numero;
     }
 
-    public int getLivre() {
+    public String getLivre() {
         return livre;
     }
 
-    public void setLivre(int livre) {
+    public void setLivre(String livre) {
         this.livre = livre;
     }
 }

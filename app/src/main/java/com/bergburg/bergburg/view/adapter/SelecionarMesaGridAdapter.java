@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.bergburg.bergburg.R;
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.view.viewholder.SelecionarMesaViewHolder;
@@ -55,7 +56,7 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
         View view =layoutInflater.inflate(R.layout.layout_mesa,null);
 
            LinearLayout layout = view.findViewById(R.id.layoutMesa);
-        if(mesas.get(position).getLivre() == 1){
+        if(mesas.get(position).getLivre().equalsIgnoreCase(Constantes.OCUPADO)){
            layout.setBackgroundResource(R.color.purple_500);
         }else{
            layout.setBackgroundResource(R.color.laranja);

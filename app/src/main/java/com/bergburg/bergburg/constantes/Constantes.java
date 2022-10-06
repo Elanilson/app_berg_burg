@@ -8,17 +8,19 @@ public class Constantes {
     public static String ID_CATEGORIA = "Id categoria";
     public static String TITULO_CATEGORIA = "Titulo Categoria";
     public static String MESA = "Mesa";
-    public static int FECHADO = 0;
-    public static int ABERTO = 1;
-    public static int OCULPADO = 1;
-    public static int LIVRE = 0;
 
-    public static int PENDENTE      = 0;
-    public static int CANCELADO     = 1;
-    public static int PREPARANDO    = 2;
-    public static int PRONTO        = 3;
-    public static int ENTREGUE      = 4;
-    public static int NAO_ENVIADO   = 5;
+    public static String FECHADO = "Fechado";
+    public static String ABERTO = "Aberto";
+
+    public static String OCUPADO = "Ocupado";
+    public static String LIVRE = "Livre";
+
+    public static String PENDENTE      = "Pendente";
+    public static String CANCELADO     = "Cancelado";
+    public static String PREPARANDO    = "Preparando";
+    public static String PRONTO        = "Pronto";
+    public static String ENTREGUE      = "Entregue";
+    public static String NAO_ENVIADO   = "Não enviado";
 
 
 }
