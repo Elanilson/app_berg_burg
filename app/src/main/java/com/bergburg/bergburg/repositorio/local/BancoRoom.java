@@ -15,18 +15,20 @@ import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Usuario;
 import com.bergburg.bergburg.repositorio.interfaces.CategoriaDAO;
 import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.MesaDAO;
 import com.bergburg.bergburg.repositorio.interfaces.PedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.ProdutoDAO;
+import com.bergburg.bergburg.repositorio.interfaces.UsuarioDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database( entities = {Categoria.class, Produto.class, Pedido.class, ItemDePedido.class, Mesa.class},version = 1)
+@Database( entities = {Categoria.class, Produto.class, Pedido.class, ItemDePedido.class, Mesa.class, Usuario.class},version = 1)
 public abstract class BancoRoom extends RoomDatabase {
     public static BancoRoom INSTACE;
 
@@ -35,11 +37,12 @@ public abstract class BancoRoom extends RoomDatabase {
     public abstract PedidoDAO pedidoDAO();
     public abstract ItemDePedidoDAO itemDePedidoDAO();
     public abstract MesaDAO mesaDAO();
+    public abstract UsuarioDAO usuarioDAO();
 
     private static Executor mExecutor = Executors.newSingleThreadExecutor();
     public static BancoRoom getInstance(Context context){
         if(INSTACE == null){
-            INSTACE = Room.databaseBuilder(context,BancoRoom.class,"bergBurg_db")
+            INSTACE = Room.databaseBuilder(context,BancoRoom.class,"teste001")
                     .allowMainThreadQueries()
                     .addCallback(new Callback() {
                         @Override
@@ -49,6 +52,7 @@ public abstract class BancoRoom extends RoomDatabase {
                                 List<Categoria> categorias = new ArrayList<>();
                                 List<Produto> produtos = new ArrayList<>();
                                 List<Mesa> mesas = new ArrayList<>();
+                                List<Usuario> usuarios = new ArrayList<>();
                                 //teste
                                 CategoriaDAO dao = getInstance(context).categoriaDAO();
                                 categorias.add(new Categoria("Entradas"            ));
@@ -64,6 +68,16 @@ public abstract class BancoRoom extends RoomDatabase {
                                     mExecutor.execute(() ->   dao.insert(categoria));
 
                                 }
+
+                            UsuarioDAO daoUsuario = getInstance(context).usuarioDAO();
+                                usuarios.add(new Usuario( "atendimento", "atendimento", "atendimento"));
+                                usuarios.add(new Usuario( "cozinha", "cozinha", "cozinha"));
+                                usuarios.add(new Usuario( "suporte", "suporte", "suporte"));
+
+                            for (Usuario usuario : usuarios) {
+                                mExecutor.execute(() ->   daoUsuario.insert(usuario));
+
+                            }
 
                                 ProdutoDAO dao1 = getInstance(context).produtoDAO();
                                // produtos.add(new Produto(1, "Picanha Pai D´egua", "Pão Brioche, Carne 160Gg (100% Picanha)); queijo cheddar, Cebola Caramelizada e Salada", "https://jotajaimagestorage.s3.sa-east-1.amazonaws.com/produtos/2597/154DE1582BBCD56F629B77BC3E76B7E058FFF8E9B68256528182872B6223782F.jpeg", 24f));

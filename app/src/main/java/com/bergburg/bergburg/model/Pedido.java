@@ -22,9 +22,9 @@ public class Pedido {
     @ColumnInfo(name = "total")
     @SerializedName("total")
     private Float total = 0f;
-    @ColumnInfo(name = "aberto")
-    @SerializedName("aberto")
-    private String aberto = Constantes.FECHADO; // ( 0 ) fechado ( 1 ) aberto
+    @ColumnInfo(name = "aberturaPedido")
+    @SerializedName("aberturaPedido")
+    private String aberturaPedido = Constantes.FECHADO; // ( 0 ) fechado ( 1 ) aberto
     @ColumnInfo(name = "status")
     @SerializedName("status")
     private String status = Constantes.NAO_ENVIADO;
@@ -32,16 +32,16 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long idUsuario, int numeroMesa, String aberto) {
+    public Pedido(Long idUsuario, int numeroMesa, String aberturaPedido) {
         this.idUsuario = idUsuario;
         this.numeroMesa = numeroMesa;
-        this.aberto = aberto;
+        this.aberturaPedido = aberturaPedido;
     }
 
-    public Pedido(Long idUsuario, int numeroMesa, String aberto, String status) {
+    public Pedido(Long idUsuario, int numeroMesa, String aberturaPedido, String status) {
         this.idUsuario = idUsuario;
         this.numeroMesa = numeroMesa;
-        this.aberto = aberto;
+        this.aberturaPedido = aberturaPedido;
         this.status = status;
     }
 
@@ -77,12 +77,12 @@ public class Pedido {
         this.total = total;
     }
 
-    public String getAberto() {
-        return aberto;
+    public String getAberturaPedido() {
+        return aberturaPedido;
     }
 
-    public void setAberto(String aberto) {
-        this.aberto = aberto;
+    public void setAberturaPedido(String aberturaPedido) {
+        this.aberturaPedido = aberturaPedido;
     }
 
     public String getStatus() {

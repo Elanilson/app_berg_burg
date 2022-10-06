@@ -26,10 +26,9 @@
     <string name="preco">Preço</string>
     <string name="pesquisar">Pesquisar</string>
     <string name="status">Status</string>
-    <string name="pendente">Pendente</string>
+    <string name="enviado">Enviado</string>
     <string name="preparando">Preparando</string>
-    <string name="entregue">Entregue</string>
-    <string name="pronto">Pronto</string>
+    <string name="concluido">Concluido</string>
     <string name="cancelado">Cancelado</string>
     <string name="naoEnviado">Não enviado</string>
 </resources>

@@ -6,34 +6,29 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.model.Pedido;
-import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Usuario;
 
 import java.util.List;
 
 @Dao
-public interface PedidoDAO {
+public interface UsuarioDAO {
     @Insert
-    public Long insert(Pedido pedido);
+    public Long insert(Usuario usuario);
     @Update
-    public int update(Pedido pedido);
+    public int update(Usuario usuario);
     @Delete
-    public int delete(Pedido pedido);
+    public int delete(Usuario usuario);
 
-    @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberturaPedido = 'Aberto' and status != 'Cancelado' ")
-    public Pedido getPedido (int numeroMesa);
+    @Query("select * from usuarios where id = :id")
+    public Usuario getUsuaurio (Long id);
 
-    @Query("select * from pedidos where numeroMesa like  '%' || :numeroMesa || '%'and  aberturaPedido = 'Aberto' and status != 'Cancelado'")
-    public List<Pedido> consultarPedido (int numeroMesa);
+    @Query("select * from usuarios where status = 'Logado'")
+    public Usuario getUsuarioLogado ();
 
-
-    @Query("select id from pedidos where numeroMesa = :numeroMesa and aberturaPedido = 'Aberto' and status != 'Cancelado'")
-    public Long getIdPedido(int numeroMesa);
-
+    @Query("select * from usuarios where nome = :usuario and senha = :senha")
+    public Usuario login (String usuario, String senha);
 
 
-    @Query("select * from pedidos where aberturaPedido = 'Aberto' and status != 'Cancelado' ")
-    public List<Pedido> pedidos();
 
 }

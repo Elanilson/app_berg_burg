@@ -2,6 +2,8 @@ package com.bergburg.bergburg.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +12,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.databinding.ActivityMainBinding;
 import com.bergburg.bergburg.databinding.ActivityPrincipalBinding;
+import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.model.Usuario;
+import com.bergburg.bergburg.viewmodel.MainViewModel;
 
 public class PrincipalActivity extends AppCompatActivity {
     private ActivityPrincipalBinding binding;
     private EditText editTextPesquisa;
+    private MainViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +33,7 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(R.string.menu_principal);
-
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         binding.buttonConsultarPedido.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,6 +44,29 @@ public class PrincipalActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(PrincipalActivity.this,SelecionarMesaActivity.class));
+            }
+        });
+        observer();
+    }
+
+    private void observer() {
+        viewModel.usuario.observe(this, new Observer<Usuario>() {
+            @Override
+            public void onChanged(Usuario usuario) {
+
+            }
+        });
+        viewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(resposta.getStatus()){
+                    Toast.makeText(PrincipalActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(PrincipalActivity.this,MainActivity.class));
+                    finish();
+                }else{
+                    Toast.makeText(PrincipalActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
     }
@@ -51,6 +81,11 @@ public class PrincipalActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_Sair:
+                viewModel.deslogar();
+                break;
+        }
         return super.onOptionsItemSelected(item);
     }
 }

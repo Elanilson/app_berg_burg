@@ -72,14 +72,14 @@ public class MesaViewModel extends AndroidViewModel {
        if( pedidoRepositorio.insert(new Pedido(idUsuario,mesa.getNumero(),Constantes.ABERTO,Constantes.NAO_ENVIADO))){
            mesa.setLivre(Constantes.OCUPADO);
            mesaRepositorio.update(mesa); //atualiza a mesa
-           _Resposta.setValue(new Resposta(Constantes.PEDIDO_ABERTO,true));
+           _Resposta.setValue(new Resposta(Constantes.ABERTO,true));
        }
     }
     public void fecharPedido(Pedido pedido,Mesa mesa){
         if(pedidoRepositorio.update(pedido)){
             mesa.setLivre(Constantes.LIVRE);
             mesaRepositorio.update(mesa); //atualiza
-            _Resposta.setValue(new Resposta(Constantes.PEDIDO_FECHADO,true));
+            _Resposta.setValue(new Resposta(Constantes.FECHADO,true));
         }
     }
 
@@ -87,7 +87,7 @@ public class MesaViewModel extends AndroidViewModel {
         if(pedidoRepositorio.update(pedido)){
             mesa.setLivre(Constantes.LIVRE);
             mesaRepositorio.update(mesa); //atualiza
-            _Resposta.setValue(new Resposta(Constantes.PEDIDO_FECHADO,true));
+            _Resposta.setValue(new Resposta(Constantes.CANCELADO,true));
         }
     }
 }

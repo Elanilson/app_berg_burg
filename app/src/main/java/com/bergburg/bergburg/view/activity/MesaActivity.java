@@ -170,7 +170,7 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(Pedido pedido) {
                 if(pedido != null){
                     pedidoDaMesa = pedido;
-                    if(pedido.getAberto().equalsIgnoreCase(Constantes.FECHADO)){
+                    if(pedido.getAberturaPedido().equalsIgnoreCase(Constantes.FECHADO)){
                         //solicito a abertura do pedido
                         solicitarAberturaDoPedido();
                     }else{
@@ -191,7 +191,7 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(Resposta resposta) {
                 if(resposta.getStatus()){
                     Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
-                    if(resposta.getMensagem().equals(Constantes.PEDIDO_FECHADO)){
+                    if(resposta.getMensagem().equals(Constantes.CANCELADO) || resposta.getMensagem().equals(Constantes.FECHADO)){
                         finish();
                     }
 
@@ -322,9 +322,10 @@ public class MesaActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        pedidoDaMesa.setAberto(Constantes.FECHADO);
+                        pedidoDaMesa.setAberturaPedido(Constantes.FECHADO);
                         pedidoDaMesa.setStatus(Constantes.CANCELADO);
                         viewModel.cancelarPedido(pedidoDaMesa,mesa);
+
                     }
                 })
                 .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {

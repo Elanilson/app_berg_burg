@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/menu_Sair"
         android:title="@string/sair"
         app:showAsAction="always" />
 </menu>

@@ -20,6 +20,10 @@ public class Resposta {
         this.mensagem = mensagem;
     }
 
+    public Resposta(Boolean status) {
+        this.status = status;
+    }
+
     public String getMensagem() {
         return mensagem;
     }
