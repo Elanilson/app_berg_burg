@@ -24,6 +24,7 @@ import com.bergburg.bergburg.databinding.ActivityItemCardapioBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.ItemCardapioAdapter;
 import com.bergburg.bergburg.viewmodel.CardapioViewModel;
 import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
@@ -138,6 +139,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
             tituloCategoria = bundle.getString(Constantes.TITULO_CATEGORIA);
             numeroMesa = bundle.getInt(Constantes.NUMERO_MESA);
             viewModel.produtosPorCategoria(idCategoria);
+          //  viewModel.produtosPorCategoriaOnline(idCategoria);
+           // viewModel.produtosOnline();
             getSupportActionBar().setTitle(tituloCategoria);
         }
     }
@@ -184,6 +187,22 @@ public class ItemCardapioActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Produto> produtos) {
                 adapter.attackProdutos(produtos);
+            }
+        });
+
+        viewModel.produtosOnline.observe(this, new Observer<List<Produto>>() {
+            @Override
+            public void onChanged(List<Produto> produtos) {
+                System.out.println("Produtos: "+produtos);
+            }
+        });
+
+        viewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(!resposta.getStatus()){
+                    System.out.println("Produto: "+resposta.getMensagem());
+                }
             }
         });
     }

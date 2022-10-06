@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
+import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.view.viewholder.SelecionarMesaViewHolder;
 
 import java.util.ArrayList;
@@ -18,8 +19,10 @@ import java.util.List;
 
 public class SelecionarMesaGridAdapter extends BaseAdapter {
 
-    private List<Integer> mesas = new ArrayList<>();
-    private OnListenerAcao<Integer> onListenerAcao;
+    private List<Mesa> mesas = new ArrayList<>();
+    //private List<Integer> mesas = new ArrayList<>();
+    //private OnListenerAcao<Integer> onListenerAcao;
+    private OnListenerAcao<Mesa> onListenerAcao;
     private Context context;
 
     public SelecionarMesaGridAdapter() {
@@ -51,7 +54,7 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
 
         TextView textViewNumeroMesa = view.findViewById(R.id.textViewNumeroMesa);
         CardView cardViewMesa = view.findViewById(R.id.cardMesa);
-        textViewNumeroMesa.setText(""+mesas.get(position));
+        textViewNumeroMesa.setText(""+mesas.get(position).getNumero());
         cardViewMesa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,7 +64,7 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
         return view;
     }
 
-    public void attackMesas(List<Integer> mesas){
+    public void attackMesas(List<Mesa> mesas){
         this.mesas = mesas;
         notifyDataSetChanged();
     }
@@ -69,7 +72,7 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
         this.mesas.clear();
         notifyDataSetChanged();
     }
-    public void attackListener(OnListenerAcao<Integer> onListenerAcao){
+    public void attackListener(OnListenerAcao<Mesa> onListenerAcao){
         this.onListenerAcao = onListenerAcao;
     }
 }

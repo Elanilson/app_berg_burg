@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.repositorio.CategoriasRepositorio;
 
@@ -30,6 +32,24 @@ public class CardapioViewModel extends AndroidViewModel {
 
     public  void getCategorias(){
         _Categorias.setValue(repositorio.categorias());
+    }
+
+    public  void getCategoriasOnline(){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                _Categorias.setValue(result.categorias);
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+
+            }
+        };
+
+        repositorio.getcategoriasOnline(listener);
+
     }
 
 }

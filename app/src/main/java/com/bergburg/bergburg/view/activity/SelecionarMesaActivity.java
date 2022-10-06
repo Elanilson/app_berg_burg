@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivitySelecionarMesaBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
+import com.bergburg.bergburg.model.Mesa;
+import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.SelecionarMesaGridAdapter;
 import com.bergburg.bergburg.viewmodel.SelecionarMesaViewModel;
 
@@ -25,7 +28,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
 
    // private SelecionarMesaAdapter adapter = new SelecionarMesaAdapter();
     private SelecionarMesaViewModel viewModel ;
-    private OnListenerAcao<Integer> onListenerAcao;
+    private OnListenerAcao<Mesa> onListenerAcao;
     private SelecionarMesaGridAdapter mesasAdapte;
 
     @Override
@@ -38,12 +41,13 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(SelecionarMesaViewModel.class);
         mesasAdapte = new SelecionarMesaGridAdapter(getApplicationContext());
         viewModel.listaDeMesas();
+       // viewModel.listarMesasOnline();
 
-        onListenerAcao = new OnListenerAcao<Integer>() {
+        onListenerAcao = new OnListenerAcao<Mesa>() {
             @Override
-            public void onClick(Integer numeroMesa) {
+            public void onClick(Mesa mesa) {
                 Bundle bundle = new Bundle();
-                bundle.putInt(Constantes.NUMERO_MESA,numeroMesa);
+                bundle.putInt(Constantes.NUMERO_MESA,mesa.getNumero());
                 Intent intent = new Intent(SelecionarMesaActivity.this,MesaActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -52,7 +56,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongClick(Integer obj) {
+            public void onLongClick(Mesa obj) {
 
             }
         };
@@ -67,11 +71,27 @@ public class SelecionarMesaActivity extends AppCompatActivity {
     }
 
     private void observe() {
-        viewModel.mesas.observe(this, new Observer<List<Integer>>() {
+        viewModel.mesas.observe(this, new Observer<List<Mesa>>() {
             @Override
-            public void onChanged(List<Integer> integers) {
+            public void onChanged(List<Mesa> mesas) {
                 mesasAdapte.limparMesas();
-                mesasAdapte.attackMesas(integers);
+                mesasAdapte.attackMesas(mesas);
+            }
+        });
+     /*   viewModel.mesasOnline.observe(this, new Observer<List<Mesa>>() {
+            @Override
+            public void onChanged(List<Mesa> mesas) {
+                mesasAdapte.limparMesas();
+                mesasAdapte.attackMesas(mesas);
+            }
+        });*/
+
+        viewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(!resposta.getStatus()){
+                    Toast.makeText(SelecionarMesaActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

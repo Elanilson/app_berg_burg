@@ -4,16 +4,22 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "itemDePedido")
 public class ItemDePedido {
-    @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
     private Long id;
     @ColumnInfo(name = "idPedido")
+    @SerializedName("idPedido")
     private Long idPedido;
     @ColumnInfo(name = "idProduto")
+    @SerializedName("idProduto")
     private Long idProduto;
     @ColumnInfo(name = "quantidade")
+    @SerializedName("quantidade")
     private int quantidade = 1;
 
     public ItemDePedido() {

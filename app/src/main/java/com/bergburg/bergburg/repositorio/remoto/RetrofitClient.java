@@ -1,4 +1,4 @@
-package com.example.meucepmvpjava.model.remoto;
+package com.bergburg.bergburg.repositorio.remoto;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -10,7 +10,7 @@ public class RetrofitClient {
     private static Retrofit getINSTACE(){
         if(INSTACE == null){
             INSTACE = new Retrofit.Builder()
-                    .baseUrl("https://viacep.com.br/ws/")
+                    .baseUrl("https://apkdoandroidonline.com/bergburg/api/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }

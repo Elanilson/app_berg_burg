@@ -7,7 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
@@ -23,6 +25,9 @@ public class ItemCardapioViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
     public LiveData<List<Produto>> produtos = _Produtos;
+
+    private MutableLiveData<List<Produto>> _ProdutosOnline = new MutableLiveData<>();
+    public LiveData<List<Produto>> produtosOnline = _ProdutosOnline;
 
     private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
     public LiveData<Resposta> resposta = _Resposta;
@@ -55,5 +60,33 @@ public class ItemCardapioViewModel extends AndroidViewModel {
         }
     }
 
+    public void produtosPorCategoriaOnline(Long id){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                _Produtos.setValue(result.produtos);
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+        };
+        repositorio.produtosPorCategoriaOnline(listener,id);
+    }
+    public void produtosOnline(){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                _Produtos.setValue(result.produtos);
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+        };
+        repositorio.produtosOnline(listener);
+    }
 
 }

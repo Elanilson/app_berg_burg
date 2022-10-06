@@ -12,10 +12,12 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.ItemDePedido;
+import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.repositorio.interfaces.CategoriaDAO;
 import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
+import com.bergburg.bergburg.repositorio.interfaces.MesaDAO;
 import com.bergburg.bergburg.repositorio.interfaces.PedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.ProdutoDAO;
 
@@ -24,7 +26,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-@Database( entities = {Categoria.class, Produto.class, Pedido.class, ItemDePedido.class},version = 1)
+@Database( entities = {Categoria.class, Produto.class, Pedido.class, ItemDePedido.class, Mesa.class},version = 1)
 public abstract class BancoRoom extends RoomDatabase {
     public static BancoRoom INSTACE;
 
@@ -32,6 +34,7 @@ public abstract class BancoRoom extends RoomDatabase {
     public abstract ProdutoDAO produtoDAO();
     public abstract PedidoDAO pedidoDAO();
     public abstract ItemDePedidoDAO itemDePedidoDAO();
+    public abstract MesaDAO mesaDAO();
 
     private static Executor mExecutor = Executors.newSingleThreadExecutor();
     public static BancoRoom getInstance(Context context){
@@ -45,6 +48,7 @@ public abstract class BancoRoom extends RoomDatabase {
 
                                 List<Categoria> categorias = new ArrayList<>();
                                 List<Produto> produtos = new ArrayList<>();
+                                List<Mesa> mesas = new ArrayList<>();
                                 //teste
                                 CategoriaDAO dao = getInstance(context).categoriaDAO();
                                 categorias.add(new Categoria("Artesanais Regionais"));
@@ -72,6 +76,51 @@ public abstract class BancoRoom extends RoomDatabase {
                                 for (Produto produto : produtos) {
                                     mExecutor.execute(() -> dao1.insert(produto));
                                 }
+                            MesaDAO dao2 = getInstance(context).mesaDAO();
+                                mesas.add(new Mesa(1)) ;
+                                mesas.add(new Mesa(2)) ;
+                                mesas.add(new Mesa(3)) ;
+                                mesas.add(new Mesa(4)) ;
+                                mesas.add(new Mesa(5)) ;
+                                mesas.add(new Mesa(6)) ;
+                                mesas.add(new Mesa(7)) ;
+                                mesas.add(new Mesa(8)) ;
+                                mesas.add(new Mesa(9)) ;
+                                mesas.add(new Mesa(10));
+                                mesas.add(new Mesa(11));
+                                mesas.add(new Mesa(12));
+                                mesas.add(new Mesa(13));
+                                mesas.add(new Mesa(14));
+                                mesas.add(new Mesa(15));
+                                mesas.add(new Mesa(16));
+                                mesas.add(new Mesa(17));
+                                mesas.add(new Mesa(18));
+                                mesas.add(new Mesa(19));
+                                mesas.add(new Mesa(20));
+                                mesas.add(new Mesa(21));
+                                mesas.add(new Mesa(22));
+                                mesas.add(new Mesa(23));
+                                mesas.add(new Mesa(24));
+                                mesas.add(new Mesa(25));
+                                mesas.add(new Mesa(26));
+                                mesas.add(new Mesa(27));
+                                mesas.add(new Mesa(28));
+                                mesas.add(new Mesa(29));
+                                mesas.add(new Mesa(30));
+                                mesas.add(new Mesa(31));
+                                mesas.add(new Mesa(32));
+                                mesas.add(new Mesa(33));
+                                mesas.add(new Mesa(34));
+                                mesas.add(new Mesa(35));
+                                mesas.add(new Mesa(36));
+                                mesas.add(new Mesa(37));
+                                mesas.add(new Mesa(38));
+                                mesas.add(new Mesa(39));
+                                mesas.add(new Mesa(40));
+
+                            for (Mesa mesa : mesas) {
+                                mExecutor.execute(() -> dao2.insert(mesa));
+                            }
                             }
 
 

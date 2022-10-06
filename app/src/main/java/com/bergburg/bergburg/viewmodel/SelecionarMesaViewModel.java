@@ -7,71 +7,58 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bergburg.bergburg.listeners.APIListener;
+import com.bergburg.bergburg.model.Dados;
+import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.MesaRepositorio;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SelecionarMesaViewModel extends AndroidViewModel {
+    private MesaRepositorio repositorio ;
 
-    private List<Integer> listaDeMesasExemplo = new ArrayList<>();
+    private List<Mesa> listaDeMesasExemplo = new ArrayList<>();
 
-    private MutableLiveData<List<Integer>> _Mesas = new MutableLiveData<>();
-    public LiveData<List<Integer>> mesas = _Mesas;
+    private MutableLiveData<List<Mesa>> _Mesas = new MutableLiveData<>();
+    public LiveData<List<Mesa>> mesas = _Mesas;
+
+    private MutableLiveData<List<Mesa>> _MesasOnline = new MutableLiveData<>();
+    public LiveData<List<Mesa>> mesasOnline = _MesasOnline;
 
     private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
     public LiveData<Resposta> resposta = _Resposta;
 
     public SelecionarMesaViewModel(@NonNull Application application) {
         super(application);
+        repositorio = new MesaRepositorio(application.getBaseContext());
     }
 
     public void listaDeMesas(){
-        System.out.println("SelecionarMesaViewModel: "+this.listaDeMesasExemplo.size());
+       // System.out.println("SelecionarMesaViewModel: "+this.listaDeMesasExemplo.size());
 
-        this.listaDeMesasExemplo.add(1);
-        this.listaDeMesasExemplo.add(2);
-        this.listaDeMesasExemplo.add(3);
-        this.listaDeMesasExemplo.add(4);
-        this.listaDeMesasExemplo.add(5);
-        this.listaDeMesasExemplo.add(6);
-        this.listaDeMesasExemplo.add(7);
-        this.listaDeMesasExemplo.add(8);
-        this.listaDeMesasExemplo.add(9);
-        this.listaDeMesasExemplo.add(10);
-        this.listaDeMesasExemplo.add(11);
-        this.listaDeMesasExemplo.add(12);
-        this.listaDeMesasExemplo.add(13);
-        this.listaDeMesasExemplo.add(14);
-        this.listaDeMesasExemplo.add(15);
-        this.listaDeMesasExemplo.add(16);
-        this.listaDeMesasExemplo.add(17);
-        this.listaDeMesasExemplo.add(18);
-        this.listaDeMesasExemplo.add(19);
-        this.listaDeMesasExemplo.add(20);
-        this.listaDeMesasExemplo.add(21);
-        this.listaDeMesasExemplo.add(22);
-        this.listaDeMesasExemplo.add(23);
-        this.listaDeMesasExemplo.add(24);
-        this.listaDeMesasExemplo.add(25);
-        this.listaDeMesasExemplo.add(26);
-        this.listaDeMesasExemplo.add(27);
-        this.listaDeMesasExemplo.add(28);
-        this.listaDeMesasExemplo.add(29);
-        this.listaDeMesasExemplo.add(30);
-        this.listaDeMesasExemplo.add(31);
-        this.listaDeMesasExemplo.add(32);
-        this.listaDeMesasExemplo.add(33);
-        this.listaDeMesasExemplo.add(34);
-        this.listaDeMesasExemplo.add(35);
-        this.listaDeMesasExemplo.add(36);
-        this.listaDeMesasExemplo.add(37);
-        this.listaDeMesasExemplo.add(38);
-        this.listaDeMesasExemplo.add(39);
-        this.listaDeMesasExemplo.add(40);
+        _Mesas.setValue(repositorio.mesas());
+    }
+    public void listarMesasOnline(){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                System.out.println("SelecionarMesaViewModel total: "+result.mesas.size());
+                _MesasOnline.setValue(result.mesas);
 
+            }
 
-        _Mesas.setValue(listaDeMesasExemplo);
+            @Override
+            public void onFailures(String mensagem) {
+                System.out.println("SelecionarMesaViewModel "+mensagem);
+
+                _Resposta.setValue(new Resposta(mensagem));
+
+            }
+        };
+
+        repositorio.getMesas(listener);
     }
 
 

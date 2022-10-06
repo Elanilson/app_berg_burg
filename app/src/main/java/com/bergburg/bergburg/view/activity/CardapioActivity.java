@@ -91,5 +91,6 @@ public class CardapioActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         viewModel.getCategorias();
+       // viewModel.getCategoriasOnline();
     }
 }

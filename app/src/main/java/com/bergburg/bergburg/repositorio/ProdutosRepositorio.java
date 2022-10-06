@@ -2,20 +2,29 @@ package com.bergburg.bergburg.repositorio;
 
 import android.content.Context;
 
+import com.bergburg.bergburg.listeners.APIListener;
+import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.PedidoDAO;
 import com.bergburg.bergburg.repositorio.local.BancoRoom;
 import com.bergburg.bergburg.repositorio.interfaces.ProdutoDAO;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
+import com.bergburg.bergburg.repositorio.remoto.services.BergburgService;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProdutosRepositorio {
     private Context context;
     private ProdutoDAO produtoDAO;
     private ItemDePedidoDAO itemDePedidoDAO;
     private PedidoDAO pedidoDAO;
+    private BergburgService service = RetrofitClient.classService(BergburgService.class);
 
     public ProdutosRepositorio(Context context) {
         this.context = context;
@@ -43,6 +52,8 @@ public class ProdutosRepositorio {
     public List<Produto> produtosPorCategoria(Long idCategoria){
         return produtoDAO.getProdutosPorCategoria(idCategoria);
     }
+
+
     public  List<Produto> produtos(){
         return produtoDAO.produtos();
     }
@@ -59,8 +70,52 @@ public class ProdutosRepositorio {
         item.setQuantidade(quantidade);
         return itemDePedidoDAO.update(item) > 0;
     }
+
     public Boolean removerProdutoDoPedido(int numeroMesa,Long idProduto){
         Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
         return itemDePedidoDAO.delete(itemDePedidoDAO.getItemDoPedido(idPedido,idProduto)) > 0;
+    }
+
+
+    public void produtosPorCategoriaOnline(APIListener<Dados> listener,Long id){
+        Call<Dados> call = service.produtosPorCategoria(id);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+                if(response.isSuccessful()){
+                    if(response.body().produtos != null){
+                        listener.onSuccess(response.body());
+                    }
+                }else{
+                    listener.onFailures(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+    }
+    public void produtosOnline(APIListener<Dados> listener){
+        Call<Dados> call = service.getProdutos();
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+                if(response.isSuccessful()){
+                    if(response.body().produtos != null){
+                        System.out.println("Produtos: "+response.body().produtos.size());
+                        listener.onSuccess(response.body());
+                    }
+                }else{
+                    listener.onFailures(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
     }
 }

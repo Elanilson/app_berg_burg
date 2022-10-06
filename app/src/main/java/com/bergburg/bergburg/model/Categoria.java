@@ -4,14 +4,18 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 @Entity(tableName = "categorias")
 public class Categoria  implements Serializable {
-    @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    @SerializedName("id")
     private Long id;
     @ColumnInfo(name = "titulo")
+    @SerializedName("titulo")
     private String titulo;
 
     public Categoria() {

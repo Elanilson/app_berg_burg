@@ -1,6 +1,6 @@
-package com.example.meucepmvpjava.model.interfaces;
+package com.bergburg.bergburg.listeners;
 
-public interface APIListener <T>{
+public interface APIListener<T>{
     void onSuccess(T result);
     void onFailures(String mensagem);
 

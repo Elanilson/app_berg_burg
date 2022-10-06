@@ -1,7 +1,11 @@
 package com.bergburg.bergburg.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Resposta {
+    @SerializedName("mensagem")
     private String mensagem;
+    @SerializedName("status")
     private Boolean status = false;
 
     public Resposta() {

@@ -25,7 +25,6 @@ public class PedidoRepositorio {
     public Boolean insert(Pedido pedido){
         return pedidoDAO.insert(pedido) > 0;
     }
-
     public Boolean update(Pedido pedido){
         return pedidoDAO.update(pedido) > 0;
     }
