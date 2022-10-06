@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "pedidos")
@@ -23,7 +24,10 @@ public class Pedido {
     private Float total = 0f;
     @ColumnInfo(name = "aberto")
     @SerializedName("aberto")
-    private int aberto = 0; // ( 0 ) fechado ( 1 ) aberto
+    private int aberto = Constantes.FECHADO; // ( 0 ) fechado ( 1 ) aberto
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    private int status = Constantes.NAO_ENVIADO;
 
     public Pedido() {
     }
@@ -32,6 +36,13 @@ public class Pedido {
         this.idUsuario = idUsuario;
         this.numeroMesa = numeroMesa;
         this.aberto = aberto;
+    }
+
+    public Pedido(Long idUsuario, int numeroMesa, int aberto, int status) {
+        this.idUsuario = idUsuario;
+        this.numeroMesa = numeroMesa;
+        this.aberto = aberto;
+        this.status = status;
     }
 
     public Long getId() {
@@ -72,5 +83,13 @@ public class Pedido {
 
     public void setAberto(int aberto) {
         this.aberto = aberto;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

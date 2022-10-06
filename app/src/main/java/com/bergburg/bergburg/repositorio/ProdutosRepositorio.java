@@ -58,14 +58,15 @@ public class ProdutosRepositorio {
         return produtoDAO.produtos();
     }
 
-    public Boolean salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade){
+    public Boolean salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade,String observacao){
         Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
-        return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade)) > 0;
+        return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade,observacao)) > 0;
     }
 
-    public Boolean atualizarQuantidadeDoItemPedido(int numeroMesa,Long idProduto,int quantidade){
+    public Boolean atualizarQuantidadeDoItemPedido(int numeroMesa,Long idProduto,int quantidade,String observacao){
         Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
         ItemDePedido item  = new ItemDePedido();
+        item.setObservacao(observacao);
         item = itemDePedidoDAO.getItemDoPedido(idPedido,idProduto);
         item.setQuantidade(quantidade);
         return itemDePedidoDAO.update(item) > 0;

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bergburg.bergburg">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BergBurg"
         tools:targetApi="31">
+        <activity
+            android:name=".view.activity.ConsultarPedidoActivity"
+            android:label="@string/consultar_pedido"
+            android:exported="false" />
         <activity
             android:name=".view.activity.ItemCardapioActivity"
             android:exported="false" />

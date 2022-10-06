@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/cinza"
     tools:context=".view.activity.PrincipalActivity">
 
     <Button
-        android:theme="@style/button_custom"
         android:id="@+id/buttonFazerPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -15,12 +15,12 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/fazer_pedido"
+        android:theme="@style/button_custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:theme="@style/button_custom"
         android:id="@+id/buttonConsultarPedido"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -28,6 +28,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:text="@string/consultar_pedido"
+        android:theme="@style/button_custom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonFazerPedido" />

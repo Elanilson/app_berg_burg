@@ -4,9 +4,13 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 @Entity(tableName = "mesas")
-public class Mesa {
+public class Mesa implements Serializable {
     @SerializedName("id")
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
@@ -16,7 +20,7 @@ public class Mesa {
     private int numero;
     @SerializedName("livre")
     @ColumnInfo(name = "livre")
-    private int livre = 0; // ( 0 ) fechado ( 1 ) aberto
+    private int livre = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
 
     public Mesa() {
     }
@@ -34,6 +38,15 @@ public class Mesa {
         this.id = id;
         this.numero = numero;
         this.livre = livre;
+    }
+
+    @Override
+    public String toString() {
+        return "Mesa{" +
+                "id=" + id +
+                ", numero=" + numero +
+                ", livre=" + livre +
+                '}';
     }
 
     public int getId() {

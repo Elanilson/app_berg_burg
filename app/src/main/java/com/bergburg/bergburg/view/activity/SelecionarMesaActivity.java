@@ -40,16 +40,15 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.selecionar_mesa);
         viewModel = new ViewModelProvider(this).get(SelecionarMesaViewModel.class);
         mesasAdapte = new SelecionarMesaGridAdapter(getApplicationContext());
-        viewModel.listaDeMesas();
+
        // viewModel.listarMesasOnline();
 
         onListenerAcao = new OnListenerAcao<Mesa>() {
             @Override
             public void onClick(Mesa mesa) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constantes.NUMERO_MESA,mesa.getNumero());
+
                 Intent intent = new Intent(SelecionarMesaActivity.this,MesaActivity.class);
-                intent.putExtras(bundle);
+                intent.putExtra(Constantes.MESA,mesa);
                 startActivity(intent);
 
                // startActivity(new Intent(SelecionarMesaActivity.this,MesaActivity.class));
@@ -122,7 +121,8 @@ public class SelecionarMesaActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
+        mesasAdapte.limparMesas();
+        viewModel.listaDeMesas();
 
     }
 }

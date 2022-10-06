@@ -40,6 +40,10 @@ public class Produto implements Serializable {
     @SerializedName("quantidade")
     private int quantidade;
 
+    @ColumnInfo(name = "observacao")
+    @SerializedName("observacao")
+    private String observacao;
+
     public Produto() {
     }
 
@@ -49,6 +53,16 @@ public class Produto implements Serializable {
         this.descricao = descricao;
         this.urlImagem = urlImagem;
         this.preco = preco;
+    }
+
+    public Produto(int idCategoria, String titulo, String descricao, String urlImagem, Float preco, int quantidade, String observacao) {
+        this.idCategoria = idCategoria;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.urlImagem = urlImagem;
+        this.preco = preco;
+        this.quantidade = quantidade;
+        this.observacao = observacao;
     }
 
     public Long getId() {
@@ -105,5 +119,13 @@ public class Produto implements Serializable {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 }

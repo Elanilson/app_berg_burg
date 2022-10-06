@@ -23,6 +23,9 @@ public interface PedidoDAO {
     @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberto = 1")
     public Pedido getPedido (int numeroMesa);
 
+    @Query("select * from pedidos where numeroMesa like  '%' || :numeroMesa || '%'and  aberto = 1")
+    public List<Pedido> consultarPedido (int numeroMesa);
+
 
     @Query("select id from pedidos where numeroMesa = :numeroMesa and aberto = 1")
     public Long getIdPedido(int numeroMesa);

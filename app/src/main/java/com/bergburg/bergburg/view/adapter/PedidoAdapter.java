@@ -9,47 +9,44 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
-import com.bergburg.bergburg.model.Produto;
-import com.bergburg.bergburg.view.viewholder.ItemCardapioViewHolder;
-import com.bergburg.bergburg.view.viewholder.MesaViewHolder;
+import com.bergburg.bergburg.model.Pedido;
+import com.bergburg.bergburg.view.viewholder.ConsultaPedidoViewHolder;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
-    private List<Produto> produtos = new ArrayList<>();
-    private OnListenerAcao<Produto> onListenerAcao;
+public class PedidoAdapter extends RecyclerView.Adapter<ConsultaPedidoViewHolder> {
+    private List<Pedido> pedidos = new ArrayList<>();
+    private OnListenerAcao<Pedido> onListenerAcao;
 
     @NonNull
     @Override
-    public MesaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout__item_cardapio,parent,false);
-        return new MesaViewHolder(layout);
+    public ConsultaPedidoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_pedido,parent,false);
+        return new ConsultaPedidoViewHolder(layout);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MesaViewHolder holder, int position) {
-        holder.bind(produtos.get(position),onListenerAcao);
+    public void onBindViewHolder(@NonNull ConsultaPedidoViewHolder holder, int position) {
+        holder.bind(pedidos.get(position),onListenerAcao);
 
     }
 
     @Override
     public int getItemCount() {
-        return produtos.size();
+        return pedidos.size();
     }
 
-    public void attackProdutos(List<Produto> produtos){
-        this.produtos = produtos;
+    public void attackPedidos(List<Pedido> pedidos){
+        this.pedidos = pedidos;
         notifyDataSetChanged();
 
     }
-    public void limparProdutos(){
-        this.produtos.clear();
+    public void limparPedidos(){
+        this.pedidos.clear();
         notifyDataSetChanged();
     }
-    public void attackOnListener(OnListenerAcao<Produto> onListenerAcao){
+    public void attackOnListener(OnListenerAcao<Pedido> onListenerAcao){
         this.onListenerAcao =  onListenerAcao;
     }
 }

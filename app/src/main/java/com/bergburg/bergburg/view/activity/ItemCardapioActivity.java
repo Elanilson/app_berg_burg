@@ -3,6 +3,7 @@ package com.bergburg.bergburg.view.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +30,7 @@ import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.ItemCardapioAdapter;
 import com.bergburg.bergburg.viewmodel.CardapioViewModel;
 import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
@@ -39,9 +42,12 @@ public class ItemCardapioActivity extends AppCompatActivity {
     private ItemCardapioViewModel viewModel ;
     private Long idCategoria = 0L;
     private String tituloCategoria = "";
+    private String observacao = "";
     private int numeroMesa = 0;
     private int quantidade = 1; // padrao
-    private ConstraintLayout layout;
+    private CoordinatorLayout layout;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private FrameLayout frameLayoutEditarItemPedido;
 
     @Override
     protected void onNightModeChanged(int mode) {
@@ -55,6 +61,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         viewModel = new ViewModelProvider(this).get(ItemCardapioViewModel.class);
         layout = binding.constraintItemCardapio;
+        frameLayoutEditarItemPedido = binding.frameSheetEditarItemPedido;
+        bottomSheetBehavior =BottomSheetBehavior.from(frameLayoutEditarItemPedido);
 
 
 
@@ -63,8 +71,48 @@ public class ItemCardapioActivity extends AppCompatActivity {
         observe();
     }
 
+    private void exibirButtonSheetPedido(Produto produto){
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        EditText editCampoQuantidade = frameLayoutEditarItemPedido.findViewById(R.id.editQuantidade);
+        EditText editCampoObservacao = frameLayoutEditarItemPedido.findViewById(R.id.editTextObservacao);
+        Button btnConfirmar = frameLayoutEditarItemPedido.findViewById(R.id.buttonConfirmarQuantidade);
+        Button btnCancelar = frameLayoutEditarItemPedido.findViewById(R.id.buttonCancelar);
+        TextView nomeProduto = frameLayoutEditarItemPedido.findViewById(R.id.textViewInfoNomeProduto);
+        TextView descricaoProduto = frameLayoutEditarItemPedido.findViewById(R.id.textViewInfoDescricao);
+        TextView totalProduto = frameLayoutEditarItemPedido.findViewById(R.id.textViewInfoTotal);
+
+        nomeProduto.setText(""+produto.getTitulo());
+        descricaoProduto.setText(""+produto.getDescricao());
+        totalProduto.setText(""+produto.getPreco());
+
+
+        btnConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String campo = "";
+                campo = editCampoQuantidade.getText().toString();
+                if(campo != null && campo != "" && !campo.equalsIgnoreCase(" ")){
+                    quantidade = Integer.parseInt(campo);
+
+                    observacao = editCampoObservacao.getText().toString();
+                    viewModel.salvarProdutoSelecionado(numeroMesa,produto.getId(),quantidade,observacao);
+                    Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    finish();
+                }else{
+                    configurarSnackBar(layout,"Informe a quantidade nescessária");
+                }
+
+
+
+            }
+        });
+        btnCancelar.setOnClickListener( v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+    }
+
     private void solicitarQuantidade(Produto produto){
-        new AlertDialog.Builder(binding.getRoot().getContext())
+     /*   new AlertDialog.Builder(binding.getRoot().getContext())
                 .setTitle("Quantidade teste")
                 .setMessage("====== teste ====")
                 .setPositiveButton("Quero 2", new DialogInterface.OnClickListener() {
@@ -83,11 +131,11 @@ public class ItemCardapioActivity extends AppCompatActivity {
                         finish();
                     }
                 })
-                .show();
+                .show();*/
     }
 
     private void alertaQuantidade(Produto produto){
-        Dialog dialog = new Dialog(this);
+     /*   Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.layout_quantidade_pedido);
         dialog.setCancelable(false);
         EditText editCampoQuantidade = dialog.findViewById(R.id.editQuantidade);
@@ -120,7 +168,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         btnCancelar.setOnClickListener( v -> dialog.dismiss());
 
         //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();
+        dialog.show();*/
 
     }
 
@@ -169,7 +217,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
             @Override
             public void onClick(Produto produto) {
                 //solicitarQuantidade(produto);
-                alertaQuantidade(produto);
+               //alertaQuantidade(produto);
+                exibirButtonSheetPedido(produto);
 
 
             }

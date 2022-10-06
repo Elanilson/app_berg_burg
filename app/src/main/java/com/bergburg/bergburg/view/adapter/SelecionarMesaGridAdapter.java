@@ -1,10 +1,12 @@
 package com.bergburg.bergburg.view.adapter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -51,6 +53,14 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater layoutInflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view =layoutInflater.inflate(R.layout.layout_mesa,null);
+
+           LinearLayout layout = view.findViewById(R.id.layoutMesa);
+        if(mesas.get(position).getLivre() == 1){
+           layout.setBackgroundResource(R.color.purple_500);
+        }else{
+           layout.setBackgroundResource(R.color.laranja);
+
+        }
 
         TextView textViewNumeroMesa = view.findViewById(R.id.textViewNumeroMesa);
         CardView cardViewMesa = view.findViewById(R.id.cardMesa);

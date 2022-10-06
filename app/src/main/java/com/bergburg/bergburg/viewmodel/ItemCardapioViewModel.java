@@ -42,14 +42,14 @@ public class ItemCardapioViewModel extends AndroidViewModel {
     public  void produtosPorCategoria(Long idCategoria){
         _Produtos.setValue(repositorio.produtosPorCategoria(idCategoria));
     }
-    public void salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade){
-        if(repositorio.salvarProdutoSelecionado(numeroMesa, idProduto,quantidade)){
+    public void salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade,String observacao){
+        if(repositorio.salvarProdutoSelecionado(numeroMesa, idProduto,quantidade,observacao)){
             _Resposta.setValue(new Resposta("Salvo",true));
         }
     }
-    public void atualizarQuantidadeDoPedido(int numeroMesa,Long idProduto,int quantidade){
+    public void atualizarQuantidadeDoPedido(int numeroMesa,Long idProduto,int quantidade,String observacao){
 
-        if( repositorio.atualizarQuantidadeDoItemPedido(numeroMesa, idProduto,quantidade)){
+        if( repositorio.atualizarQuantidadeDoItemPedido(numeroMesa, idProduto,quantidade,observacao)){
             _Resposta.setValue(new Resposta("Atualizado",true));
         }
     }

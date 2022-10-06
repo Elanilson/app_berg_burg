@@ -21,6 +21,8 @@ public class ItemDePedido {
     @ColumnInfo(name = "quantidade")
     @SerializedName("quantidade")
     private int quantidade = 1;
+    @ColumnInfo(name = "observacao")
+    private String observacao;
 
     public ItemDePedido() {
     }
@@ -37,6 +39,12 @@ public class ItemDePedido {
     }
 
 
+    public ItemDePedido(Long idPedido, Long idProduto, int quantidade, String observacao) {
+        this.idPedido = idPedido;
+        this.idProduto = idProduto;
+        this.quantidade = quantidade;
+        this.observacao = observacao;
+    }
 
     public Long getId() {
         return id;
@@ -68,5 +76,13 @@ public class ItemDePedido {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
     }
 }

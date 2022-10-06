@@ -40,4 +40,15 @@ public class PedidoRepositorio {
     public List<ItemDePedido> getItensDoPedido(Long id){
         return itemDePedidoDAO.getItensDoPedido(id);
     }
+
+    public List<Pedido> getPedidos(){
+        return pedidoDAO.pedidos();
+    }
+
+    public List<Pedido> consultaPedido(int numeroMesa){
+        return pedidoDAO.consultarPedido(numeroMesa);
+    }
+
+
+
 }
