@@ -8,6 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.bergburg.bergburg.constantes.Constantes;
+import com.bergburg.bergburg.listeners.APIListener;
+import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
@@ -67,9 +69,13 @@ public class MesaViewModel extends AndroidViewModel {
     public void atualizarTotalPedido(Pedido pedido){
         pedidoRepositorio.update(pedido);
     }
+    public void sincronizarPedido(Long idUsuario, Mesa mesa,String identificadorUnico){
+        salvarPedidoOnline(idUsuario,mesa.getId(),Constantes.ABERTO,Constantes.NAO_ENVIADO,0f,identificadorUnico);
+    }
 
-    public void abrirPedido(Long idUsuario, Mesa mesa){
-       if( pedidoRepositorio.insert(new Pedido(idUsuario,mesa.getNumero(),Constantes.ABERTO,Constantes.NAO_ENVIADO))){
+    public void abrirPedido(Long idUsuario, Mesa mesa,String identificadorUnico){
+        sincronizarPedido(idUsuario,mesa,identificadorUnico);
+       if( pedidoRepositorio.insert(new Pedido(idUsuario,mesa.getId(),Constantes.ABERTO,Constantes.NAO_ENVIADO,identificadorUnico))){
            mesa.setLivre(Constantes.OCUPADO);
            mesaRepositorio.update(mesa); //atualiza a mesa
            _Resposta.setValue(new Resposta(Constantes.ABERTO,true));
@@ -89,5 +95,20 @@ public class MesaViewModel extends AndroidViewModel {
             mesaRepositorio.update(mesa); //atualiza
             _Resposta.setValue(new Resposta(Constantes.CANCELADO,true));
         }
+    }
+
+    public void salvarPedidoOnline(Long idUsuario,int idMesa,String aberturaPedido,String status,Float total, String identificadorUnico){
+        APIListener<Pedido> listener = new APIListener<Pedido>() {
+            @Override
+            public void onSuccess(Pedido result) {
+
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+        };
+        pedidoRepositorio.salvarPedidoOnline(listener,idUsuario,idMesa,aberturaPedido,status,total,identificadorUnico);
     }
 }

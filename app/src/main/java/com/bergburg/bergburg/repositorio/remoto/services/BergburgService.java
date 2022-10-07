@@ -24,6 +24,18 @@ public interface BergburgService {
     Call<Dados>  getMesas();
     @GET("getProdutos.php")
     Call<Dados>  getProdutos();
+
+    @POST("salvarPedido.php/")
+    @FormUrlEncoded
+    Call<Pedido>  salvarPedido(
+            @Field("idUsuario") Long idUsuario,
+            @Field("idMesa") int idMesa,
+            @Field("aberturaPedido") String aberturaPedido,
+            @Field("status") String status,
+            @Field("total") Float total,
+            @Field("identificadorUnico") String identificadorUnico
+    );
+
     @FormUrlEncoded
     @POST("getProdutosPorcategoria.php/")
     Call<Dados>  produtosPorCategoria(@Field("idCategoria") Long id);

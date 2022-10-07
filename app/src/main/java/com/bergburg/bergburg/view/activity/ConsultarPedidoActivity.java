@@ -75,7 +75,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
             public void onClick(Pedido pedido) {
                 Intent intent = new Intent(ConsultarPedidoActivity.this,MesaActivity.class);
 
-                intent.putExtra(Constantes.MESA,new Mesa(pedido.getNumeroMesa()));
+                intent.putExtra(Constantes.MESA,new Mesa(pedido.getIdMesa()));
                 startActivity(intent);
             }
 

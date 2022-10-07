@@ -16,9 +16,9 @@ public class Pedido {
     @ColumnInfo(name = "idUsuario")
     @SerializedName("idUsuario")
     private Long idUsuario;
-    @ColumnInfo(name = "numeroMesa")
-    @SerializedName("numeroMesa")
-    private int numeroMesa;
+    @ColumnInfo(name = "idMesa")
+    @SerializedName("idMesa")
+    private int idMesa;
     @ColumnInfo(name = "total")
     @SerializedName("total")
     private Float total = 0f;
@@ -28,21 +28,47 @@ public class Pedido {
     @ColumnInfo(name = "status")
     @SerializedName("status")
     private String status = Constantes.NAO_ENVIADO;
+    @ColumnInfo(name = "identificadorUnico")
+    @SerializedName("identificadorUnico")
+    private String identificadorUnico ;
+    @ColumnInfo(name = "sincronizado")
+    private String sincronizado = Constantes.NAO;
 
     public Pedido() {
     }
 
-    public Pedido(Long idUsuario, int numeroMesa, String aberturaPedido) {
+    public Pedido(Long id, String sincronizado) {
+        this.id = id;
+        this.sincronizado = sincronizado;
+    }
+
+    public Pedido(Long idUsuario, int idMesa, String aberturaPedido) {
         this.idUsuario = idUsuario;
-        this.numeroMesa = numeroMesa;
+        this.idMesa = idMesa;
         this.aberturaPedido = aberturaPedido;
     }
 
-    public Pedido(Long idUsuario, int numeroMesa, String aberturaPedido, String status) {
+    public Pedido(Long idUsuario, int idMesa, String aberturaPedido, String status) {
         this.idUsuario = idUsuario;
-        this.numeroMesa = numeroMesa;
+        this.idMesa = idMesa;
         this.aberturaPedido = aberturaPedido;
         this.status = status;
+    }
+
+    public Pedido(Long idUsuario, int idMesa, String aberturaPedido, String status, String identificadorUnico) {
+        this.idUsuario = idUsuario;
+        this.idMesa = idMesa;
+        this.aberturaPedido = aberturaPedido;
+        this.status = status;
+        this.identificadorUnico = identificadorUnico;
+    }
+
+    public String getSincronizado() {
+        return sincronizado;
+    }
+
+    public void setSincronizado(String sincronizado) {
+        this.sincronizado = sincronizado;
     }
 
     public Long getId() {
@@ -61,12 +87,12 @@ public class Pedido {
         this.idUsuario = idUsuario;
     }
 
-    public int getNumeroMesa() {
-        return numeroMesa;
+    public int getIdMesa() {
+        return idMesa;
     }
 
-    public void setNumeroMesa(int numeroMesa) {
-        this.numeroMesa = numeroMesa;
+    public void setIdMesa(int idMesa) {
+        this.idMesa = idMesa;
     }
 
     public Float getTotal() {
@@ -91,5 +117,13 @@ public class Pedido {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getIdentificadorUnico() {
+        return identificadorUnico;
+    }
+
+    public void setIdentificadorUnico(String identificadorUnico) {
+        this.identificadorUnico = identificadorUnico;
     }
 }

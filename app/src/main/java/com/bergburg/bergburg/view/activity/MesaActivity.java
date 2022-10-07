@@ -196,6 +196,10 @@ public class MesaActivity extends AppCompatActivity {
                     }else{
                         //pedido aberto, solicito os produtos do pedido
                         viewModel.getItemPedido(pedido.getId());
+                        if(pedido.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
+                            Long identificadorUnico = System.currentTimeMillis(); // pegar o milesegundos
+                            viewModel.sincronizarPedido(pedido.getId(),mesa,String.valueOf(identificadorUnico));
+                        }
                     }
                 }else{
                     //solicito a abertura do pedido
@@ -382,8 +386,9 @@ public class MesaActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        viewModel.abrirPedido(1l,mesa);
-                        viewModel.getPedido(mesa.getNumero());
+                        Long identificadorUnico = System.currentTimeMillis();
+                        viewModel.abrirPedido(1l,mesa,String.valueOf(identificadorUnico));
+                        viewModel.getPedido(mesa.getId());
 
                     }
                 })

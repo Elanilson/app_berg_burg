@@ -21,19 +21,22 @@ public interface PedidoDAO {
     @Delete
     public int delete(Pedido pedido);
 
-    @Query("select * from pedidos where numeroMesa = :numeroMesa and  aberturaPedido = 'Aberto' and status != 'Cancelado' ")
-    public Pedido getPedido (int numeroMesa);
+    @Query("select * from pedidos where idMesa = :idMesa and  aberturaPedido = 'Aberto' and status != 'Cancelado' ")
+    public Pedido getPedido (int idMesa);
 
-    @Query("select * from pedidos where numeroMesa like  '%' || :numeroMesa || '%'and  aberturaPedido = 'Aberto' and status != 'Cancelado'")
-    public List<Pedido> consultarPedido (int numeroMesa);
+    @Query("select * from pedidos where idMesa like  '%' || :idMesa || '%'and  aberturaPedido = 'Aberto' and status != 'Cancelado'")
+    public List<Pedido> consultarPedido (int idMesa);
 
 
-    @Query("select id from pedidos where numeroMesa = :numeroMesa and aberturaPedido = 'Aberto' and status != 'Cancelado'")
-    public Long getIdPedido(int numeroMesa);
+    @Query("select id from pedidos where idMesa = :idMesa and aberturaPedido = 'Aberto' and status != 'Cancelado'")
+    public Long getIdPedido(int idMesa);
 
 
 
     @Query("select * from pedidos where aberturaPedido = 'Aberto' and status != 'Cancelado' ")
     public List<Pedido> pedidos();
+
+    @Query("UPDATE pedidos set sincronizado  = :sincronizado where id = :id")
+    public int atualizarSincronismo(Long id,String sincronizado);
 
 }

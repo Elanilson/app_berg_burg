@@ -15,6 +15,9 @@ public class Constantes {
     public static String OCUPADO = "Ocupado";
     public static String LIVRE = "Livre";
 
+    public static String SIM = "SIM";
+    public static String NAO = "NAO";
+
     public static String ENVIADO      = "Enviado";
     public static String CANCELADO     = "Cancelado";
     public static String PREPARANDO    = "Preparando";

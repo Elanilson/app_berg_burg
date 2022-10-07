@@ -44,7 +44,7 @@ public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
 
         textStatus.setText(status);
         textViewTotal.setText("R$ "+pedido.getTotal());
-        textNumeroMesa.setText(""+pedido.getNumeroMesa());
+        textNumeroMesa.setText(""+pedido.getIdMesa());
         layout.setOnClickListener(v -> {
           onListenerAcao.onClick(pedido);
         });
