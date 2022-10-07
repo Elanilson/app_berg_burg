@@ -211,20 +211,7 @@ public abstract class BancoRoom extends RoomDatabase {
                                 mesas.add(new Mesa(24));
                                 mesas.add(new Mesa(25));
                                 mesas.add(new Mesa(26));
-                                mesas.add(new Mesa(27));
-                                mesas.add(new Mesa(28));
-                                mesas.add(new Mesa(29));
-                                mesas.add(new Mesa(30));
-                                mesas.add(new Mesa(31));
-                                mesas.add(new Mesa(32));
-                                mesas.add(new Mesa(33));
-                                mesas.add(new Mesa(34));
-                                mesas.add(new Mesa(35));
-                                mesas.add(new Mesa(36));
-                                mesas.add(new Mesa(37));
-                                mesas.add(new Mesa(38));
-                                mesas.add(new Mesa(39));
-                                mesas.add(new Mesa(40));
+
 
                             for (Mesa mesa : mesas) {
                                 mExecutor.execute(() -> dao2.insert(mesa));

@@ -21,9 +21,11 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.ItemCardapioActivity"
+            android:theme="@style/Theme.BergBurg_NoActionBar"
             android:exported="false" />
         <activity
             android:name=".view.activity.CardapioActivity"
+            android:theme="@style/Theme.BergBurg_NoActionBar"
             android:exported="false"
             android:label="@string/cardapio" />
         <activity
@@ -31,8 +33,7 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.PrincipalActivity"
-            android:exported="false"
-            android:parentActivityName=".view.activity.MainActivity" />
+            android:exported="false" />
         <activity
             android:name=".view.activity.MesaActivity"
             android:exported="false"

@@ -39,8 +39,9 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="TextView"
+            android:textAllCaps="true"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
     </LinearLayout>

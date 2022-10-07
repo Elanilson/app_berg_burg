@@ -16,7 +16,7 @@
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_enviar_comanda.xml" value="0.2" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_item_cardapio.xml" value="0.264" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_main.xml" value="0.264" />
-        <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_mesa.xml" value="0.5234460196292258" />
+        <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_mesa.xml" value="0.264" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_principal.xml" value="0.25" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/activity_selecionar_mesa.xml" value="0.264" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/layout__item_cardapio.xml" value="0.6" />
@@ -27,6 +27,7 @@
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/layout_pedido.xml" value="0.4" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/layout_quantidade_pedido.xml" value="0.4" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/toolbar_centralizado.xml" value="0.4" />
+        <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/layout/toolbar_personalizada.xml" value="0.4" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/menu/menu_mesa.xml" value="0.25" />
         <entry key="..\:/Users/elani/AndroidStudioProjects/Bergburg/app/src/main/res/menu/menu_principal.xml" value="0.24895833333333334" />
       </map>

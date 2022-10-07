@@ -2,6 +2,7 @@ package com.bergburg.bergburg.view.activity;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.lifecycle.Observer;
@@ -63,15 +64,27 @@ public class ItemCardapioActivity extends AppCompatActivity {
         layout = binding.constraintItemCardapio;
         frameLayoutEditarItemPedido = binding.frameSheetEditarItemPedido;
         bottomSheetBehavior =BottomSheetBehavior.from(frameLayoutEditarItemPedido);
-
-
+        bottomSheetBehavior.setDraggable(false);
 
         configurarrRecyclerView();
         adapteListener();
         observe();
     }
 
+    private void configuracaoToolbar(){
+        // getSupportActionBar().setTitle("Mesa 25");
+        Toolbar toolbar = binding.toolbar.toolbarPersonalizado;
+        binding.toolbar.textViewLabelToolbar.setText(tituloCategoria);
+
+        binding.toolbar.imageButtonVoltar.setOnClickListener(v -> voltarTela());
+        setSupportActionBar(toolbar);
+    }
+    private void voltarTela() {
+        onBackPressed();
+    }
+
     private void exibirButtonSheetPedido(Produto produto){
+        binding.recyclerViewItemCardapio.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         EditText editCampoQuantidade = frameLayoutEditarItemPedido.findViewById(R.id.editQuantidade);
         EditText editCampoObservacao = frameLayoutEditarItemPedido.findViewById(R.id.editTextObservacao);
@@ -108,7 +121,14 @@ public class ItemCardapioActivity extends AppCompatActivity {
 
             }
         });
-        btnCancelar.setOnClickListener( v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                binding.recyclerViewItemCardapio.setVisibility(View.VISIBLE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
     }
 
     private void solicitarQuantidade(Produto produto){
@@ -189,7 +209,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
             viewModel.produtosPorCategoria(idCategoria);
           //  viewModel.produtosPorCategoriaOnline(idCategoria);
            // viewModel.produtosOnline();
-            getSupportActionBar().setTitle(tituloCategoria);
+          //  getSupportActionBar().setTitle(tituloCategoria);
+            configuracaoToolbar();
         }
     }
 

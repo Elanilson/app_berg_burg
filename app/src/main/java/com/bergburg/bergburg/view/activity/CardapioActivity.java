@@ -1,6 +1,7 @@
 package com.bergburg.bergburg.view.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,11 +34,24 @@ public class CardapioActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(CardapioViewModel.class);
-
+        configuracaoToolbar();
         recuperar();
         configurarrRecyclerView();
         adapteListener();
         observe();
+    }
+
+    private void configuracaoToolbar(){
+        // getSupportActionBar().setTitle("Mesa 25");
+        Toolbar toolbar = binding.toolbar.toolbarPersonalizado;
+
+        binding.toolbar.textViewLabelToolbar.setText(getString(R.string.cardapio));
+
+        binding.toolbar.imageButtonVoltar.setOnClickListener(v -> voltarTela());
+        setSupportActionBar(toolbar);
+    }
+    private void voltarTela() {
+        onBackPressed();
     }
 
     private void recuperar(){

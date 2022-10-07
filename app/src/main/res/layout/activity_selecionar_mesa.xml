@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
 
         android:layout_margin="10dp"
-        android:columnWidth="60dp"
+        android:columnWidth="80dp"
         android:numColumns="auto_fit" />
 
 </LinearLayout>

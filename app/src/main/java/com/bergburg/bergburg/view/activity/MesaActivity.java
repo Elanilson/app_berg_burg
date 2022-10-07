@@ -77,6 +77,14 @@ public class MesaActivity extends AppCompatActivity {
 
 
         binding.buttonAdicionarProdutos.setOnClickListener(v -> abriCardapio());
+        binding.buttonEnviarComnda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertaEnVioDeComanda();
+            }
+        });
+
+        bottomSheetBehavior.setDraggable(false);
 
 
 
@@ -88,6 +96,9 @@ public class MesaActivity extends AppCompatActivity {
     }
 
     private void exibirButtonSheetPedido(Produto produto){
+        binding.recyclerViewDetalhesMesa.setVisibility(View.GONE);
+        binding.linearLayoutTotal.setVisibility(View.GONE);
+        binding.layoutButton.setVisibility(View.GONE);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         EditText editCampoQuantidade = frameLayoutEditarItemPedido.findViewById(R.id.editQuantidade);
         EditText editCampoObservacao = frameLayoutEditarItemPedido.findViewById(R.id.editTextObservacao);
@@ -121,7 +132,15 @@ public class MesaActivity extends AppCompatActivity {
             }
         });
 
-        btnCancelar.setOnClickListener( v -> bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED));
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.recyclerViewDetalhesMesa.setVisibility(View.VISIBLE);
+                binding.linearLayoutTotal.setVisibility(View.VISIBLE);
+                binding.layoutButton.setVisibility(View.VISIBLE);
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        });
     }
 
     private void adapteListener() {
@@ -142,7 +161,6 @@ public class MesaActivity extends AppCompatActivity {
         adapter.attackOnListener(onListenerAcao);
     }
 
-
     private void configurarrRecyclerView() {
         LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(RecyclerView.VERTICAL);
@@ -156,7 +174,9 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(List<Produto> produtos) {
                 if(produtos.size() > 0){
                     binding.linearLayoutTotal.setVisibility(View.VISIBLE);
+                    binding.buttonEnviarComnda.setVisibility(View.VISIBLE);
                 }else{
+                    binding.buttonEnviarComnda.setVisibility(View.GONE);
                     binding.linearLayoutTotal.setVisibility(View.GONE);
 
                 }
@@ -242,7 +262,6 @@ public class MesaActivity extends AppCompatActivity {
          //   System.out.println(mesa.toString());
         }
     }
-
 
     private void voltarTela() {
         onBackPressed();
@@ -403,9 +422,6 @@ public class MesaActivity extends AppCompatActivity {
         super.onOptionsItemSelected(item);
 
         switch (item.getItemId()){
-            case R.id.enviarComanda:
-                alertaEnVioDeComanda();
-                break;
             case R.id.menuCancelar:
                 if(pedidoDaMesa.getStatus().equalsIgnoreCase(getString(R.string.preparando))){
                     Toast.makeText(this, "Não é possível cancelar, o pedido está sendo preparado", Toast.LENGTH_SHORT).show();

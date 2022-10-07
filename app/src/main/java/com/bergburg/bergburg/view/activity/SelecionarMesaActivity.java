@@ -107,8 +107,8 @@ public class SelecionarMesaActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_principal,menu);
+      //  MenuInflater inflater = getMenuInflater();
+     //   inflater.inflate(R.menu.menu_principal,menu);
         return true;
        // return super.onCreateOptionsMenu(menu);
     }
