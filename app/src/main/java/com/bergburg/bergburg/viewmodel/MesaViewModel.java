@@ -27,6 +27,7 @@ public class MesaViewModel extends AndroidViewModel {
     private PedidoRepositorio pedidoRepositorio;
     private MesaRepositorio mesaRepositorio;
 
+
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
     public LiveData<List<Produto>> produtos = _Produtos;
 
@@ -49,6 +50,11 @@ public class MesaViewModel extends AndroidViewModel {
     public void getItemPedido(Long id){
         //pecorro os itens da tebela itensDoPedido
         for(ItemDePedido item: pedidoRepositorio.getItensDoPedido(id)){
+            //caso não sincroninazo ele vai sincronizar
+            if(item.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
+                salvarProdutoSelecionadoOnline(item.getIdPedido(),item.getIdProduto(), item.getQuantidade(), item.getObservacao(),item.getIndentificadorUnico(), item.getPreco() );
+            }
+
             //busco o produto conforme o id
             //e crio uma lista de produtos
             Produto produto = new Produto();
@@ -62,8 +68,8 @@ public class MesaViewModel extends AndroidViewModel {
         _Produtos.setValue(produtoList);
     }
 
-    public void getPedido(int numeroMesa){
-        _Pedido.setValue(pedidoRepositorio.getPedido(numeroMesa));
+    public void getPedido(int idMesa){
+        _Pedido.setValue(pedidoRepositorio.getPedido(idMesa));
     }
 
     public void atualizarTotalPedido(Pedido pedido){
@@ -110,5 +116,23 @@ public class MesaViewModel extends AndroidViewModel {
             }
         };
         pedidoRepositorio.salvarPedidoOnline(listener,idUsuario,idMesa,aberturaPedido,status,total,identificadorUnico);
+    }
+
+    public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco){
+
+        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
+            @Override
+            public void onSuccess(ItemDePedido result) {
+                // precisa ter nada  aqui porque ta sendo feito no repositorio
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+
+        };
+        repositorio.salvarProdutoSelecionadoOnline(listener,idPedido,idProduto,quantidade,observacao,identificador,preco);
+
     }
 }

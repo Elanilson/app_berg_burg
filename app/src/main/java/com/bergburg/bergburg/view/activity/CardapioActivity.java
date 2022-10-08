@@ -24,7 +24,7 @@ public class CardapioActivity extends AppCompatActivity {
     private ActivityCardapioBinding binding;
     private CardapioAdapter adapter = new CardapioAdapter();
     private CardapioViewModel viewModel;
-    private int numeroMesa = 0;
+    private int id_mesa = 0;
 
 
     @Override
@@ -57,7 +57,7 @@ public class CardapioActivity extends AppCompatActivity {
     private void recuperar(){
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            this.numeroMesa = bundle.getInt(Constantes.NUMERO_MESA);
+            this.id_mesa = bundle.getInt(Constantes.ID_MESA);
         }
     }
 
@@ -69,7 +69,7 @@ public class CardapioActivity extends AppCompatActivity {
                     Bundle bundle = new Bundle();
                     bundle.putLong(Constantes.ID_CATEGORIA,obj.getId());
                     bundle.putString(Constantes.TITULO_CATEGORIA,obj.getTitulo());
-                    bundle.putInt(Constantes.NUMERO_MESA,numeroMesa);
+                    bundle.putInt(Constantes.ID_MESA,id_mesa);
                     Intent intent = new Intent(CardapioActivity.this,ItemCardapioActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);

@@ -46,8 +46,8 @@ public class PedidoRepositorio {
         return pedidoDAO.atualizarSincronismo(id,sincronizado) > 0;
     }
 
-    public Pedido getPedido(int numeroMesa){
-        return pedidoDAO.getPedido(numeroMesa);
+    public Pedido getPedido(int idMesa){
+        return pedidoDAO.getPedido(idMesa);
     }
 
 
@@ -74,6 +74,8 @@ public class PedidoRepositorio {
                     if(response.body() != null){
                      //   System.out.println("Pedido enviado com sucesso: "+response.body());
                        // listener.onSuccess(response.body());
+                        //QUANDO O PEIDO É ENVIADO COM SUCESSO ELE É SINCRONIZADO MARCADO COMO "SIM" O CAMPO SINCRONIZADO
+                        //CASO CONTRARIO ELE VAI TENTAR ATER O ENVIO SER CONFIRMADO STATUS 200 HTTP
                         Long id = getPedido(idMesa).getId();
                         atualizarSincronismo(id,Constantes.SIM);
                     }

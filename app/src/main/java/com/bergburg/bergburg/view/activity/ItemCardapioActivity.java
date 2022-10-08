@@ -44,7 +44,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
     private Long idCategoria = 0L;
     private String tituloCategoria = "";
     private String observacao = "";
-    private int numeroMesa = 0;
+    private int id_mesa = 0;
     private int quantidade = 1; // padrao
     private CoordinatorLayout layout;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -109,7 +109,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
                     quantidade = Integer.parseInt(campo);
 
                     observacao = editCampoObservacao.getText().toString();
-                    viewModel.salvarProdutoSelecionado(numeroMesa,produto.getId(),quantidade,observacao);
+                    Long identificadorUnico = System.currentTimeMillis();
+                    viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco());
                     Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     finish();
@@ -205,7 +206,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         if(bundle != null){
             idCategoria = bundle.getLong(Constantes.ID_CATEGORIA);
             tituloCategoria = bundle.getString(Constantes.TITULO_CATEGORIA);
-            numeroMesa = bundle.getInt(Constantes.NUMERO_MESA);
+            id_mesa = bundle.getInt(Constantes.ID_MESA);
             viewModel.produtosPorCategoria(idCategoria);
           //  viewModel.produtosPorCategoriaOnline(idCategoria);
            // viewModel.produtosOnline();

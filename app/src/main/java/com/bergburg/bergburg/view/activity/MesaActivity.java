@@ -74,8 +74,6 @@ public class MesaActivity extends AppCompatActivity {
         bottomSheetBehavior =BottomSheetBehavior.from(frameLayoutEditarItemPedido);
 
 
-
-
         binding.buttonAdicionarProdutos.setOnClickListener(v -> abriCardapio());
         binding.buttonEnviarComnda.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -175,6 +173,7 @@ public class MesaActivity extends AppCompatActivity {
                 if(produtos.size() > 0){
                     binding.linearLayoutTotal.setVisibility(View.VISIBLE);
                     binding.buttonEnviarComnda.setVisibility(View.VISIBLE);
+
                 }else{
                     binding.buttonEnviarComnda.setVisibility(View.GONE);
                     binding.linearLayoutTotal.setVisibility(View.GONE);
@@ -196,6 +195,7 @@ public class MesaActivity extends AppCompatActivity {
                     }else{
                         //pedido aberto, solicito os produtos do pedido
                         viewModel.getItemPedido(pedido.getId());
+                        //sincronizar todos os itens que nao tiverem sincronizados
                         if(pedido.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
                             Long identificadorUnico = System.currentTimeMillis(); // pegar o milesegundos
                             viewModel.sincronizarPedido(pedido.getId(),mesa,String.valueOf(identificadorUnico));
@@ -230,7 +230,7 @@ public class MesaActivity extends AppCompatActivity {
                 if(resposta.getStatus()){
                     Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                     adapter.limparProdutos();
-                    viewModel.getPedido(mesa.getNumero());
+                    viewModel.getPedido(mesa.getId());
                 }else{
                     Toast.makeText(MesaActivity.this, getString(R.string.erro), Toast.LENGTH_LONG).show();
                 }
@@ -255,7 +255,7 @@ public class MesaActivity extends AppCompatActivity {
 
     private void abriCardapio(){
         Bundle bundle = new Bundle();
-        bundle.putInt(Constantes.NUMERO_MESA,mesa.getNumero());
+        bundle.putInt(Constantes.ID_MESA,mesa.getId());
         Intent intent = new Intent(this,CardapioActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
@@ -446,7 +446,7 @@ public class MesaActivity extends AppCompatActivity {
         super.onResume();
         recuperar();
         adapter.limparProdutos();
-        viewModel.getPedido(mesa.getNumero());
+        viewModel.getPedido(mesa.getId());
         configuracaoToolbar();
     }
 }

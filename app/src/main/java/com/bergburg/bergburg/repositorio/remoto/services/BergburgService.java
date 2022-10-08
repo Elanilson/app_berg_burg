@@ -6,6 +6,7 @@ import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
+import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
 
 import java.util.List;
 
@@ -34,6 +35,17 @@ public interface BergburgService {
             @Field("status") String status,
             @Field("total") Float total,
             @Field("identificadorUnico") String identificadorUnico
+    );
+
+    @POST("salvarItemDoPedido.php/")
+    @FormUrlEncoded
+    Call<ItemDePedido>  salvarItemDoPedido(
+            @Field("idPedido") Long idPedido,
+            @Field("idProduto") Long idProduto,
+            @Field("preco") Float preco,
+            @Field("quantidade") int quantidade,
+            @Field("observacao") String observacao,
+            @Field("indentificadorUnico") String identificador
     );
 
     @FormUrlEncoded

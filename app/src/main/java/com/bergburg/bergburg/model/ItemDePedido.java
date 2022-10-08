@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "itemDePedido")
@@ -23,6 +24,14 @@ public class ItemDePedido {
     private int quantidade = 1;
     @ColumnInfo(name = "observacao")
     private String observacao;
+    @ColumnInfo(name = "sincronizado")
+    private String sincronizado = Constantes.NAO;
+    @ColumnInfo(name = "indentificadorUnico")
+    @SerializedName("indentificadorUnico")
+    private String indentificadorUnico ;
+    @ColumnInfo(name = "preco")
+    @SerializedName("preco")
+    private Float preco = 0f;
 
     public ItemDePedido() {
     }
@@ -44,6 +53,39 @@ public class ItemDePedido {
         this.idProduto = idProduto;
         this.quantidade = quantidade;
         this.observacao = observacao;
+    }
+
+    public ItemDePedido(Long idPedido, Long idProduto, int quantidade, String observacao, String indentificadorUnico, Float preco) {
+        this.idPedido = idPedido;
+        this.idProduto = idProduto;
+        this.quantidade = quantidade;
+        this.observacao = observacao;
+        this.indentificadorUnico = indentificadorUnico;
+        this.preco = preco;
+    }
+
+    public Float getPreco() {
+        return preco;
+    }
+
+    public void setPreco(Float preco) {
+        this.preco = preco;
+    }
+
+    public String getIndentificadorUnico() {
+        return indentificadorUnico;
+    }
+
+    public void setIndentificadorUnico(String indentificadorUnico) {
+        this.indentificadorUnico = indentificadorUnico;
+    }
+
+    public String getSincronizado() {
+        return sincronizado;
+    }
+
+    public void setSincronizado(String sincronizado) {
+        this.sincronizado = sincronizado;
     }
 
     public Long getId() {

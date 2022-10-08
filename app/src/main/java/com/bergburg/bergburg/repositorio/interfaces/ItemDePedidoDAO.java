@@ -27,6 +27,12 @@ public interface ItemDePedidoDAO {
     @Query("select * from itemDePedido where idProduto = :idProduto and idPedido = :idPedido")
     public ItemDePedido getItemDoPedido (Long idPedido,Long idProduto);
 
+    @Query("select * from itemDePedido where idPedido = :idPedido and id order by id desc limit 1")
+    public ItemDePedido getUltimoItemDoPedidoAdicionado (Long idPedido);
+
+    @Query("UPDATE itemDePedido set sincronizado  = :sincronizado where id = :id")
+    public int atualizarSincronismo(Long id,String sincronizado);
+
 
 
 

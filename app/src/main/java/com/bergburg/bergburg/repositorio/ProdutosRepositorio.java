@@ -2,9 +2,11 @@ package com.bergburg.bergburg.repositorio;
 
 import android.content.Context;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.ItemDePedido;
+import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.repositorio.interfaces.ItemDePedidoDAO;
 import com.bergburg.bergburg.repositorio.interfaces.PedidoDAO;
@@ -58,9 +60,13 @@ public class ProdutosRepositorio {
         return produtoDAO.produtos();
     }
 
-    public Boolean salvarProdutoSelecionado(int numeroMesa,Long idProduto,int quantidade,String observacao){
-        Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
-        return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade,observacao)) > 0;
+    public Boolean atualizarSincronismo(Long id, String sincronizado){
+        return itemDePedidoDAO.atualizarSincronismo(id,sincronizado) > 0;
+    }
+
+    public Boolean salvarProdutoSelecionado(int id_mesa,Long idProduto,int quantidade,String observacao,String indentificador,Float preco){
+        Long idPedido = pedidoDAO.getIdPedido(id_mesa);
+        return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade,observacao,indentificador,preco)) > 0;
     }
 
     public Boolean atualizarQuantidadeDoItemPedido(int numeroMesa,Long idProduto,int quantidade,String observacao){
@@ -116,6 +122,36 @@ public class ProdutosRepositorio {
             @Override
             public void onFailure(Call<Dados> call, Throwable t) {
                 listener.onFailures(t.getMessage());
+            }
+        });
+    }
+
+
+
+    public void salvarProdutoSelecionadoOnline(APIListener<ItemDePedido> listener,Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco){
+        Call<ItemDePedido> call = service.salvarItemDoPedido(idPedido,idProduto,preco,quantidade,observacao,identificador);
+        call.enqueue(new Callback<ItemDePedido>() {
+            @Override
+            public void onResponse(Call<ItemDePedido> call, Response<ItemDePedido> response) {
+                //QUANDO O ItemDePedido É ENVIADO COM SUCESSO ELE É SINCRONIZADO MARCADO COMO "SIM" O CAMPO SINCRONIZADO
+                if(response.isSuccessful()){
+                    if(response.body() != null){
+                        // recupero o id do ultimo item adicionado no pedido
+                        Long idItem = itemDePedidoDAO.getUltimoItemDoPedidoAdicionado(idPedido).getId();
+                        atualizarSincronismo(idItem, Constantes.SIM);
+
+                    }
+
+                }else {
+                    listener.onFailures("ProdutosRepositorio "+response.message());
+                    listener.onFailures(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ItemDePedido> call, Throwable t) {
+                System.out.println(": "+t.getMessage());
+                listener.onFailures("ProdutosRepositorio "+t.getMessage());
             }
         });
     }
