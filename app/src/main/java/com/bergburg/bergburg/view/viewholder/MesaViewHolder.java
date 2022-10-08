@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
+import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Produto;
 
 public class MesaViewHolder extends RecyclerView.ViewHolder {
@@ -27,12 +28,12 @@ public class MesaViewHolder extends RecyclerView.ViewHolder {
         textViewQuantidade = itemView.findViewById(R.id.textViewQuantidadeItem);
         layout = itemView.findViewById(R.id.layoutITem);
     }
-    public void bind(Produto produto, OnListenerAcao<Produto> onListenerAcao){
-        textViewNomeItem.setText(produto.getTitulo());
-        textViewValor.setText(produto.getPreco()+"");
-        textViewTotal.setText(calcular(produto));
-        textViewQuantidade.setText(produto.getQuantidade()+"x");
-        textViewDescricao.setText(produto.getDescricao());
+    public void bind(ItemDePedido itensDoPedido, OnListenerAcao<ItemDePedido> onListenerAcao){
+        textViewNomeItem.setText(itensDoPedido.getTitulo());
+        textViewValor.setText(itensDoPedido.getPreco()+"");
+        textViewTotal.setText(calcular(itensDoPedido));
+        textViewQuantidade.setText(itensDoPedido.getQuantidade()+"x");
+        textViewDescricao.setText(itensDoPedido.getDescricao());
 
         textViewTotal.setVisibility(View.VISIBLE);
         textViewQuantidade.setVisibility(View.VISIBLE);
@@ -40,17 +41,17 @@ public class MesaViewHolder extends RecyclerView.ViewHolder {
         layout.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                onListenerAcao.onLongClick(produto);
+                onListenerAcao.onLongClick(itensDoPedido);
                 return false;
             }
         });
         layout.setOnClickListener(v -> {
-          onListenerAcao.onClick(produto);
+          onListenerAcao.onClick(itensDoPedido);
         });
 
     }
 
-    private String calcular(Produto produto){
-        return  "R$ "+(produto.getQuantidade() * produto.getPreco());
+    private String calcular(ItemDePedido itensDoPedido){
+        return  "R$ "+(itensDoPedido.getQuantidade() * itensDoPedido.getPreco());
     }
 }

@@ -95,7 +95,7 @@ public class MesaActivity extends AppCompatActivity {
 
     }
 
-    private void exibirButtonSheetPedido(Produto produto){
+    private void exibirButtonSheetPedido(ItemDePedido itemDePedido){
         binding.recyclerViewDetalhesMesa.setVisibility(View.GONE);
         binding.linearLayoutTotal.setVisibility(View.GONE);
         binding.layoutButton.setVisibility(View.GONE);
@@ -107,12 +107,12 @@ public class MesaActivity extends AppCompatActivity {
         TextView totalProduto = frameLayoutEditarItemPedido.findViewById(R.id.textViewInfoTotal);
         Button btnConfirmar = frameLayoutEditarItemPedido.findViewById(R.id.buttonConfirmarQuantidade);
         Button btnCancelar = frameLayoutEditarItemPedido.findViewById(R.id.buttonCancelar);
-        editCampoQuantidade.setText(""+produto.getQuantidade());
-        editCampoObservacao.setText(""+produto.getObservacao());
-        nomeProduto.setText(""+produto.getTitulo());
-        descricaoProduto.setText(""+produto.getDescricao());
-        totalProduto.setText(""+produto.getPreco());
-        System.out.println("Produto: "+produto.toString());
+        editCampoQuantidade.setText(""+itemDePedido.getQuantidade());
+        editCampoObservacao.setText(""+itemDePedido.getObservacao());
+        nomeProduto.setText(""+itemDePedido.getTitulo());
+        descricaoProduto.setText(""+itemDePedido.getDescricao());
+        totalProduto.setText(""+itemDePedido.getPreco());
+        System.out.println("Produto: "+itemDePedido.toString());
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,8 +122,11 @@ public class MesaActivity extends AppCompatActivity {
                 if(campo != null && campo != "" && !campo.equalsIgnoreCase(" ")){
                     quantidade = Integer.parseInt(campo);
                     observacao = editCampoObservacao.getText().toString();
-                    itemCardapioViewModel.atualizarQuantidadeItemDoPedido(mesa.getNumero(),produto.getId(),quantidade,observacao);
-                    itemCardapioViewModel.atualizarQuantidadeDoProdutoSelecionadoOnline(produto.getId(),produto.getIdentificador(),quantidade);
+                    itemDePedido.setQuantidade(quantidade);
+                    itemDePedido.setObservacao(observacao);
+                    itemCardapioViewModel.atualizarItemDoPedido(itemDePedido,mesa.getId());
+                   // itemCardapioViewModel.atualizarQuantidadeItemDoPedido(mesa.getId(),itemDePedido.getId(),quantidade,observacao);
+                  //  itemCardapioViewModel.atualizarQuantidadeDoProdutoSelecionadoOnline(itemDePedido.getId(),itemDePedido.getIndentificadorUnico(),quantidade);
                   //  itemCardapioViewModel.autlizarItemDoPedidoOnline(produto.getId(),produto.getIdentificador(),quantidade);
                     // configurarSnackBar(layout,"Sucesso");
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
@@ -147,18 +150,18 @@ public class MesaActivity extends AppCompatActivity {
     }
 
     private void adapteListener() {
-        OnListenerAcao<Produto> onListenerAcao = new OnListenerAcao<Produto>() {
+        OnListenerAcao<ItemDePedido> onListenerAcao = new OnListenerAcao<ItemDePedido>() {
             @Override
-            public void onClick(Produto produto) {
+            public void onClick(ItemDePedido itemDePedido) {
                // viewModel.salvarProdutoSelecionado(numeroMesa,obj.getId());
               //  finish();
              //   alertaAleterarQuantidade(produto);
-                exibirButtonSheetPedido(produto);
+                exibirButtonSheetPedido(itemDePedido);
             }
 
             @Override
-            public void onLongClick(Produto produto) {
-                alertaRemocao(produto);
+            public void onLongClick(ItemDePedido itemDePedido) {
+                alertaRemocao(itemDePedido);
             }
         };
         adapter.attackOnListener(onListenerAcao);
@@ -172,10 +175,10 @@ public class MesaActivity extends AppCompatActivity {
     }
 
     private void observe() {
-        viewModel.produtos.observe(this, new Observer<List<Produto>>() {
+        viewModel.itensDoPedido.observe(this, new Observer<List<ItemDePedido>>() {
             @Override
-            public void onChanged(List<Produto> produtos) {
-                if(produtos.size() > 0){
+            public void onChanged(List<ItemDePedido> itensDoPedido) {
+                if(itensDoPedido.size() > 0){
                     binding.linearLayoutTotal.setVisibility(View.VISIBLE);
                     binding.buttonEnviarComnda.setVisibility(View.VISIBLE);
 
@@ -184,8 +187,8 @@ public class MesaActivity extends AppCompatActivity {
                     binding.linearLayoutTotal.setVisibility(View.GONE);
 
                 }
-                calcularTotalDaMesa(produtos);
-                adapter.attackProdutos(produtos);
+                calcularTotalDaMesa(itensDoPedido);
+                adapter.attackProdutos(itensDoPedido);
             }
         });
 
@@ -201,10 +204,10 @@ public class MesaActivity extends AppCompatActivity {
                         //pedido aberto, solicito os produtos do pedido
                         viewModel.getItemPedido(pedido.getId());
                         //sincronizar todos os itens que nao tiverem sincronizados
-                        if(pedido.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
+                       /* if(pedido.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
                             Long identificadorUnico = System.currentTimeMillis(); // pegar o milesegundos
                             viewModel.sincronizarPedido(pedido.getId(),mesa,String.valueOf(identificadorUnico));
-                        }
+                        }*/
                     }
                 }else{
                     //solicito a abertura do pedido
@@ -322,7 +325,7 @@ public class MesaActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void alertaRemocao(Produto produto){
+    private void alertaRemocao(ItemDePedido itemDePedido){
         new AlertDialog.Builder(binding.getRoot().getContext())
                 .setTitle("Remoção de item")
                 .setMessage("Proseguir com a remoção")
@@ -330,7 +333,8 @@ public class MesaActivity extends AppCompatActivity {
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        itemCardapioViewModel.removerProdutoDoPedido(mesa.getNumero(),produto.getId());
+                        itemCardapioViewModel.removerItemDoPedido(itemDePedido,mesa.getId());
+                        //itemCardapioViewModel.removerProdutoDoPedido(mesa.getNumero(),itemDePedido.getId());
                     }
                 })
                 .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
@@ -406,14 +410,14 @@ public class MesaActivity extends AppCompatActivity {
                 })
                 .show();
     }
-    private void calcularTotalDaMesa(List<Produto> itens){
+    private void calcularTotalDaMesa(List<ItemDePedido> itensDoPedido){
         Float total = 0f;
-        for (Produto produto : itens){
-            total += produto.getQuantidade() * produto.getPreco();
+        for (ItemDePedido ItemDePedido : itensDoPedido){
+            total += ItemDePedido.getQuantidade() * ItemDePedido.getPreco();
         }
         pedidoDaMesa.setTotal(total);
-        viewModel.atualizarTotalPedido(pedidoDaMesa);
-        viewModel.atualizarPedidoOnline(pedidoDaMesa.getId(), pedidoDaMesa.getIdentificadorUnico(), pedidoDaMesa.getTotal());
+        viewModel.atualizarTotalPedido(pedidoDaMesa);//local
+        viewModel.atualizarPedidoOnline(pedidoDaMesa.getId(), pedidoDaMesa.getIdentificadorUnico(), pedidoDaMesa.getTotal(),pedidoDaMesa.getStatus(),pedidoDaMesa.getAberturaPedido());
         textViewTotalDaMesa.setText("R$ "+total);
 
 

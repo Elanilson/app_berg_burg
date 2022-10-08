@@ -13,25 +13,45 @@ public class ItemDePedido {
     @ColumnInfo(name = "id")
     @SerializedName("id")
     private Long id;
+
+    @ColumnInfo(name = "titulo")
+    @SerializedName("titulo")
+    private String titulo;
+
     @ColumnInfo(name = "idPedido")
     @SerializedName("idPedido")
     private Long idPedido;
+
     @ColumnInfo(name = "idProduto")
     @SerializedName("idProduto")
     private Long idProduto;
+
+    @ColumnInfo(name = "idCategoria")
+    @SerializedName("idCategoria")
+    private int idCategoria;
+
+    @ColumnInfo(name = "descricao")
+    @SerializedName("descricao")
+    private String descricao;
+
     @ColumnInfo(name = "quantidade")
     @SerializedName("quantidade")
     private int quantidade = 1;
+
     @ColumnInfo(name = "observacao")
     private String observacao;
+
     @ColumnInfo(name = "sincronizado")
     private String sincronizado = Constantes.NAO;
+
     @ColumnInfo(name = "indentificadorUnico")
     @SerializedName("indentificadorUnico")
     private String indentificadorUnico ;
+
     @ColumnInfo(name = "preco")
     @SerializedName("preco")
     private Float preco = 0f;
+
     @ColumnInfo(name = "status")
     @SerializedName("status")
     private String status = Constantes.ATIVO;
@@ -81,8 +101,11 @@ public class ItemDePedido {
     public String toString() {
         return "ItemDePedido{" +
                 "id=" + id +
+                ", titulo='" + titulo + '\'' +
                 ", idPedido=" + idPedido +
                 ", idProduto=" + idProduto +
+                ", idCategoria=" + idCategoria +
+                ", descricao='" + descricao + '\'' +
                 ", quantidade=" + quantidade +
                 ", observacao='" + observacao + '\'' +
                 ", sincronizado='" + sincronizado + '\'' +
@@ -90,6 +113,30 @@ public class ItemDePedido {
                 ", preco=" + preco +
                 ", status='" + status + '\'' +
                 '}';
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public String getStatus() {

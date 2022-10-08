@@ -26,6 +26,7 @@ import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivityItemCardapioBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.ItemCardapioAdapter;
@@ -109,8 +110,19 @@ public class ItemCardapioActivity extends AppCompatActivity {
                     quantidade = Integer.parseInt(campo);
 
                     observacao = editCampoObservacao.getText().toString();
-                    Long identificadorUnico = System.currentTimeMillis();
-                    viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco(),Constantes.ATIVO);
+                    Long indentificadorUnico = System.currentTimeMillis();
+                    ItemDePedido item = new ItemDePedido();
+                    item.setTitulo(produto.getTitulo());
+                    item.setIdProduto(produto.getId());
+                    item.setIdCategoria(produto.getIdCategoria());
+                    item.setDescricao(produto.getDescricao());
+                    item.setPreco(produto.getPreco());
+                    item.setQuantidade(quantidade);
+                    item.setObservacao(observacao);
+                    item.setIndentificadorUnico(String.valueOf(indentificadorUnico));
+
+                    viewModel.salvarItemDoPedido(item,id_mesa);
+                    //viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco(),Constantes.ATIVO);
                     Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     finish();

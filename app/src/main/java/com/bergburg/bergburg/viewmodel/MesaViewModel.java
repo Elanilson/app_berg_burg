@@ -15,6 +15,7 @@ import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.ItemDoPedidoRepositorio;
 import com.bergburg.bergburg.repositorio.MesaRepositorio;
 import com.bergburg.bergburg.repositorio.PedidoRepositorio;
 import com.bergburg.bergburg.repositorio.ProdutosRepositorio;
@@ -26,10 +27,15 @@ public class MesaViewModel extends AndroidViewModel {
     private ProdutosRepositorio repositorio;
     private PedidoRepositorio pedidoRepositorio;
     private MesaRepositorio mesaRepositorio;
+    private ItemDoPedidoRepositorio itemDoPedidoRepositorio;
 
 
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
     public LiveData<List<Produto>> produtos = _Produtos;
+
+    private MutableLiveData<List<ItemDePedido>> _ItensDoPedido = new MutableLiveData<>();
+    public LiveData<List<ItemDePedido>> itensDoPedido = _ItensDoPedido;
+
 
     private MutableLiveData<Pedido> _Pedido = new MutableLiveData<>();
     public LiveData<Pedido> pedido = _Pedido;
@@ -37,7 +43,7 @@ public class MesaViewModel extends AndroidViewModel {
     private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
     public LiveData<Resposta> resposta = _Resposta;
 
-    private List<Produto> produtoList = new ArrayList<>();
+    private List<ItemDePedido> itensDoPedido_Sem_OsRemovidos = new ArrayList<>();
 
     public MesaViewModel(@NonNull Application application) {
         super(application);
@@ -45,29 +51,24 @@ public class MesaViewModel extends AndroidViewModel {
         repositorio = new ProdutosRepositorio(application.getApplicationContext());
         pedidoRepositorio = new PedidoRepositorio(application.getApplicationContext());
         mesaRepositorio = new MesaRepositorio(application.getApplicationContext());
+        itemDoPedidoRepositorio = new ItemDoPedidoRepositorio(application.getApplicationContext());
     }
 
     public void getItemPedido(Long id){
         //pecorro os itens da tebela itensDoPedido
         for(ItemDePedido item: pedidoRepositorio.getItensDoPedido(id)){
-            //caso não sincroninazo ele vai sincronizar
+            //caso não sincroninazo ele vai sincronizar - principalmente os removidos
             if(item.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
-                salvarProdutoSelecionadoOnline(item.getIdPedido(),item.getIdProduto(), item.getQuantidade(), item.getObservacao(),item.getIndentificadorUnico(), item.getPreco(), item.getStatus() );
+                salvar_OU_Atualizar_ItemDoPedidoOnline(item);
             }
-
-            //busco o produto conforme o id
-            //e crio uma lista de produtos
-            Produto produto = new Produto();
-            produto = repositorio.getProduto(item.getIdProduto());
-            produto.setIdItemPedido(item.getId());
-            produto.setObservacao(item.getObservacao());
-            produto.setIdentificador(item.getIndentificadorUnico());
-            produto.setObservacao(item.getObservacao());
-            produto.setQuantidade(item.getQuantidade());
-            produtoList.add(produto);
+            //somente os itens ativos
+           if(item.getStatus().equalsIgnoreCase(Constantes.ATIVO)){
+               itensDoPedido_Sem_OsRemovidos.add(item);
+           }
         }
-
-        _Produtos.setValue(produtoList);
+       // _ItensDoPedido.setValue(pedidoRepositorio.getItensDoPedido(id));
+        _ItensDoPedido.setValue(itensDoPedido_Sem_OsRemovidos);
+      //  _Produtos.setValue(produtoList);
     }
 
     public void getPedido(int idMesa){
@@ -100,6 +101,7 @@ public class MesaViewModel extends AndroidViewModel {
     }
 
     public void cancelarPedido(Pedido pedido,Mesa mesa){
+        pedido.setSincronizado(Constantes.NAO);
         if(pedidoRepositorio.update(pedido)){
             mesa.setLivre(Constantes.LIVRE);
             mesaRepositorio.update(mesa); //atualiza
@@ -122,7 +124,7 @@ public class MesaViewModel extends AndroidViewModel {
         pedidoRepositorio.salvarPedidoOnline(listener,idUsuario,idMesa,aberturaPedido,status,total,identificadorUnico);
     }
 
-    public void atualizarPedidoOnline(Long idPedido,String indentificador,Float total){
+    public void atualizarPedidoOnline(Long idPedido,String indentificador,Float total,String status, String aberturaPedido){
         APIListener<Pedido> listene = new APIListener<Pedido>() {
             @Override
             public void onSuccess(Pedido result) {
@@ -135,10 +137,28 @@ public class MesaViewModel extends AndroidViewModel {
             }
         };
 
-        pedidoRepositorio.atualizarPedidoOnline(listene,idPedido,indentificador,total);
+        pedidoRepositorio.atualizarPedidoOnline(listene,idPedido,indentificador,total,status,aberturaPedido);
     }
 
-    public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
+
+    public void salvar_OU_Atualizar_ItemDoPedidoOnline(ItemDePedido item){
+        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
+            @Override
+            public void onSuccess(ItemDePedido result) {
+                // precisa ter nada  aqui porque ta sendo feito no repositorio
+
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+
+        };
+        itemDoPedidoRepositorio.salvar_OU_Atualizar_ItemDoPedidoOnline(listener,item);
+    }
+
+   /* public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
 
         APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
             @Override
@@ -155,7 +175,7 @@ public class MesaViewModel extends AndroidViewModel {
         };
         repositorio.salvarProdutoSelecionadoOnline(listener,idPedido,idProduto,quantidade,observacao,identificador,preco,status);
 
-    }
+    }*/
 
    /* public void atualizarItemDoPedidoOnline(ItemDePedido itemDePedido){
         APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {

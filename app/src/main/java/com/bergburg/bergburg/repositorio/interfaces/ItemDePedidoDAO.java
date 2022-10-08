@@ -20,8 +20,11 @@ public interface ItemDePedidoDAO {
     @Delete
     public int delete(ItemDePedido itemDePedido);
 
-    @Query("select * from itemDePedido where idPedido = :id ")
-    public List<ItemDePedido> getItensDoPedido (Long id);
+    @Query("select * from itemDePedido where idPedido = :idPedido ")
+    public List<ItemDePedido> getItensDoPedido (Long idPedido);
+
+    @Query("select * from itemDePedido where sincronizado = 'NAO' ")
+    public List<ItemDePedido> itensDoPedidosNaoSincronizados ();
 
 
     @Query("select * from itemDePedido where idProduto = :idProduto and idPedido = :idPedido ")

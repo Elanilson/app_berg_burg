@@ -24,6 +24,10 @@ public interface PedidoDAO {
     @Query("select * from pedidos where idMesa = :idMesa and  aberturaPedido = 'Aberto' and status != 'Cancelado' ")
     public Pedido getPedido (int idMesa);
 
+    //trás qualquer pedido pelo id
+    @Query("select * from pedidos where identificadorUnico = :identificadorUnico  ")
+    public Pedido getQualQuerPedido (String identificadorUnico);
+
     @Query("select * from pedidos where idMesa like  '%' || :idMesa || '%'and  aberturaPedido = 'Aberto' and status != 'Cancelado'")
     public List<Pedido> consultarPedido (int idMesa);
 
@@ -35,6 +39,9 @@ public interface PedidoDAO {
 
     @Query("select * from pedidos where aberturaPedido = 'Aberto' and status != 'Cancelado' ")
     public List<Pedido> pedidos();
+
+    @Query("select * from pedidos")
+    public List<Pedido> getTodosOsPedidos();
 
     @Query("UPDATE pedidos set sincronizado  = :sincronizado where id = :id")
     public int atualizarSincronismo(Long id,String sincronizado);

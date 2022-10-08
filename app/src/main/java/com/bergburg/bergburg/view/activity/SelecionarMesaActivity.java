@@ -16,7 +16,9 @@ import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivitySelecionarMesaBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
+import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
+import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.SelecionarMesaGridAdapter;
 import com.bergburg.bergburg.viewmodel.SelecionarMesaViewModel;
@@ -84,6 +86,19 @@ public class SelecionarMesaActivity extends AppCompatActivity {
                 mesasAdapte.attackMesas(mesas);
             }
         });*/
+        viewModel.itensDosPedidos.observe(this, new Observer<List<ItemDePedido>>() {
+            @Override
+            public void onChanged(List<ItemDePedido> itensDePedidos) {
+                viewModel.sincronizarItensDosPedidos(itensDePedidos);
+            }
+        });
+
+        viewModel.pedidos.observe(this, new Observer<List<Pedido>>() {
+            @Override
+            public void onChanged(List<Pedido> pedidos) {
+                viewModel.sincronizarPedidoOnline(pedidos);
+            }
+        });
 
         viewModel.resposta.observe(this, new Observer<Resposta>() {
             @Override
@@ -123,6 +138,8 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         super.onResume();
         mesasAdapte.limparMesas();
         viewModel.listaDeMesas();
+        viewModel.carregarItensDosPedidos();
+        viewModel.carregarPedidos();
 
     }
 }

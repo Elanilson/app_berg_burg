@@ -38,11 +38,13 @@ public interface BergburgService {
             @Field("indentificadorUnico") String indentificadorUnico
     );
 
-    @PUT("atualizarTotalPedido.php/")
+    @PUT("atualizarPedido.php/")
     @FormUrlEncoded
-    Call<Pedido>  atualizarTotalPedido(
+    Call<Pedido>  atualizarPedido(
             @Field("indentificadorUnico") String identificadorUnico,
-            @Field("total") Float total
+            @Field("total") Float total,
+            @Field("status") String status,
+            @Field("aberturaPedido") String aberturaPedido
     );
 
     @PUT("atualizarQuantidadeitemPedido.php/")

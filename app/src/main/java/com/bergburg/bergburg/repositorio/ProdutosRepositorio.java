@@ -51,28 +51,26 @@ public class ProdutosRepositorio {
     }
 
 
-    public Produto getProduto(Long id){
-        return produtoDAO.getProduto(id);
+    public  List<Produto> produtos(){
+        return produtoDAO.produtos();
     }
 
     public List<Produto> produtosPorCategoria(Long idCategoria){
         return produtoDAO.getProdutosPorCategoria(idCategoria);
     }
 
-
-    public  List<Produto> produtos(){
-        return produtoDAO.produtos();
+  /*  public Produto getProduto(Long id){
+        return produtoDAO.getProduto(id);
     }
 
+    //removidos nao utilizados === no fim deletos eles
     public Boolean atualizarSincronismoItemDoPedido(ItemDePedido itemDePedido){
         return itemDePedidoDAO.update(itemDePedido) > 0;
     }
-
     public Boolean salvarProdutoSelecionado(int id_mesa,Long idProduto,int quantidade,String observacao,String indentificador,Float preco,String status){
         Long idPedido = pedidoDAO.getIdPedido(id_mesa);
         return itemDePedidoDAO.insert(new ItemDePedido(idPedido,idProduto,quantidade,observacao,indentificador,preco,status)) > 0;
     }
-
     public Boolean atualizarQuantidadeDoItemPedido(int id_mesa,Long idProduto,int quantidade,String observacao){
         Long idPedido = pedidoDAO.getIdPedido(id_mesa);
         ItemDePedido item  = new ItemDePedido();
@@ -81,7 +79,6 @@ public class ProdutosRepositorio {
         item.setQuantidade(quantidade);
         return itemDePedidoDAO.update(item) > 0;
     }
-
     public Boolean removerProdutoDoPedido(int numeroMesa,Long idProduto){
         Long idPedido = pedidoDAO.getIdPedido(numeroMesa);
       //  return itemDePedidoDAO.delete(itemDePedidoDAO.getItemDoPedido(idPedido,idProduto)) > 0;
@@ -90,12 +87,9 @@ public class ProdutosRepositorio {
         item.setStatus(Constantes.REMOVIDO);
         item.setSincronizado(Constantes.NAO);
         return itemDePedidoDAO.update(item) > 0;
-    }
 
-
-
-
-    public void produtosPorCategoriaOnline(APIListener<Dados> listener,Long id){
+    }*/
+  /*  public void produtosPorCategoriaOnline(APIListener<Dados> listener,Long id){
         Call<Dados> call = service.produtosPorCategoria(id);
         call.enqueue(new Callback<Dados>() {
             @Override
@@ -114,8 +108,8 @@ public class ProdutosRepositorio {
                 listener.onFailures(t.getMessage());
             }
         });
-    }
-    public void produtosOnline(APIListener<Dados> listener){
+    }*/
+  /*  public void produtosOnline(APIListener<Dados> listener){
         Call<Dados> call = service.getProdutos();
         call.enqueue(new Callback<Dados>() {
             @Override
@@ -135,10 +129,8 @@ public class ProdutosRepositorio {
                 listener.onFailures(t.getMessage());
             }
         });
-    }
-
-
-    public void atualizarQuantidadeDoProdutoSelecionadoOnline(APIListener<ItemDePedido> listener ,Long idProduto,String indentificador,int quantidade){
+    }*/
+   /* public void atualizarQuantidadeDoProdutoSelecionadoOnline(APIListener<ItemDePedido> listener ,Long idProduto,String indentificador,int quantidade){
 
         item = itemDePedidoDAO.getIdDoItem(indentificador);
 
@@ -170,9 +162,8 @@ public class ProdutosRepositorio {
         });
 
 
-    }
-
-    public void autlizarItemDoPedidoOnline(APIListener<ItemDePedido> listener,ItemDePedido itemDePedido){
+    }*/
+  /*  public void autlizarItemDoPedidoOnline(APIListener<ItemDePedido> listener,ItemDePedido itemDePedido){
         Call<ItemDePedido> call = service.atualizarItemDoPedido(itemDePedido.getIndentificadorUnico(),itemDePedido.getStatus(), itemDePedido.getQuantidade(),itemDePedido.getPreco(),itemDePedido.getObservacao());
         call.enqueue(new Callback<ItemDePedido>() {
             @Override
@@ -197,9 +188,8 @@ public class ProdutosRepositorio {
             }
         });
 
-    }
-
-    public void autlizarItemDoPedidoOnline(APIListener<ItemDePedido> listener,Long idProduto,String indentificador,int quantidade){
+    }*/
+  /*  public void autlizarItemDoPedidoOnline(APIListener<ItemDePedido> listener,Long idProduto,String indentificador,int quantidade){
         item = itemDePedidoDAO.getIdDoItem(indentificador);
         item.setQuantidade(quantidade);
         Call<ItemDePedido> call = service.atualizarItemDoPedido(item.getIndentificadorUnico(),item.getStatus(), item.getQuantidade(),item.getPreco(),item.getObservacao());
@@ -226,9 +216,8 @@ public class ProdutosRepositorio {
             }
         });
 
-    }
-
-    public void salvarProdutoSelecionadoOnline(APIListener<ItemDePedido> listener,Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
+    }*/
+  /*  public void salvarProdutoSelecionadoOnline(APIListener<ItemDePedido> listener,Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
         Call<ItemDePedido> call = service.salvarItemDoPedido(idPedido,idProduto,preco,quantidade,observacao,status,identificador);
         call.enqueue(new Callback<ItemDePedido>() {
             @Override
@@ -267,5 +256,5 @@ public class ProdutosRepositorio {
                 listener.onFailures(t.getMessage());
             }
         });
-    }
+    }*/
 }
