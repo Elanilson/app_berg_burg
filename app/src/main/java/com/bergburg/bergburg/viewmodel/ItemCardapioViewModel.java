@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.Dados;
@@ -45,17 +46,16 @@ public class ItemCardapioViewModel extends AndroidViewModel {
     public  void produtosPorCategoria(Long idCategoria){
         _Produtos.setValue(repositorio.produtosPorCategoria(idCategoria));
     }
-    public void salvarProdutoSelecionado(int idMesa,Long idProduto,int quantidade,String observacao,String indentificador,Float preco){
+    public void salvarProdutoSelecionado(int idMesa,Long idProduto,int quantidade,String observacao,String indentificador,Float preco,String status){
         //enviar para se salvo na api
         Long idPedido = pedidoRepositorio.getPedido(idMesa).getId();
-        salvarProdutoSelecionadoOnline(idPedido,idProduto,quantidade,observacao,indentificador,preco);
+        salvarProdutoSelecionadoOnline(idPedido,idProduto,quantidade,observacao,indentificador,preco, Constantes.ATIVO);
         //salvo localmente
-        if(repositorio.salvarProdutoSelecionado(idMesa, idProduto,quantidade,observacao,indentificador,preco)){
+        if(repositorio.salvarProdutoSelecionado(idMesa, idProduto,quantidade,observacao,indentificador,preco,status)){
             _Resposta.setValue(new Resposta("Salvo",true));
         }
     }
-    public void atualizarQuantidadeDoPedido(int idMesa,Long idProduto,int quantidade,String observacao){
-
+    public void atualizarQuantidadeItemDoPedido(int idMesa,Long idProduto,int quantidade,String observacao){
         if( repositorio.atualizarQuantidadeDoItemPedido(idMesa, idProduto,quantidade,observacao)){
             _Resposta.setValue(new Resposta("Atualizado",true));
         }
@@ -66,24 +66,55 @@ public class ItemCardapioViewModel extends AndroidViewModel {
             _Resposta.setValue(new Resposta("Removido",true));
         }
     }
-
-
-    public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco){
+    public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
 
         APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
             @Override
             public void onSuccess(ItemDePedido result) {
                 // precisa ter nada  aqui porque ta sendo feito no repositorio
+
+                _Resposta.setValue(new Resposta("erro 4 "+result.toString()));
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("erro 3 "+mensagem));
+            }
+
+        };
+        repositorio.salvarProdutoSelecionadoOnline(listener,idPedido,idProduto,quantidade,observacao,identificador,preco,status);
+
+    }
+    public  void atualizarQuantidadeDoProdutoSelecionadoOnline(Long idItemDoPedido,String indentificador,int quantidade){
+
+        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
+            @Override
+            public void onSuccess(ItemDePedido result) {
+
             }
 
             @Override
             public void onFailures(String mensagem) {
                 _Resposta.setValue(new Resposta(mensagem));
             }
-
         };
-        repositorio.salvarProdutoSelecionadoOnline(listener,idPedido,idProduto,quantidade,observacao,identificador,preco);
+        repositorio.atualizarQuantidadeDoProdutoSelecionadoOnline(listener,idItemDoPedido,indentificador,quantidade);
+    }
 
+    public  void autlizarItemDoPedidoOnline(Long idProduto,String indentificador,int quantidade){
+
+        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
+            @Override
+            public void onSuccess(ItemDePedido result) {
+
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta(mensagem));
+            }
+        };
+        repositorio.autlizarItemDoPedidoOnline(listener,idProduto,indentificador,quantidade);
     }
 
 

@@ -17,6 +17,8 @@ public class Constantes {
 
     public static String SIM = "SIM";
     public static String NAO = "NAO";
+    public static String REMOVIDO = "REMOVIDO";
+    public static String ATIVO = "ATIVO";
 
     public static String ENVIADO      = "Enviado";
     public static String CANCELADO     = "Cancelado";

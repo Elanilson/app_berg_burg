@@ -20,19 +20,18 @@ public interface ItemDePedidoDAO {
     @Delete
     public int delete(ItemDePedido itemDePedido);
 
-    @Query("select * from itemDePedido where idPedido = :id")
+    @Query("select * from itemDePedido where idPedido = :id ")
     public List<ItemDePedido> getItensDoPedido (Long id);
 
 
-    @Query("select * from itemDePedido where idProduto = :idProduto and idPedido = :idPedido")
+    @Query("select * from itemDePedido where idProduto = :idProduto and idPedido = :idPedido ")
     public ItemDePedido getItemDoPedido (Long idPedido,Long idProduto);
 
-    @Query("select * from itemDePedido where idPedido = :idPedido and id order by id desc limit 1")
-    public ItemDePedido getUltimoItemDoPedidoAdicionado (Long idPedido);
+    @Query("select * from itemDePedido where indentificadorUnico = :indentificadorUnico  ")
+    public ItemDePedido getIdDoItem (String indentificadorUnico);
 
-    @Query("UPDATE itemDePedido set sincronizado  = :sincronizado where id = :id")
-    public int atualizarSincronismo(Long id,String sincronizado);
 
+// and status != 'REMOVIDO'
 
 
 

@@ -15,6 +15,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface BergburgService {
     @GET("getCategorias.php")
@@ -34,7 +35,38 @@ public interface BergburgService {
             @Field("aberturaPedido") String aberturaPedido,
             @Field("status") String status,
             @Field("total") Float total,
-            @Field("identificadorUnico") String identificadorUnico
+            @Field("indentificadorUnico") String indentificadorUnico
+    );
+
+    @PUT("atualizarTotalPedido.php/")
+    @FormUrlEncoded
+    Call<Pedido>  atualizarTotalPedido(
+            @Field("indentificadorUnico") String identificadorUnico,
+            @Field("total") Float total
+    );
+
+    @PUT("atualizarQuantidadeitemPedido.php/")
+    @FormUrlEncoded
+    Call<ItemDePedido>  atualizarQuantidadeitemPedido(
+            @Field("indentificadorUnico") String identificadorUnico,
+            @Field("quantidade") int quantidade
+    );
+
+    @PUT("removerItemPedido.php/")
+    @FormUrlEncoded
+    Call<ItemDePedido>  removerItemDoPedido(
+            @Field("indentificadorUnico") String identificadorUnico,
+            @Field("status") String status
+    );
+
+    @PUT("atualizaritemPedido.php/")
+    @FormUrlEncoded
+    Call<ItemDePedido>  atualizarItemDoPedido(
+            @Field("indentificadorUnico") String identificadorUnico,
+            @Field("status") String status,
+            @Field("quantidade") int quantidade,
+            @Field("preco") Float preco,
+            @Field("observacao") String observacao
     );
 
     @POST("salvarItemDoPedido.php/")
@@ -45,6 +77,7 @@ public interface BergburgService {
             @Field("preco") Float preco,
             @Field("quantidade") int quantidade,
             @Field("observacao") String observacao,
+            @Field("status") String status,
             @Field("indentificadorUnico") String identificador
     );
 

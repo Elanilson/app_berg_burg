@@ -2,6 +2,7 @@ package com.bergburg.bergburg.model;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
@@ -43,6 +44,10 @@ public class Produto implements Serializable {
     @ColumnInfo(name = "observacao")
     @SerializedName("observacao")
     private String observacao;
+    @Ignore
+    private String identificador;
+    @Ignore
+    private Long idItemPedido;
 
     public Produto() {
     }
@@ -69,6 +74,37 @@ public class Produto implements Serializable {
         this.preco = preco;
         this.quantidade = quantidade;
         this.observacao = observacao;
+    }
+
+    @Override
+    public String toString() {
+        return "Produto{" +
+                "id=" + id +
+                ", idCategoria=" + idCategoria +
+                ", titulo='" + titulo + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", urlImagem='" + urlImagem + '\'' +
+                ", preco=" + preco +
+                ", quantidade=" + quantidade +
+                ", observacao='" + observacao + '\'' +
+                ", identificador='" + identificador + '\'' +
+                '}';
+    }
+
+    public Long getIdItemPedido() {
+        return idItemPedido;
+    }
+
+    public void setIdItemPedido(Long idItemPedido) {
+        this.idItemPedido = idItemPedido;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 
     public Long getId() {

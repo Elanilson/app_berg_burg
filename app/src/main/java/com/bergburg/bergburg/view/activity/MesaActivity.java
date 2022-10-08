@@ -29,6 +29,7 @@ import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivityMesaBinding;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
+import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
@@ -47,6 +48,7 @@ public class MesaActivity extends AppCompatActivity {
     private Pedido pedidoDaMesa = new Pedido();
     private MesaAdapter adapter = new MesaAdapter();
     private Mesa mesa = new Mesa();
+    private ItemDePedido itemDePedido = new ItemDePedido();
     private ItemCardapioViewModel itemCardapioViewModel;
 
    // private int numeroMesa = 0;
@@ -110,6 +112,7 @@ public class MesaActivity extends AppCompatActivity {
         nomeProduto.setText(""+produto.getTitulo());
         descricaoProduto.setText(""+produto.getDescricao());
         totalProduto.setText(""+produto.getPreco());
+        System.out.println("Produto: "+produto.toString());
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,7 +122,9 @@ public class MesaActivity extends AppCompatActivity {
                 if(campo != null && campo != "" && !campo.equalsIgnoreCase(" ")){
                     quantidade = Integer.parseInt(campo);
                     observacao = editCampoObservacao.getText().toString();
-                    itemCardapioViewModel.atualizarQuantidadeDoPedido(mesa.getNumero(),produto.getId(),quantidade,observacao);
+                    itemCardapioViewModel.atualizarQuantidadeItemDoPedido(mesa.getNumero(),produto.getId(),quantidade,observacao);
+                    itemCardapioViewModel.atualizarQuantidadeDoProdutoSelecionadoOnline(produto.getId(),produto.getIdentificador(),quantidade);
+                  //  itemCardapioViewModel.autlizarItemDoPedidoOnline(produto.getId(),produto.getIdentificador(),quantidade);
                     // configurarSnackBar(layout,"Sucesso");
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
@@ -220,7 +225,7 @@ public class MesaActivity extends AppCompatActivity {
                     }
 
                 }else{
-                    Toast.makeText(MesaActivity.this, getString(R.string.erro), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -232,7 +237,7 @@ public class MesaActivity extends AppCompatActivity {
                     adapter.limparProdutos();
                     viewModel.getPedido(mesa.getId());
                 }else{
-                    Toast.makeText(MesaActivity.this, getString(R.string.erro), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -408,6 +413,7 @@ public class MesaActivity extends AppCompatActivity {
         }
         pedidoDaMesa.setTotal(total);
         viewModel.atualizarTotalPedido(pedidoDaMesa);
+        viewModel.atualizarPedidoOnline(pedidoDaMesa.getId(), pedidoDaMesa.getIdentificadorUnico(), pedidoDaMesa.getTotal());
         textViewTotalDaMesa.setText("R$ "+total);
 
 

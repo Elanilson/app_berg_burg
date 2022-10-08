@@ -25,11 +25,13 @@ public class PedidoRepositorio {
     private Context context;
     private BergburgService service = RetrofitClient.classService(BergburgService.class);
 
+
     public PedidoRepositorio(Context context) {
         this.context = context;
         BancoRoom db = BancoRoom.getInstance(context);
         pedidoDAO = db.pedidoDAO();
         itemDePedidoDAO = db.itemDePedidoDAO();
+
     }
 
     public Boolean insert(Pedido pedido){
@@ -91,6 +93,32 @@ public class PedidoRepositorio {
         });
     }
 
+    public void atualizarPedidoOnline(APIListener<Pedido> listener,Long idPedido,String indentificador,Float total){
+        Call<Pedido> call = service.atualizarTotalPedido(indentificador,total);
+        call.enqueue(new Callback<Pedido>() {
+            @Override
+            public void onResponse(Call<Pedido> call, Response<Pedido> response) {
+                if(response.isSuccessful()){
+                    if(response.body() != null){
+                        //sincronizado nao precisa fazer nada
+                    }
+                }else{
+                    atualizarSincronismo(idPedido,Constantes.NAO);
+                    listener.onFailures(response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Pedido> call, Throwable t) {
+                atualizarSincronismo(idPedido,Constantes.NAO);
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+
+
+
+    }
 
 
 }

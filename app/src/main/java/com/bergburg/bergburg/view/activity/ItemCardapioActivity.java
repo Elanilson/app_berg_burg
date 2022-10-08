@@ -110,7 +110,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
 
                     observacao = editCampoObservacao.getText().toString();
                     Long identificadorUnico = System.currentTimeMillis();
-                    viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco());
+                    viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco(),Constantes.ATIVO);
                     Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     finish();

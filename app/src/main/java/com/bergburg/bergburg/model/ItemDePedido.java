@@ -32,6 +32,9 @@ public class ItemDePedido {
     @ColumnInfo(name = "preco")
     @SerializedName("preco")
     private Float preco = 0f;
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    private String status = Constantes.ATIVO;
 
     public ItemDePedido() {
     }
@@ -62,6 +65,39 @@ public class ItemDePedido {
         this.observacao = observacao;
         this.indentificadorUnico = indentificadorUnico;
         this.preco = preco;
+    }
+
+    public ItemDePedido(Long idPedido, Long idProduto, int quantidade, String observacao, String indentificadorUnico, Float preco, String status) {
+        this.idPedido = idPedido;
+        this.idProduto = idProduto;
+        this.quantidade = quantidade;
+        this.observacao = observacao;
+        this.indentificadorUnico = indentificadorUnico;
+        this.preco = preco;
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDePedido{" +
+                "id=" + id +
+                ", idPedido=" + idPedido +
+                ", idProduto=" + idProduto +
+                ", quantidade=" + quantidade +
+                ", observacao='" + observacao + '\'' +
+                ", sincronizado='" + sincronizado + '\'' +
+                ", indentificadorUnico='" + indentificadorUnico + '\'' +
+                ", preco=" + preco +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Float getPreco() {
