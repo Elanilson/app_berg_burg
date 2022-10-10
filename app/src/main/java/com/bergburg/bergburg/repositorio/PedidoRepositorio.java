@@ -110,12 +110,6 @@ public class PedidoRepositorio {
                     if(response.body() != null){
 
                         atualizarSincronismo(idPedido,Constantes.SIM);
-                        listener.onFailures(response.message());
-                        System.out.println("atualizarPedidoOnline:indentificador "+indentificador);
-                        System.out.println("atualizarPedidoOnline:idPedido "+idPedido);
-                        System.out.println("atualizarPedidoOnline:total "+total);
-                        System.out.println("atualizarPedidoOnline:status "+status);
-                        System.out.println("atualizarPedidoOnline:aberturaPedido "+aberturaPedido);
                     }
                 }else{
                     System.out.println("atualizarPedidoOnline:indentificador "+indentificador);

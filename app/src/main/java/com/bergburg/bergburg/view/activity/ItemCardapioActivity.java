@@ -1,18 +1,23 @@
 package com.bergburg.bergburg.view.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.PrimaryKey;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,8 +40,11 @@ import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class ItemCardapioActivity extends AppCompatActivity {
     private ActivityItemCardapioBinding binding;
@@ -50,7 +58,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
     private CoordinatorLayout layout;
     private BottomSheetBehavior bottomSheetBehavior;
     private FrameLayout frameLayoutEditarItemPedido;
-
+    private List<Produto> listProdutos = new ArrayList<>();
+    private int posicao = 0;
     @Override
     protected void onNightModeChanged(int mode) {
         super.onNightModeChanged(mode);
@@ -82,6 +91,51 @@ public class ItemCardapioActivity extends AppCompatActivity {
     }
     private void voltarTela() {
         onBackPressed();
+    }
+
+    private void swipe(){
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                int dragFlags =ItemTouchHelper.ACTION_STATE_IDLE;
+                int swipeFlags = ItemTouchHelper.END ;
+                return makeMovementFlags(dragFlags,swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                // System.out.println("Direção: "+direction);
+                posicao = viewHolder.getLayoutPosition();
+                switch (direction){
+                    case ItemTouchHelper.END:
+                        exibirButtonSheetPedido(listProdutos.get(posicao));
+                        adapter.notifyDataSetChanged();
+
+                        break;
+
+                }
+
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(ItemCardapioActivity.this, R.color.black))
+                        .addSwipeRightActionIcon(R.drawable.ic_shopping_24)
+                        .addSwipeRightLabel(getString(R.string.adicionar))
+                        .setSwipeRightLabelColor(ContextCompat.getColor(ItemCardapioActivity.this, R.color.white))
+                        .create()
+                        .decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(binding.recyclerViewItemCardapio);
     }
 
     private void exibirButtonSheetPedido(Produto produto){
@@ -244,6 +298,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewItemCardapio.setLayoutManager(manager);
         binding.recyclerViewItemCardapio.setAdapter(adapter);
+        swipe();
     }
 
     private void adapteListener() {
@@ -252,7 +307,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
             public void onClick(Produto produto) {
                 //solicitarQuantidade(produto);
                //alertaQuantidade(produto);
-                exibirButtonSheetPedido(produto);
+               // exibirButtonSheetPedido(produto);
 
 
             }
@@ -269,6 +324,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         viewModel.produtos.observe(this, new Observer<List<Produto>>() {
             @Override
             public void onChanged(List<Produto> produtos) {
+                listProdutos.addAll(produtos);
                 adapter.attackProdutos(produtos);
             }
         });

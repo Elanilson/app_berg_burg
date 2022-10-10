@@ -74,7 +74,7 @@ public class ItemDoPedidoRepositorio {
             public void onFailure(Call<ItemDePedido> call, Throwable t) {
                 item.setSincronizado(Constantes.NAO);
                 itemDePedidoDAO.update(item);
-                System.out.println(": "+t.getMessage());
+                System.out.println(t.getMessage());
                 listener.onFailures(t.getMessage());
             }
         });

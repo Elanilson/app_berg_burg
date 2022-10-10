@@ -31,4 +31,8 @@
     <string name="concluido">Concluido</string>
     <string name="cancelado">Cancelado</string>
     <string name="naoEnviado">Não enviado</string>
+    <string name="excluir">Excluir</string>
+    <string name="editar">Editar</string>
+    <string name="adicionar">Adicionar</string>
+    <string name="exibir">Exibir</string>
 </resources>

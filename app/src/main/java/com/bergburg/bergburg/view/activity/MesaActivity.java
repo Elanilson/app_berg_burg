@@ -6,14 +6,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,7 +43,10 @@ import com.bergburg.bergburg.viewmodel.MesaViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 public class MesaActivity extends AppCompatActivity {
     private ActivityMesaBinding binding;
@@ -50,6 +56,8 @@ public class MesaActivity extends AppCompatActivity {
     private Mesa mesa = new Mesa();
     private ItemDePedido itemDePedido = new ItemDePedido();
     private ItemCardapioViewModel itemCardapioViewModel;
+    private List<ItemDePedido> listItens = new ArrayList<>();
+    private int posicao = 0;
 
    // private int numeroMesa = 0;
 
@@ -93,6 +101,67 @@ public class MesaActivity extends AppCompatActivity {
         adapteListener();
 
 
+    }
+
+    private void swipe(){
+        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+               int dragFlags =ItemTouchHelper.ACTION_STATE_IDLE;
+               int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                return makeMovementFlags(dragFlags,swipeFlags);
+            }
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+               // System.out.println("Direção: "+direction);
+                posicao = viewHolder.getLayoutPosition();
+                switch (direction){
+                    case ItemTouchHelper.START:
+                        alertaRemocao(listItens.get(posicao));
+                      //  System.out.println("Poiscao: "+viewHolder.getLayoutPosition());
+                       adapter.notifyDataSetChanged();
+
+                      //  Toast.makeText(MesaActivity.this, "Deletar posicao: "+viewHolder.getBindingAdapterPosition(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case ItemTouchHelper.END:
+                        exibirButtonSheetPedido(listItens.get(posicao));
+                       adapter.notifyDataSetChanged();
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftBackgroundColor(ContextCompat.getColor(MesaActivity.this, R.color.vermelho))
+                        .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_24)
+                        .addSwipeLeftLabel(getString(R.string.excluir))
+                        .setSwipeLeftLabelColor(ContextCompat.getColor(MesaActivity.this, R.color.white))
+                        .addSwipeRightBackgroundColor(ContextCompat.getColor(MesaActivity.this, R.color.laranja))
+                        .addSwipeRightActionIcon(R.drawable.ic_editar_24)
+                        .addSwipeRightLabel(getString(R.string.editar))
+                        .setSwipeRightLabelColor(ContextCompat.getColor(MesaActivity.this, R.color.white))
+                      //  .addBackgroundColor(ContextCompat.getColor(MesaActivity.this, R.color.verde))
+                        //.addActionIcon(R.drawable.ic_arrow_right_24)
+                        .create()
+                        .decorate();
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        new ItemTouchHelper(itemTouch).attachToRecyclerView(binding.recyclerViewDetalhesMesa);
+    }
+
+
+    public void excluirItemDaLista(RecyclerView.ViewHolder viewHolder){
+        adapter.notifyDataSetChanged();
     }
 
     private void exibirButtonSheetPedido(ItemDePedido itemDePedido){
@@ -156,12 +225,12 @@ public class MesaActivity extends AppCompatActivity {
                // viewModel.salvarProdutoSelecionado(numeroMesa,obj.getId());
               //  finish();
              //   alertaAleterarQuantidade(produto);
-                exibirButtonSheetPedido(itemDePedido);
+              //  exibirButtonSheetPedido(itemDePedido);
             }
 
             @Override
             public void onLongClick(ItemDePedido itemDePedido) {
-                alertaRemocao(itemDePedido);
+               // alertaRemocao(itemDePedido);
             }
         };
         adapter.attackOnListener(onListenerAcao);
@@ -172,6 +241,7 @@ public class MesaActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewDetalhesMesa.setLayoutManager(manager);
         binding.recyclerViewDetalhesMesa.setAdapter(adapter);
+        swipe();
     }
 
     private void observe() {
@@ -179,6 +249,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<ItemDePedido> itensDoPedido) {
                 if(itensDoPedido.size() > 0){
+                    listItens.addAll(itensDoPedido);
                     binding.linearLayoutTotal.setVisibility(View.VISIBLE);
                     binding.buttonEnviarComnda.setVisibility(View.VISIBLE);
 
@@ -222,7 +293,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(Resposta resposta) {
                 if(resposta.getStatus()){
-                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                  //  Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                     if(resposta.getMensagem().equals(Constantes.CANCELADO) || resposta.getMensagem().equals(Constantes.FECHADO)){
                         finish();
                     }
@@ -236,7 +307,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(Resposta resposta) {
                 if(resposta.getStatus()){
-                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                     adapter.limparProdutos();
                     viewModel.getPedido(mesa.getId());
                 }else{
