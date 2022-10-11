@@ -30,7 +30,7 @@ public class MesaViewHolder extends RecyclerView.ViewHolder {
     }
     public void bind(ItemDePedido itensDoPedido, OnListenerAcao<ItemDePedido> onListenerAcao){
         textViewNomeItem.setText(itensDoPedido.getTitulo());
-        textViewValor.setText(itensDoPedido.getPreco()+"");
+        textViewValor.setText("R$ "+String.format("%.2f", itensDoPedido.getPreco()));
         textViewTotal.setText(calcular(itensDoPedido));
         textViewQuantidade.setText(itensDoPedido.getQuantidade()+"x");
         textViewDescricao.setText(itensDoPedido.getDescricao());
@@ -52,6 +52,8 @@ public class MesaViewHolder extends RecyclerView.ViewHolder {
     }
 
     private String calcular(ItemDePedido itensDoPedido){
-        return  "R$ "+(itensDoPedido.getQuantidade() * itensDoPedido.getPreco());
+        Float total = 0f;
+        total = (itensDoPedido.getQuantidade() * itensDoPedido.getPreco());
+        return  "R$ "+String.format("%.2f", total);
     }
 }

@@ -23,4 +23,8 @@ public interface MesaDAO {
 
     @Query("select * from mesas")
     public List<Mesa> mesas();
+
+    @Query("select * from mesas where id = :idMesa")
+    public Mesa mesas(int idMesa);
+
 }

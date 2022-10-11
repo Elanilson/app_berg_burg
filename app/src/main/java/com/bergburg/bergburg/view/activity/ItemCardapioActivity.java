@@ -151,7 +151,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
 
         nomeProduto.setText(""+produto.getTitulo());
         descricaoProduto.setText(""+produto.getDescricao());
-        totalProduto.setText(""+produto.getPreco());
+        totalProduto.setText("R$ "+String.format("%.2f", produto.getPreco()));
 
 
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
@@ -177,7 +177,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
 
                     viewModel.salvarItemDoPedido(item,id_mesa);
                     //viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco(),Constantes.ATIVO);
-                    Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ItemCardapioActivity.this, getString(R.string.adicionado), Toast.LENGTH_LONG).show();
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     finish();
                 }else{
@@ -298,7 +298,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewItemCardapio.setLayoutManager(manager);
         binding.recyclerViewItemCardapio.setAdapter(adapter);
-        swipe();
+       // swipe();
     }
 
     private void adapteListener() {
@@ -307,7 +307,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
             public void onClick(Produto produto) {
                 //solicitarQuantidade(produto);
                //alertaQuantidade(produto);
-               // exibirButtonSheetPedido(produto);
+                exibirButtonSheetPedido(produto);
 
 
             }

@@ -20,6 +20,7 @@ import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.view.adapter.PedidoAdapter;
 import com.bergburg.bergburg.viewmodel.ConsultaPedidoViewModel;
+import com.bergburg.bergburg.viewmodel.MesaViewModel;
 
 import java.util.List;
 
@@ -27,6 +28,8 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
     private ActivityConsultarPedidoBinding binding;
     private PedidoAdapter adapter = new PedidoAdapter();
     private ConsultaPedidoViewModel viewModel;
+    private MesaViewModel mesaViewModel;
+    private Mesa mMesa = new Mesa();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +37,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         viewModel = new ViewModelProvider(this).get(ConsultaPedidoViewModel.class);
+        mesaViewModel = new ViewModelProvider(this).get(MesaViewModel.class);
 
         binding.editTextPesquisaPedido.addTextChangedListener(new TextWatcher() {
             @Override
@@ -50,6 +54,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
                    numeroMesa = Integer.parseInt(texto.toString());
 
                    viewModel.consultarPedido(numeroMesa);
+
 
                }else{
                    viewModel.getPedidos();
@@ -73,10 +78,8 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
         OnListenerAcao<Pedido> onListenerAcao = new OnListenerAcao<Pedido>() {
             @Override
             public void onClick(Pedido pedido) {
-                Intent intent = new Intent(ConsultarPedidoActivity.this,MesaActivity.class);
-
-                intent.putExtra(Constantes.MESA,new Mesa(pedido.getIdMesa()));
-                startActivity(intent);
+                mesaViewModel.getMesa(pedido.getIdMesa());
+                idParaProximaTela();
             }
 
             @Override
@@ -87,6 +90,12 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
         adapter.attackOnListener(onListenerAcao);
     }
     private void observe() {
+        mesaViewModel.mesa.observe(this, new Observer<Mesa>() {
+            @Override
+            public void onChanged(Mesa mesa) {
+                mMesa = mesa;
+            }
+        });
         viewModel.pedidos.observe(this, new Observer<List<Pedido>>() {
             @Override
             public void onChanged(List<Pedido> pedidos) {
@@ -99,6 +108,11 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void idParaProximaTela(){
+        Intent intent = new Intent(ConsultarPedidoActivity.this,MesaActivity.class);
+        intent.putExtra(Constantes.MESA,mMesa);
+        startActivity(intent);
     }
 
     private void configurarrRecyclerView() {

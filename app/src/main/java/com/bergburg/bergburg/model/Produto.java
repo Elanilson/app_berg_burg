@@ -58,6 +58,13 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
+    public Produto(String titulo, String descricao, Float preco,int idCategoria ) {
+        this.idCategoria = idCategoria;
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.preco = preco;
+    }
+
     public Produto(int idCategoria, String titulo, String descricao, String urlImagem, Float preco) {
         this.idCategoria = idCategoria;
         this.titulo = titulo;
@@ -75,6 +82,8 @@ public class Produto implements Serializable {
         this.quantidade = quantidade;
         this.observacao = observacao;
     }
+
+
 
     @Override
     public String toString() {

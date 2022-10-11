@@ -126,7 +126,7 @@ public class CardapioActivity extends AppCompatActivity {
         OnListenerAcao<Categoria> onListenerAcao = new OnListenerAcao<Categoria>() {
             @Override
             public void onClick(Categoria obj) {
-              /*  if(obj != null){
+                if(obj != null){
                     Bundle bundle = new Bundle();
                     bundle.putLong(Constantes.ID_CATEGORIA,obj.getId());
                     bundle.putString(Constantes.TITULO_CATEGORIA,obj.getTitulo());
@@ -134,7 +134,7 @@ public class CardapioActivity extends AppCompatActivity {
                     Intent intent = new Intent(CardapioActivity.this,ItemCardapioActivity.class);
                     intent.putExtras(bundle);
                     startActivity(intent);
-                }*/
+                }
 
             }
 
@@ -161,7 +161,7 @@ public class CardapioActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewCardPio.setLayoutManager(manager);
         binding.recyclerViewCardPio.setAdapter(adapter);
-        swipe();
+        //swipe();
     }
 
     @Override

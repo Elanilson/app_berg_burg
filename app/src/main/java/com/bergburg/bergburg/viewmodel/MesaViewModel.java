@@ -40,6 +40,9 @@ public class MesaViewModel extends AndroidViewModel {
     private MutableLiveData<Pedido> _Pedido = new MutableLiveData<>();
     public LiveData<Pedido> pedido = _Pedido;
 
+    private MutableLiveData<Mesa> _Mesa = new MutableLiveData<>();
+    public LiveData<Mesa> mesa = _Mesa;
+
     private MutableLiveData<Resposta> _Resposta = new MutableLiveData<>();
     public LiveData<Resposta> resposta = _Resposta;
 
@@ -69,6 +72,10 @@ public class MesaViewModel extends AndroidViewModel {
        // _ItensDoPedido.setValue(pedidoRepositorio.getItensDoPedido(id));
         _ItensDoPedido.setValue(itensDoPedido_Sem_OsRemovidos);
       //  _Produtos.setValue(produtoList);
+    }
+
+    public void getMesa(int id){
+        _Mesa.setValue(mesaRepositorio.getMesa(id));
     }
 
     public void getPedido(int idMesa){
@@ -158,38 +165,6 @@ public class MesaViewModel extends AndroidViewModel {
         itemDoPedidoRepositorio.salvar_OU_Atualizar_ItemDoPedidoOnline(listener,item);
     }
 
-   /* public void salvarProdutoSelecionadoOnline(Long idPedido,Long idProduto,int quantidade,String observacao,String identificador,Float preco,String status){
 
-        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
-            @Override
-            public void onSuccess(ItemDePedido result) {
-                // precisa ter nada  aqui porque ta sendo feito no repositorio
-
-            }
-
-            @Override
-            public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
-            }
-
-        };
-        repositorio.salvarProdutoSelecionadoOnline(listener,idPedido,idProduto,quantidade,observacao,identificador,preco,status);
-
-    }*/
-
-   /* public void atualizarItemDoPedidoOnline(ItemDePedido itemDePedido){
-        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
-            @Override
-            public void onSuccess(ItemDePedido result) {
-
-            }
-
-            @Override
-            public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
-            }
-        };
-        repositorio.autlizarItemDoPedidoOnline(listener,itemDePedido);
-    }*/
 
 }

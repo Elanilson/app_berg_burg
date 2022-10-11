@@ -68,4 +68,8 @@ public class MesaRepositorio {
         });
 
     }
+
+    public Mesa getMesa(int id){
+        return mesaDAO.mesas(id);
+    }
 }

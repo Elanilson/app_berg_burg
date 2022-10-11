@@ -26,7 +26,7 @@ public class ItemCardapioViewHolder extends RecyclerView.ViewHolder {
     }
     public void bind(Produto produto, OnListenerAcao<Produto> onListenerAcao){
         textViewNomeItem.setText(produto.getTitulo());
-        textViewValor.setText("R$ "+produto.getPreco());
+        textViewValor.setText("R$ "+String.format("%.2f", produto.getPreco()));
         textViewDescricao.setText(produto.getDescricao());
         layout.setOnClickListener(v -> {
           onListenerAcao.onClick(produto);

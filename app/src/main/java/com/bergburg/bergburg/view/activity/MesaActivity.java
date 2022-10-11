@@ -180,7 +180,7 @@ public class MesaActivity extends AppCompatActivity {
         editCampoObservacao.setText(""+itemDePedido.getObservacao());
         nomeProduto.setText(""+itemDePedido.getTitulo());
         descricaoProduto.setText(""+itemDePedido.getDescricao());
-        totalProduto.setText(""+itemDePedido.getPreco());
+        totalProduto.setText("R$ "+String.format("%.2f", itemDePedido.getPreco()));
         System.out.println("Produto: "+itemDePedido.toString());
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,12 +225,12 @@ public class MesaActivity extends AppCompatActivity {
                // viewModel.salvarProdutoSelecionado(numeroMesa,obj.getId());
               //  finish();
              //   alertaAleterarQuantidade(produto);
-              //  exibirButtonSheetPedido(itemDePedido);
+                exibirButtonSheetPedido(itemDePedido);
             }
 
             @Override
             public void onLongClick(ItemDePedido itemDePedido) {
-               // alertaRemocao(itemDePedido);
+                alertaRemocao(itemDePedido);
             }
         };
         adapter.attackOnListener(onListenerAcao);
@@ -241,7 +241,7 @@ public class MesaActivity extends AppCompatActivity {
         manager.setOrientation(RecyclerView.VERTICAL);
         binding.recyclerViewDetalhesMesa.setLayoutManager(manager);
         binding.recyclerViewDetalhesMesa.setAdapter(adapter);
-        swipe();
+       // swipe();
     }
 
     private void observe() {
@@ -307,7 +307,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(Resposta resposta) {
                 if(resposta.getStatus()){
-                   // Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                     adapter.limparProdutos();
                     viewModel.getPedido(mesa.getId());
                 }else{
@@ -399,7 +399,7 @@ public class MesaActivity extends AppCompatActivity {
     private void alertaRemocao(ItemDePedido itemDePedido){
         new AlertDialog.Builder(binding.getRoot().getContext())
                 .setTitle("Remoção de item")
-                .setMessage("Proseguir com a remoção")
+                .setMessage("Prosseguir com a remoção")
                 .setCancelable(false)
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
@@ -462,7 +462,7 @@ public class MesaActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setTitle("Abertura de Pedido")
                 .setCancelable(false)
-                .setMessage("Continuar com abertura do pedido ?")
+                .setMessage("Continuar com abertura de pedido ?")
                 .setPositiveButton(getString(R.string.confirmar), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -489,7 +489,7 @@ public class MesaActivity extends AppCompatActivity {
         pedidoDaMesa.setTotal(total);
         viewModel.atualizarTotalPedido(pedidoDaMesa);//local
         viewModel.atualizarPedidoOnline(pedidoDaMesa.getId(), pedidoDaMesa.getIdentificadorUnico(), pedidoDaMesa.getTotal(),pedidoDaMesa.getStatus(),pedidoDaMesa.getAberturaPedido());
-        textViewTotalDaMesa.setText("R$ "+total);
+        textViewTotalDaMesa.setText("R$ "+String.format("%.2f", total));
 
 
     }

@@ -73,7 +73,7 @@ public class SelecionarMesaViewModel extends AndroidViewModel {
             }
         };
 
-        repositorio.getMesas(listener);
+       // repositorio.getMesas(listener);
     }
 
 

@@ -33,7 +33,7 @@ public class MainViewModel extends AndroidViewModel {
         Usuario  usuario = repositorio.getUsuarioLogado();
         if(usuario != null){
             _Usuario.setValue(usuario);
-            _Resposta.setValue(new Resposta("Logado",true));
+            _Resposta.setValue(new Resposta(true));
         }else{
          //   _Resposta.setValue(new Resposta("não Logado"));
         }
@@ -44,7 +44,7 @@ public class MainViewModel extends AndroidViewModel {
         if( usuario != null){
             usuario.setStatus(Constantes.USUARIO_LOGADO);
             repositorio.update(usuario);
-            _Resposta.setValue(new Resposta("Sucesso",true));
+            _Resposta.setValue(new Resposta("Autenticado",true));
         }else{
             _Resposta.setValue(new Resposta("Usuário ou senha incorretos!"));
 
