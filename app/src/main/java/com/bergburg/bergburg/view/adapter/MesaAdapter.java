@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
-import com.bergburg.bergburg.model.ItemDePedido;
+import com.bergburg.bergburg.model.ItensComanda;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.view.viewholder.ItemCardapioViewHolder;
 import com.bergburg.bergburg.view.viewholder.MesaViewHolder;
@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Set;
 
 public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
-    private List<ItemDePedido> itensDoPedido = new ArrayList<>();
-    private OnListenerAcao<ItemDePedido> onListenerAcao;
+    private List<ItensComanda> itensComanda = new ArrayList<>();
+    private OnListenerAcao<ItensComanda> onListenerAcao;
 
     @NonNull
     @Override
@@ -32,25 +32,25 @@ public class MesaAdapter extends RecyclerView.Adapter<MesaViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull MesaViewHolder holder, int position) {
-        holder.bind(itensDoPedido.get(position),onListenerAcao);
+        holder.bind(itensComanda.get(position),onListenerAcao);
 
     }
 
     @Override
     public int getItemCount() {
-        return itensDoPedido.size();
+        return itensComanda.size();
     }
 
-    public void attackProdutos(List<ItemDePedido> itensDoPedido){
-        this.itensDoPedido = itensDoPedido;
+    public void attackProdutos(List<ItensComanda> itensDoPedido){
+        this.itensComanda = itensDoPedido;
         notifyDataSetChanged();
 
     }
     public void limparProdutos(){
-        this.itensDoPedido.clear();
+        this.itensComanda.clear();
         notifyDataSetChanged();
     }
-    public void attackOnListener(OnListenerAcao<ItemDePedido> onListenerAcao){
+    public void attackOnListener(OnListenerAcao<ItensComanda> onListenerAcao){
         this.onListenerAcao =  onListenerAcao;
     }
 }

@@ -36,4 +36,10 @@
     <string name="editar">Editar</string>
     <string name="adicionar">Adicionar</string>
     <string name="exibir">Exibir</string>
+    <string name="sem_conexao">Sem conexão com a internet.</string>
+    <string name="id">ID</string>
+    <string name="mesa">Mesa</string>
+    <string name="pedido">Pedido</string>
+    <string name="itens">Itens</string>
+    <string name="pedidos">Pedidos</string>
 </resources>

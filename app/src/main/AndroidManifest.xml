@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bergburg.bergburg">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -12,27 +13,28 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/Theme.BergBurg"
-        android:screenOrientation="portrait"
         tools:targetApi="31">
         <activity
-            android:name=".view.activity.ConsultarPedidoActivity"
-            android:label="@string/consultar_pedido"
-            android:parentActivityName=".view.activity.PrincipalActivity"
+            android:name=".view.activity.ExibirPedidoctivity"
+            android:theme="@style/Theme.BergBurg_NoActionBar"
             android:exported="false" />
+        <activity
+            android:name=".view.activity.ConsultarPedidoActivity"
+            android:exported="false"
+            android:label="@string/consultar_pedido"
+            android:parentActivityName=".view.activity.PrincipalActivity" />
         <activity
             android:name=".view.activity.ItemCardapioActivity"
-            android:theme="@style/Theme.BergBurg_NoActionBar"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.BergBurg_NoActionBar" />
         <activity
             android:name=".view.activity.CardapioActivity"
-            android:theme="@style/Theme.BergBurg_NoActionBar"
             android:exported="false"
-            android:label="@string/cardapio" />
-        <activity
-            android:name=".view.activity.EnviarComandaActivity"
-            android:exported="false" />
+            android:label="@string/cardapio"
+            android:theme="@style/Theme.BergBurg_NoActionBar" />
         <activity
             android:name=".view.activity.PrincipalActivity"
             android:exported="false" />

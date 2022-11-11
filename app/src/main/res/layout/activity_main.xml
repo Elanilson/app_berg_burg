@@ -12,17 +12,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_transparente"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/editCampoLogin"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
         android:background="@drawable/background_campo"
         android:drawableLeft="@drawable/ic_usuario_24"
         android:drawablePadding="10dp"
@@ -34,16 +29,15 @@
         android:textColor="@color/grey31"
         app:layout_constraintBottom_toTopOf="@+id/editCampoSenha"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText
         android:id="@+id/editCampoSenha"
-        android:layout_width="0dp"
+        android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="32dp"
         android:background="@drawable/background_campo"
         android:drawableLeft="@drawable/ic_lock_24"
         android:drawablePadding="10dp"
@@ -53,8 +47,9 @@
         android:padding="10dp"
         android:text="suporte"
         android:textColor="@color/grey31"
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogin"
+        app:layout_constraintBottom_toTopOf="@+id/frame"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editCampoLogin" />
 
@@ -66,42 +61,61 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/textView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
         app:srcCompat="@drawable/logoburgs" />
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:drawableRight="@drawable/ic_baseline_login_24"
-        android:paddingLeft="20dp"
-        android:paddingTop="6dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="6dp"
-        android:text="@string/entrar"
-        android:theme="@style/button_custom"
+        android:layout_marginTop="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCampoSenha" />
+        app:layout_constraintTop_toBottomOf="@+id/editCampoSenha">
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableRight="@drawable/ic_baseline_login_24"
+            android:paddingLeft="20dp"
+            android:paddingTop="6dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="6dp"
+            android:text="@string/entrar"
+            android:theme="@style/button_custom" />
+
+        <ProgressBar
+            android:id="@+id/progressBarLogin"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="5dp"
+            android:indeterminateTint="@color/grey11"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="0dp"
+        android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
         android:gravity="center"
         android:text="@string/controle_de_acesso"
         android:textColor="@color/purple_500"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/editCampoLogin"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

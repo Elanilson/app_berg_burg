@@ -20,10 +20,15 @@ import retrofit2.http.PUT;
 public interface BergburgService {
     @GET("getCategorias.php")
     Call<Dados>  getCategorias();
-    @GET("getPedidos.php")
-    Call<Dados>  getPedido();
+
+    @GET("getTodosOsPedidos.php")
+    Call<Dados> getTodosOsPedidos();
+
     @GET("getMesas.php")
     Call<Dados>  getMesas();
+    @GET("getMesasOcupadas.php")
+    Call<Dados>  getMesasOcupadas();
+
     @GET("getProdutos.php")
     Call<Dados>  getProdutos();
 
@@ -38,6 +43,89 @@ public interface BergburgService {
             @Field("indentificadorUnico") String indentificadorUnico
     );
 
+    @POST("criarPedido.php/")
+    @FormUrlEncoded
+    Call<Dados>  criarPedido(
+            @Field("idUsuario") Long idUsuario,
+            @Field("idMesa") Long idMesa,
+            @Field("total") Float total
+    );
+
+    @POST("adicionarItemComanda.php/")
+    @FormUrlEncoded
+    Call<Dados>  adicionarItemComanda(
+            @Field("idProduto") Long idPoduto,
+            @Field("idMesa") Long idMesa,
+            @Field("quantidade") int quantidade,
+            @Field("observacao") String observacao
+    );
+
+    @POST("itensComanda.php/")
+    @FormUrlEncoded
+    Call<Dados>  itensComanda(
+            @Field("idMesa") Long idMesa
+    );
+    @POST("getPedidosAbertos.php/")
+    @FormUrlEncoded
+    Call<Dados>  getPedidosAbertos(
+            @Field("idMesa") Long idMesa
+    );
+    @POST("cancelarComanda.php/")
+    @FormUrlEncoded
+    Call<Dados>  cancelarComanda(
+            @Field("idMesa") Long idMesa
+    );
+    @POST("getMesa.php/")
+    @FormUrlEncoded
+    Call<Dados>  getMesa(
+            @Field("id") Long id
+    );
+    @POST("removerItemComanda.php/")
+    @FormUrlEncoded
+    Call<Dados>  removerItemComanda(
+            @Field("idItemComanda") Long idItemComanda
+    );
+
+    @PUT("atualizarItemComanda.php/")
+    @FormUrlEncoded
+    Call<Dados>  atualizarItemComanda(
+            @Field("id") Long idItemComanda,
+            @Field("quantidade") int quantidade,
+            @Field("observacao") String observacao
+    );
+
+    @POST("getItemPedido.php/")
+    @FormUrlEncoded
+    Call<Dados>  getItensPedido(
+            @Field("idPedido") Long idPedido
+    );
+    @POST("getPedido.php/")
+    @FormUrlEncoded
+    Call<Dados>  getPedido(
+            @Field("idPedido") Long idPedido
+    );
+    @POST("getPedidos.php/")
+    @FormUrlEncoded
+    Call<Dados>  getPedidos(
+            @Field("idMesa") Long idPedido
+    );
+    @POST("login.php/")
+    @FormUrlEncoded
+    Call<Dados>  login(
+            @Field("nome") String nome,
+            @Field("senha") String senha
+    );
+    @POST("verificarUsuarioLogado.php/")
+    @FormUrlEncoded
+    Call<Dados>  verificarUsuarioLogado(
+            @Field("id") Long id
+    );
+    @PUT("deslogar.php/")
+    @FormUrlEncoded
+    Call<Dados>  deslogar(
+            @Field("id") Long id
+    );
+
     @PUT("atualizarPedido.php/")
     @FormUrlEncoded
     Call<Pedido>  atualizarPedido(
@@ -45,6 +133,12 @@ public interface BergburgService {
             @Field("total") Float total,
             @Field("status") String status,
             @Field("aberturaPedido") String aberturaPedido
+    );
+
+    @PUT("alterarStatusMesa.php/")
+    @FormUrlEncoded
+    Call<Dados>  alterarStatusMesa(
+            @Field("id") Long id
     );
 
     @PUT("atualizarQuantidadeitemPedido.php/")
@@ -73,7 +167,7 @@ public interface BergburgService {
 
     @POST("salvarItemDoPedido.php/")
     @FormUrlEncoded
-    Call<ItemDePedido>  salvarItemDoPedido(
+    Call<ItemDePedido> salvarItemDoPedido(
             @Field("idPedido") Long idPedido,
             @Field("idProduto") Long idProduto,
             @Field("preco") Float preco,

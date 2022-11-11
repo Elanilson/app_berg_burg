@@ -33,6 +33,7 @@ public class Pedido {
     private String identificadorUnico ;
     @ColumnInfo(name = "sincronizado")
     private String sincronizado = Constantes.NAO;
+    private String  data_create;
 
     public Pedido() {
     }
@@ -125,5 +126,13 @@ public class Pedido {
 
     public void setIdentificadorUnico(String identificadorUnico) {
         this.identificadorUnico = identificadorUnico;
+    }
+
+    public String getData_create() {
+        return data_create;
+    }
+
+    public void setData_create(String data_create) {
+        this.data_create = data_create;
     }
 }

@@ -4,10 +4,7 @@ import android.content.Context;
 
 import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Dados;
-import com.bergburg.bergburg.model.Mesa;
-import com.bergburg.bergburg.model.Pedido;
-import com.bergburg.bergburg.repositorio.interfaces.MesaDAO;
-import com.bergburg.bergburg.repositorio.local.BancoRoom;
+
 import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.repositorio.remoto.services.BergburgService;
 
@@ -19,46 +16,27 @@ import retrofit2.Response;
 
 public class MesaRepositorio {
     private BergburgService service = RetrofitClient.classService(BergburgService.class);
-    private MesaDAO mesaDAO;
     private Context context;
+
 
     public MesaRepositorio() {
     }
 
     public MesaRepositorio(Context context) {
         this.context = context;
-        BancoRoom db = BancoRoom.getInstance(context);
-        mesaDAO = db.mesaDAO();
+
     }
 
-    public Boolean insert(Mesa mesa){
-        return mesaDAO.insert(mesa) > 0;
-    }
 
-    public Boolean update(Mesa mesa){
-        return mesaDAO.update(mesa) > 0;
-    }
-    public Boolean delete(Mesa mesa){
-        return mesaDAO.delete(mesa) > 0;
-    }
 
-    public List<Mesa> mesas(){
-        return mesaDAO.mesas();
-    }
-
-    public  void getMesas(APIListener<Dados> listener){
-
-        Call<Dados>  call =  service.getMesas();
+    public void carregarMesas(APIListener<Dados> listener){
+        Call<Dados> call = service.getMesas();
         call.enqueue(new Callback<Dados>() {
             @Override
             public void onResponse(Call<Dados> call, Response<Dados> response) {
-                if(response.code() == 200){
-                    if(response.body() != null){
-                        listener.onSuccess(response.body());
-                    }
-                }else{
-                    listener.onFailures("Erro na requisição");
-                }
+
+                listener.onSuccess(response.body());
+
             }
 
             @Override
@@ -69,7 +47,130 @@ public class MesaRepositorio {
 
     }
 
-    public Mesa getMesa(int id){
-        return mesaDAO.mesas(id);
+    public void getMesa(APIListener<Dados> listener,Long id){
+        Call<Dados> call = service.getMesa(id);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+    public void removerItemComanda(APIListener<Dados> listener,Long idItemComanda){
+        Call<Dados> call = service.removerItemComanda(idItemComanda);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+    public void atualizarItemComanda(APIListener<Dados> listener,Long idITemComanda,int quantidade,String observacao){
+        Call<Dados> call = service.atualizarItemComanda(idITemComanda,quantidade,observacao);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+    public void abrirMesa(APIListener<Dados> listener,Long id){
+        Call<Dados> call = service.alterarStatusMesa(id);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+    public void itensComanda(APIListener<Dados> listener,Long idMesa){
+        Call<Dados> call = service.itensComanda(idMesa);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+    public void cancelarComanda(APIListener<Dados> listener,Long idMesa){
+        Call<Dados> call = service.cancelarComanda(idMesa);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
+    }
+
+
+    public void adicionarItemComanda(APIListener<Dados> listener,Long idMesa,Long idProduto,String observacao, int quantidade){
+        Call<Dados> call = service.adicionarItemComanda(idProduto,idMesa,quantidade,observacao);
+        call.enqueue(new Callback<Dados>() {
+            @Override
+            public void onResponse(Call<Dados> call, Response<Dados> response) {
+
+                listener.onSuccess(response.body());
+
+            }
+
+            @Override
+            public void onFailure(Call<Dados> call, Throwable t) {
+                listener.onFailures(t.getMessage());
+            }
+        });
+
     }
 }

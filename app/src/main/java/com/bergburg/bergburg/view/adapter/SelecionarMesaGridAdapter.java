@@ -56,7 +56,7 @@ public class SelecionarMesaGridAdapter extends BaseAdapter {
         View view =layoutInflater.inflate(R.layout.layout_mesa,null);
 
            LinearLayout layout = view.findViewById(R.id.layoutMesa);
-        if(mesas.get(position).getLivre().equalsIgnoreCase(Constantes.OCUPADO)){
+        if(mesas.get(position).getStatus().equalsIgnoreCase(Constantes.OCUPADO)){
            layout.setBackgroundResource(R.color.purple_500);
         }else{
            layout.setBackgroundResource(R.color.laranja);

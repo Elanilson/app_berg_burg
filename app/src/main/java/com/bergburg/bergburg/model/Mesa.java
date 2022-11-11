@@ -14,13 +14,23 @@ public class Mesa implements Serializable {
     @SerializedName("id")
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private Long id;
     @SerializedName("numero")
     @ColumnInfo(name = "numero")
     private int numero;
-    @SerializedName("livre")
-    @ColumnInfo(name = "livre")
-    private String livre = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
+    @ColumnInfo(name = "status")
+    private String status = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
+    private Float total;
+
+
+    @Override
+    public String toString() {
+        return "Mesa{" +
+                "id=" + id +
+                ", numero=" + numero +
+                ", status='" + status + '\'' +
+                '}';
+    }
 
     public Mesa() {
     }
@@ -29,31 +39,23 @@ public class Mesa implements Serializable {
         this.numero = numero;
     }
 
-    public Mesa(int numero, String livre) {
+
+    public Mesa(int numero, String status) {
         this.numero = numero;
-        this.livre = livre;
+        this.status = status;
     }
 
-    public Mesa(int id, int numero, String livre) {
+    public Mesa(Long id, int numero, String status) {
         this.id = id;
         this.numero = numero;
-        this.livre = livre;
+        this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Mesa{" +
-                "id=" + id +
-                ", numero=" + numero +
-                ", livre=" + livre +
-                '}';
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -65,11 +67,21 @@ public class Mesa implements Serializable {
         this.numero = numero;
     }
 
-    public String getLivre() {
-        return livre;
+    public Float getTotal() {
+        return total;
     }
 
-    public void setLivre(String livre) {
-        this.livre = livre;
+    public void setTotal(Float total) {
+        this.total = total;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+
 }

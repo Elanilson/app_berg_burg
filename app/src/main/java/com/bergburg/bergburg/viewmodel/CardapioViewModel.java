@@ -30,26 +30,24 @@ public class CardapioViewModel extends AndroidViewModel {
        repositorio = new CategoriasRepositorio(application.getApplicationContext());
     }
 
-    public  void getCategorias(){
-        _Categorias.setValue(repositorio.categorias());
-    }
 
-    public  void getCategoriasOnline(){
+
+    public void getCategorias(){
         APIListener<Dados> listener = new APIListener<Dados>() {
             @Override
             public void onSuccess(Dados result) {
-                _Categorias.setValue(result.categorias);
+                _Categorias.setValue(result.getCategorias());
+
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
-
+                _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };
-
-        repositorio.getcategoriasOnline(listener);
-
+        repositorio.getCategoria(listener);
     }
+
+
 
 }

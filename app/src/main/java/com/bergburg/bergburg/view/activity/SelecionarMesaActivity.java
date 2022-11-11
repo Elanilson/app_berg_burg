@@ -7,31 +7,45 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivitySelecionarMesaBinding;
+import com.bergburg.bergburg.helpers.VerificadorDeConexao;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.SelecionarMesaGridAdapter;
+import com.bergburg.bergburg.viewmodel.MesaViewModel;
 import com.bergburg.bergburg.viewmodel.SelecionarMesaViewModel;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SelecionarMesaActivity extends AppCompatActivity {
     private ActivitySelecionarMesaBinding binding;
 
-   // private SelecionarMesaAdapter adapter = new SelecionarMesaAdapter();
     private SelecionarMesaViewModel viewModel ;
+    private MesaViewModel mesaViewModel;
     private OnListenerAcao<Mesa> onListenerAcao;
     private SelecionarMesaGridAdapter mesasAdapte;
+    private int totalDeMesas = 0;
+    private Runnable runnable;
+    private Handler handler = new Handler();
+    private Boolean ticker = false;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,63 +54,48 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle(R.string.selecionar_mesa);
+
         viewModel = new ViewModelProvider(this).get(SelecionarMesaViewModel.class);
+        mesaViewModel = new ViewModelProvider(this).get(MesaViewModel.class);
+
         mesasAdapte = new SelecionarMesaGridAdapter(getApplicationContext());
 
-       // viewModel.listarMesasOnline();
 
         onListenerAcao = new OnListenerAcao<Mesa>() {
             @Override
             public void onClick(Mesa mesa) {
-
                 Intent intent = new Intent(SelecionarMesaActivity.this,MesaActivity.class);
                 intent.putExtra(Constantes.MESA,mesa);
                 startActivity(intent);
-
-               // startActivity(new Intent(SelecionarMesaActivity.this,MesaActivity.class));
             }
-
             @Override
             public void onLongClick(Mesa obj) {
 
             }
         };
+
+
         mesasAdapte.attackListener(onListenerAcao);
-
-
         observe();
         configurarRecyclerview();
-
-
-
     }
 
     private void observe() {
-        viewModel.mesas.observe(this, new Observer<List<Mesa>>() {
+        mesaViewModel.mesas.observe(this, new Observer<List<Mesa>>() {
             @Override
             public void onChanged(List<Mesa> mesas) {
-                mesasAdapte.limparMesas();
-                mesasAdapte.attackMesas(mesas);
-            }
-        });
-     /*   viewModel.mesasOnline.observe(this, new Observer<List<Mesa>>() {
-            @Override
-            public void onChanged(List<Mesa> mesas) {
-                mesasAdapte.limparMesas();
-                mesasAdapte.attackMesas(mesas);
-            }
-        });*/
-        viewModel.itensDosPedidos.observe(this, new Observer<List<ItemDePedido>>() {
-            @Override
-            public void onChanged(List<ItemDePedido> itensDePedidos) {
-                viewModel.sincronizarItensDosPedidos(itensDePedidos);
-            }
-        });
+                if(mesas != null){
+                    if(mesas.size() > 0){
+                        binding.progressBarGimesasd.setVisibility(View.GONE);
+                        mesasAdapte.limparMesas();
+                        mesasAdapte.attackMesas(mesas);
+                    }else{
+                        binding.progressBarGimesasd.setVisibility(View.VISIBLE);
 
-        viewModel.pedidos.observe(this, new Observer<List<Pedido>>() {
-            @Override
-            public void onChanged(List<Pedido> pedidos) {
-                viewModel.sincronizarPedidoOnline(pedidos);
+                    }
+                }else{
+                        binding.progressBarGimesasd.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -108,16 +107,41 @@ public class SelecionarMesaActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void configurarRecyclerview(){
-       // GridLayoutManager manager = new GridLayoutManager(this,3);
-     //   manager.setOrientation(RecyclerView.HORIZONTAL);
-      //  binding.recyclerViewSelecionarMesa.setLayoutManager(manager);
-       // binding.recyclerViewSelecionarMesa.setAdapter(adapter);
-        //binding.gridviewteste.setAdapter(adapter);
-        //binding.gridLayout.setad
         binding.gridViewMesas.setAdapter(mesasAdapte);
+    }
+
+    private void startClock(){
+
+        final Calendar calendar = Calendar.getInstance();
+        this.runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(!ticker){
+                    return;
+                }
+
+                try {
+                            calendar.setTimeInMillis(System.currentTimeMillis());
+                            System.out.println("SelecionarMesa -Milisegundos: "+System.currentTimeMillis());
+
+                             mesaViewModel.carregarMesas();
+
+                            Long now = SystemClock.uptimeMillis();
+                            Long next = now + (1000 - (now % 1000));
+                            handler.postAtTime(runnable,next);
+
+                }catch (Exception e){
+                    System.out.println("Error "+e.getMessage());
+                }
+
+
+            }
+        };
+        this.runnable.run();
     }
 
     @Override
@@ -133,13 +157,35 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        mesasAdapte.limparMesas();
-        viewModel.listaDeMesas();
-        viewModel.carregarItensDosPedidos();
-        viewModel.carregarPedidos();
 
+        ticker = true;
+        startClock();
+
+
+        mesasAdapte.limparMesas();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ticker = false;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        ticker = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ticker = false;
     }
 }

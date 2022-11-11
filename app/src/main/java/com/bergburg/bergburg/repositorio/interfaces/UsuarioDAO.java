@@ -23,7 +23,7 @@ public interface UsuarioDAO {
     @Query("select * from usuarios where id = :id")
     public Usuario getUsuaurio (Long id);
 
-    @Query("select * from usuarios where status = 'Logado'")
+    @Query("select * from usuarios where status = 'Logado' limit 1")
     public Usuario getUsuarioLogado ();
 
     @Query("select * from usuarios where nome = :usuario and senha = :senha")

@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.databinding.ActivityItemCardapioBinding;
+import com.bergburg.bergburg.helpers.VerificadorDeConexao;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.ItemDePedido;
@@ -37,6 +38,7 @@ import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.view.adapter.ItemCardapioAdapter;
 import com.bergburg.bergburg.viewmodel.CardapioViewModel;
 import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
+import com.bergburg.bergburg.viewmodel.MesaViewModel;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -50,10 +52,11 @@ public class ItemCardapioActivity extends AppCompatActivity {
     private ActivityItemCardapioBinding binding;
     private ItemCardapioAdapter adapter = new ItemCardapioAdapter();
     private ItemCardapioViewModel viewModel ;
+    private MesaViewModel mesaViewModel;
     private Long idCategoria = 0L;
     private String tituloCategoria = "";
     private String observacao = "";
-    private int id_mesa = 0;
+    private Long id_mesa = 0L;
     private int quantidade = 1; // padrao
     private CoordinatorLayout layout;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -70,11 +73,16 @@ public class ItemCardapioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityItemCardapioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         viewModel = new ViewModelProvider(this).get(ItemCardapioViewModel.class);
+        mesaViewModel = new ViewModelProvider(this).get(MesaViewModel.class);
+
         layout = binding.constraintItemCardapio;
         frameLayoutEditarItemPedido = binding.frameSheetEditarItemPedido;
         bottomSheetBehavior =BottomSheetBehavior.from(frameLayoutEditarItemPedido);
         bottomSheetBehavior.setDraggable(false);
+
+
 
         configurarrRecyclerView();
         adapteListener();
@@ -93,50 +101,7 @@ public class ItemCardapioActivity extends AppCompatActivity {
         onBackPressed();
     }
 
-    private void swipe(){
-        ItemTouchHelper.Callback itemTouch = new ItemTouchHelper.Callback() {
-            @Override
-            public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
-                int dragFlags =ItemTouchHelper.ACTION_STATE_IDLE;
-                int swipeFlags = ItemTouchHelper.END ;
-                return makeMovementFlags(dragFlags,swipeFlags);
-            }
 
-            @Override
-            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                // System.out.println("Direção: "+direction);
-                posicao = viewHolder.getLayoutPosition();
-                switch (direction){
-                    case ItemTouchHelper.END:
-                        exibirButtonSheetPedido(listProdutos.get(posicao));
-                        adapter.notifyDataSetChanged();
-
-                        break;
-
-                }
-
-            }
-
-            @Override
-            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                new RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                        .addSwipeRightBackgroundColor(ContextCompat.getColor(ItemCardapioActivity.this, R.color.black))
-                        .addSwipeRightActionIcon(R.drawable.ic_shopping_24)
-                        .addSwipeRightLabel(getString(R.string.adicionar))
-                        .setSwipeRightLabelColor(ContextCompat.getColor(ItemCardapioActivity.this, R.color.white))
-                        .create()
-                        .decorate();
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-            }
-        };
-
-        new ItemTouchHelper(itemTouch).attachToRecyclerView(binding.recyclerViewItemCardapio);
-    }
 
     private void exibirButtonSheetPedido(Produto produto){
         binding.recyclerViewItemCardapio.setVisibility(View.GONE);
@@ -174,10 +139,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
                     item.setQuantidade(quantidade);
                     item.setObservacao(observacao);
                     item.setIndentificadorUnico(String.valueOf(indentificadorUnico));
-
-                    viewModel.salvarItemDoPedido(item,id_mesa);
-                    //viewModel.salvarProdutoSelecionado(id_mesa,produto.getId(),quantidade,observacao,String.valueOf(identificadorUnico), produto.getPreco(),Constantes.ATIVO);
-                    Toast.makeText(ItemCardapioActivity.this, getString(R.string.adicionado), Toast.LENGTH_LONG).show();
+                    System.out.println(id_mesa+" idMEsa - idProduto"+ item.getIdProduto() );
+                    mesaViewModel.adicionarItemComanda(id_mesa,item.getIdProduto(),item.getObservacao(), item.getQuantidade());
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     finish();
                 }else{
@@ -198,85 +161,14 @@ public class ItemCardapioActivity extends AppCompatActivity {
         });
     }
 
-    private void solicitarQuantidade(Produto produto){
-     /*   new AlertDialog.Builder(binding.getRoot().getContext())
-                .setTitle("Quantidade teste")
-                .setMessage("====== teste ====")
-                .setPositiveButton("Quero 2", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    quantidade = 2;
-                        viewModel.salvarProdutoSelecionado(numeroMesa,produto.getId(),quantidade);
-                        finish();
-                    }
-                })
-                .setNeutralButton("Quero 1", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        quantidade = 1;
-                        viewModel.salvarProdutoSelecionado(numeroMesa,produto.getId(),quantidade);
-                        finish();
-                    }
-                })
-                .show();*/
-    }
-
-    private void alertaQuantidade(Produto produto){
-     /*   Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.layout_quantidade_pedido);
-        dialog.setCancelable(false);
-        EditText editCampoQuantidade = dialog.findViewById(R.id.editQuantidade);
-        Button btnConfirmar = dialog.findViewById(R.id.buttonConfirmarQuantidade);
-        Button btnCancelar = dialog.findViewById(R.id.buttonCancelar);
-
-
-        btnConfirmar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                String campo = "";
-                campo = editCampoQuantidade.getText().toString();
-                if(campo != null && campo != "" && !campo.equalsIgnoreCase(" ")){
-                    quantidade = Integer.parseInt(campo);
-
-                    viewModel.salvarProdutoSelecionado(numeroMesa,produto.getId(),quantidade);
-                    // configurarSnackBar(layout,"Sucesso");
-                    Toast.makeText(ItemCardapioActivity.this, getString(R.string.pedido_confirmado), Toast.LENGTH_LONG).show();
-                    dialog.dismiss();
-                    finish();
-                }else{
-                    configurarSnackBar(layout,"Informe a quantidade nescessária");
-                }
-
-
-
-            }
-        });
-        btnCancelar.setOnClickListener( v -> dialog.dismiss());
-
-        //  dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        dialog.show();*/
-
-    }
-
-    private void aguardar(int segundos){
-        try {
-            TimeUnit.SECONDS.sleep(segundos);
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
     private void recuperar(){
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             idCategoria = bundle.getLong(Constantes.ID_CATEGORIA);
             tituloCategoria = bundle.getString(Constantes.TITULO_CATEGORIA);
-            id_mesa = bundle.getInt(Constantes.ID_MESA);
+            id_mesa = Long.parseLong(String.valueOf(bundle.getInt(Constantes.ID_MESA)));
             viewModel.produtosPorCategoria(idCategoria);
-          //  viewModel.produtosPorCategoriaOnline(idCategoria);
-           // viewModel.produtosOnline();
-          //  getSupportActionBar().setTitle(tituloCategoria);
+
             configuracaoToolbar();
         }
     }
@@ -321,20 +213,36 @@ public class ItemCardapioActivity extends AppCompatActivity {
     }
 
     private void observe() {
+        mesaViewModel.resposta.observe(this, new Observer<Resposta>() {
+            @Override
+            public void onChanged(Resposta resposta) {
+                if(resposta.getStatus()){
+                    Toast.makeText(ItemCardapioActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(ItemCardapioActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
         viewModel.produtos.observe(this, new Observer<List<Produto>>() {
             @Override
             public void onChanged(List<Produto> produtos) {
-                listProdutos.addAll(produtos);
-                adapter.attackProdutos(produtos);
+                if(produtos != null){
+                    if(produtos.size() > 0){
+                        binding.progressBaritemCardapio.setVisibility(View.GONE);
+                        listProdutos.addAll(produtos);
+                        adapter.attackProdutos(produtos);
+                    }else{
+                        binding.progressBaritemCardapio.setVisibility(View.VISIBLE);
+
+                    }
+                }else{
+                        binding.progressBaritemCardapio.setVisibility(View.VISIBLE);
+
+                }
             }
         });
 
-        viewModel.produtosOnline.observe(this, new Observer<List<Produto>>() {
-            @Override
-            public void onChanged(List<Produto> produtos) {
-                System.out.println("Produtos: "+produtos);
-            }
-        });
 
         viewModel.resposta.observe(this, new Observer<Resposta>() {
             @Override
@@ -349,7 +257,10 @@ public class ItemCardapioActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         recuperar();
 
     }
+
+
 }

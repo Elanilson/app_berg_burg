@@ -6,8 +6,10 @@ import androidx.room.PrimaryKey;
 
 import com.bergburg.bergburg.constantes.Constantes;
 
+import java.io.Serializable;
+
 @Entity(tableName = "usuarios")
-public class Usuario {
+public class Usuario implements Serializable {
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true)
     private Long id;
@@ -19,6 +21,18 @@ public class Usuario {
     private String cargo;
     @ColumnInfo(name = "status")
     private String status = Constantes.USUARIO_DESLOGADO;
+
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", senha='" + senha + '\'' +
+                ", cargo='" + cargo + '\'' +
+                ", status='" + status + '\'' +
+                '}';
+    }
 
     public Usuario() {
     }

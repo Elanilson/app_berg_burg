@@ -14,13 +14,15 @@ import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 
 public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
-    TextView textNumeroMesa,textStatus,textViewTotal;
+    TextView textNumeroMesa,textStatus,textViewTotal,textViewData,textViewAberturaPedido;
     CardView layout;
     private View view;
 
 
     public ConsultaPedidoViewHolder(@NonNull View itemView) {
         super(itemView);
+        textViewAberturaPedido = itemView.findViewById(R.id.textViewAbeturaPedido);
+        textViewData = itemView.findViewById(R.id.textViewDataPedido);
         textNumeroMesa = itemView.findViewById(R.id.textViewNumeroDaMesa);
         textStatus = itemView.findViewById(R.id.textViewStatusDoPedido);
         textViewTotal = itemView.findViewById(R.id.textViewTotalPedido);
@@ -28,7 +30,7 @@ public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
         view = itemView;
     }
     public void bind(Pedido pedido, OnListenerAcao<Pedido> onListenerAcao){
-        String status = "";
+    /*    String status = "";
         if(pedido.getStatus().equalsIgnoreCase(Constantes.ENVIADO)){
             status = view.getContext().getString(R.string.enviado);
         }else if(pedido.getStatus().equalsIgnoreCase(Constantes.CANCELADO)){
@@ -40,9 +42,10 @@ public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
 
         }else if(pedido.getStatus().equalsIgnoreCase(Constantes.NAO_ENVIADO)){
             status = view.getContext().getString(R.string.naoEnviado);
-        }
-
-        textStatus.setText(status);
+        }*/
+        textViewAberturaPedido.setText(pedido.getAberturaPedido());
+        textViewData.setText(pedido.getData_create());
+        textStatus.setText(pedido.getStatus());
         textViewTotal.setText("R$ "+String.format("%.2f", pedido.getTotal()));
         textNumeroMesa.setText(""+pedido.getIdMesa());
         layout.setOnClickListener(v -> {

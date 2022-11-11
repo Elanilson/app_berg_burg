@@ -11,23 +11,35 @@ import com.bergburg.bergburg.constantes.Constantes;
 import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Dados;
 import com.bergburg.bergburg.model.ItemDePedido;
+import com.bergburg.bergburg.model.ItensComanda;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.model.Usuario;
 import com.bergburg.bergburg.repositorio.ItemDoPedidoRepositorio;
 import com.bergburg.bergburg.repositorio.MesaRepositorio;
 import com.bergburg.bergburg.repositorio.PedidoRepositorio;
 import com.bergburg.bergburg.repositorio.ProdutosRepositorio;
+import com.bergburg.bergburg.repositorio.UsuarioRepositorio;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
+import com.bergburg.bergburg.repositorio.remoto.services.BergburgService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MesaViewModel extends AndroidViewModel {
     private ProdutosRepositorio repositorio;
     private PedidoRepositorio pedidoRepositorio;
     private MesaRepositorio mesaRepositorio;
     private ItemDoPedidoRepositorio itemDoPedidoRepositorio;
+    private UsuarioRepositorio usuarioRepositorio;
+
+
 
 
     private MutableLiveData<List<Produto>> _Produtos = new MutableLiveData<>();
@@ -36,9 +48,18 @@ public class MesaViewModel extends AndroidViewModel {
     private MutableLiveData<List<ItemDePedido>> _ItensDoPedido = new MutableLiveData<>();
     public LiveData<List<ItemDePedido>> itensDoPedido = _ItensDoPedido;
 
+    private MutableLiveData<List<ItensComanda>> _ItensComanda = new MutableLiveData<>();
+    public LiveData<List<ItensComanda>> itensComanda = _ItensComanda;
+
 
     private MutableLiveData<Pedido> _Pedido = new MutableLiveData<>();
     public LiveData<Pedido> pedido = _Pedido;
+
+    private MutableLiveData<List<Pedido>> _Pedidos = new MutableLiveData<>();
+    public LiveData<List<Pedido>> pedidos = _Pedidos;
+
+    private MutableLiveData<Usuario> _Usuario = new MutableLiveData<>();
+    public LiveData<Usuario> usuario = _Usuario;
 
     private MutableLiveData<Mesa> _Mesa = new MutableLiveData<>();
     public LiveData<Mesa> mesa = _Mesa;
@@ -48,6 +69,9 @@ public class MesaViewModel extends AndroidViewModel {
 
     private List<ItemDePedido> itensDoPedido_Sem_OsRemovidos = new ArrayList<>();
 
+    private MutableLiveData<List<Mesa>> _Mesas = new MutableLiveData<>();
+    public LiveData<List<Mesa>> mesas = _Mesas;
+
     public MesaViewModel(@NonNull Application application) {
         super(application);
 
@@ -55,114 +79,207 @@ public class MesaViewModel extends AndroidViewModel {
         pedidoRepositorio = new PedidoRepositorio(application.getApplicationContext());
         mesaRepositorio = new MesaRepositorio(application.getApplicationContext());
         itemDoPedidoRepositorio = new ItemDoPedidoRepositorio(application.getApplicationContext());
+        usuarioRepositorio = new UsuarioRepositorio(application.getApplicationContext());
     }
 
-    public void getItemPedido(Long id){
-        //pecorro os itens da tebela itensDoPedido
-        for(ItemDePedido item: pedidoRepositorio.getItensDoPedido(id)){
-            //caso não sincroninazo ele vai sincronizar - principalmente os removidos
-            if(item.getSincronizado().equalsIgnoreCase(Constantes.NAO)){
-                salvar_OU_Atualizar_ItemDoPedidoOnline(item);
-            }
-            //somente os itens ativos
-           if(item.getStatus().equalsIgnoreCase(Constantes.ATIVO)){
-               itensDoPedido_Sem_OsRemovidos.add(item);
-           }
-        }
-       // _ItensDoPedido.setValue(pedidoRepositorio.getItensDoPedido(id));
-        _ItensDoPedido.setValue(itensDoPedido_Sem_OsRemovidos);
-      //  _Produtos.setValue(produtoList);
-    }
 
-    public void getMesa(int id){
-        _Mesa.setValue(mesaRepositorio.getMesa(id));
-    }
-
-    public void getPedido(int idMesa){
-        _Pedido.setValue(pedidoRepositorio.getPedido(idMesa));
-    }
-
-    public void atualizarTotalPedido(Pedido pedido){
-        pedidoRepositorio.update(pedido);
-    }
-
-    //local
-    public void sincronizarPedido(Long idUsuario, Mesa mesa,String identificadorUnico){
-        salvarPedidoOnline(idUsuario,mesa.getId(),Constantes.ABERTO,Constantes.NAO_ENVIADO,0f,identificadorUnico);
-    }
-
-    public void abrirPedido(Long idUsuario, Mesa mesa,String identificadorUnico){
-        sincronizarPedido(idUsuario,mesa,identificadorUnico);
-       if( pedidoRepositorio.insert(new Pedido(idUsuario,mesa.getId(),Constantes.ABERTO,Constantes.NAO_ENVIADO,identificadorUnico))){
-           mesa.setLivre(Constantes.OCUPADO);
-           mesaRepositorio.update(mesa); //atualiza a mesa
-           _Resposta.setValue(new Resposta(Constantes.ABERTO,true));
-       }
-    }
-    public void fecharPedido(Pedido pedido,Mesa mesa){
-        if(pedidoRepositorio.update(pedido)){
-            mesa.setLivre(Constantes.LIVRE);
-            mesaRepositorio.update(mesa); //atualiza
-            _Resposta.setValue(new Resposta(Constantes.FECHADO,true));
-        }
-    }
-
-    public void cancelarPedido(Pedido pedido,Mesa mesa){
-        pedido.setSincronizado(Constantes.NAO);
-        if(pedidoRepositorio.update(pedido)){
-            mesa.setLivre(Constantes.LIVRE);
-            mesaRepositorio.update(mesa); //atualiza
-            _Resposta.setValue(new Resposta(Constantes.CANCELADO,true));
-        }
-    }
-
-    public void salvarPedidoOnline(Long idUsuario,int idMesa,String aberturaPedido,String status,Float total, String identificadorUnico){
-        APIListener<Pedido> listener = new APIListener<Pedido>() {
+    public void carregarMesas(){
+        APIListener<Dados> listener = new APIListener<Dados>() {
             @Override
-            public void onSuccess(Pedido result) {
-
+            public void onSuccess(Dados result) {
+                _Mesas.setValue(result.getMesas());
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
+                _Resposta.setValue(new Resposta("Não foi possível carregar"));
             }
         };
-        pedidoRepositorio.salvarPedidoOnline(listener,idUsuario,idMesa,aberturaPedido,status,total,identificadorUnico);
+
+        mesaRepositorio.carregarMesas(listener);
+
     }
-
-    public void atualizarPedidoOnline(Long idPedido,String indentificador,Float total,String status, String aberturaPedido){
-        APIListener<Pedido> listene = new APIListener<Pedido>() {
+    public void getMesa(Long id){
+        APIListener<Dados> listener = new APIListener<Dados>() {
             @Override
-            public void onSuccess(Pedido result) {
-
+            public void onSuccess(Dados result) {
+               _Mesa.setValue(result.getMesa());
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
+                _Resposta.setValue(new Resposta("Não foi possível Abrir Mesa"));
             }
         };
 
-        pedidoRepositorio.atualizarPedidoOnline(listene,idPedido,indentificador,total,status,aberturaPedido);
+        mesaRepositorio.getMesa(listener,id);
     }
 
-
-    public void salvar_OU_Atualizar_ItemDoPedidoOnline(ItemDePedido item){
-        APIListener<ItemDePedido> listener = new APIListener<ItemDePedido>() {
+    public void getPedidosAbertos(Long idMesa){
+        APIListener<Dados> listener = new APIListener<Dados>() {
             @Override
-            public void onSuccess(ItemDePedido result) {
-                // precisa ter nada  aqui porque ta sendo feito no repositorio
-
+            public void onSuccess(Dados result) {
+                _Pedidos.setValue(result.getPedidos());
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta(mensagem));
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+
+        pedidoRepositorio.getPedidosAbertos(listener,idMesa);
+    }
+
+    public void atualizarItemComanda(Long idItemComanda, int quantidade, String observacao){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                if(result.getStatus()){
+                    _Resposta.setValue(new Resposta(Constantes.ATUALIZADO,true));
+                }else{
+                    _Resposta.setValue(new Resposta("Não foi possível Abrir Mesa"));
+                }
             }
 
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
         };
-        itemDoPedidoRepositorio.salvar_OU_Atualizar_ItemDoPedidoOnline(listener,item);
+
+        mesaRepositorio.atualizarItemComanda(listener,idItemComanda,quantidade,observacao);
+    }
+    public void abrirMesa(Long id){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                if(result.getStatus()){
+                    _Resposta.setValue(new Resposta("Mesa aberta!",true));
+                }else{
+                    _Resposta.setValue(new Resposta("não conseguir abrir a mesa"));
+                }
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+
+        mesaRepositorio.abrirMesa(listener,id);
+    }
+    public void removerItemComanda(Long idItemComanda){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                if(result.getStatus()){
+                    _Resposta.setValue(new Resposta(Constantes.REMOVIDO,true));
+                }else{
+                    _Resposta.setValue(new Resposta("Não foi possível remover"));
+                }
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+
+        mesaRepositorio.removerItemComanda(listener,idItemComanda);
+    }
+    public void itensComanda(Long idMesa){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                _ItensComanda.setValue(result.getItensComanda());
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Não foi possível carregar os itens da comanda"));
+            }
+        };
+
+        mesaRepositorio.itensComanda(listener,idMesa);
+    }
+    public void cancelarComanda(Long idMesa){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+               if(result.getStatus()){
+                   _Resposta.setValue(new Resposta(Constantes.CANCELADO,true));
+               }else{
+                   _Resposta.setValue(new Resposta("Não foi possível cancelar"));
+
+               }
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+
+        mesaRepositorio.cancelarComanda(listener,idMesa);
+    }
+
+    public void getUsuario(Long idUsuario){
+        if(idUsuario != null){
+            APIListener<Dados> listener = new APIListener<Dados>() {
+                @Override
+                public void onSuccess(Dados result) {
+                    _Usuario.setValue(result.getUsuario());
+                }
+
+                @Override
+                public void onFailures(String mensagem) {
+                    _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                }
+            };
+
+            usuarioRepositorio.verificarUsuarioLogado(listener,idUsuario);
+        }else{
+            _Resposta.setValue(new Resposta("ID do usuário não encontrado"));
+        }
+    }
+
+    public void adicionarItemComanda(Long idMesa,Long idProduto,String observacao,int quantidade){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                if(result.getStatus()){
+                    _Resposta.setValue(new Resposta("Adicionado.",true));
+                }else{
+                    _Resposta.setValue(new Resposta("não conseguir adicionar!"));
+                }
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+        mesaRepositorio.adicionarItemComanda(listener,idMesa,idProduto,observacao,quantidade);
+    }
+
+    public void criarPedido(Long idMesa,Long idUsuario,float total){
+        APIListener<Dados> listener = new APIListener<Dados>() {
+            @Override
+            public void onSuccess(Dados result) {
+                if(result.getStatus()){
+                    _Resposta.setValue(new Resposta(Constantes.ENVIADO,true));
+                }else{
+                    _Resposta.setValue(new Resposta("Não foi possível enviar!"));
+                }
+            }
+
+            @Override
+            public void onFailures(String mensagem) {
+                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+            }
+        };
+        pedidoRepositorio.criarPedido(listener,idMesa,idUsuario,total);
     }
 
 
