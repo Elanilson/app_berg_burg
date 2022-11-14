@@ -49,7 +49,7 @@ public class ConsultaPedidoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
-                System.out.println(mensagem);
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };
@@ -66,6 +66,7 @@ public class ConsultaPedidoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };
@@ -82,6 +83,7 @@ public class ConsultaPedidoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };

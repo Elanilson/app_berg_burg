@@ -122,7 +122,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
                         binding.textViewSemPedidos.setVisibility(View.VISIBLE);
                     }
                 }else{
-                    binding.progressBarConPedido.setVisibility(View.VISIBLE);
+                    binding.progressBarConPedido.setVisibility(View.GONE);
                     binding.textViewSemPedidos.setVisibility(View.VISIBLE);
                 }
             }

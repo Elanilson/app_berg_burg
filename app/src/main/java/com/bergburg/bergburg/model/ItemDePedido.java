@@ -9,50 +9,37 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "itemDePedido")
 public class ItemDePedido {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
     @SerializedName("id")
     private Long id;
 
-    @ColumnInfo(name = "titulo")
     @SerializedName("titulo")
     private String titulo;
 
-    @ColumnInfo(name = "idPedido")
     @SerializedName("idPedido")
     private Long idPedido;
 
-    @ColumnInfo(name = "idProduto")
     @SerializedName("idProduto")
     private Long idProduto;
 
-    @ColumnInfo(name = "idCategoria")
     @SerializedName("idCategoria")
     private int idCategoria;
 
-    @ColumnInfo(name = "descricao")
     @SerializedName("descricao")
     private String descricao;
 
-    @ColumnInfo(name = "quantidade")
     @SerializedName("quantidade")
     private int quantidade = 1;
 
-    @ColumnInfo(name = "observacao")
     private String observacao;
 
-    @ColumnInfo(name = "sincronizado")
     private String sincronizado = Constantes.NAO;
 
-    @ColumnInfo(name = "indentificadorUnico")
     @SerializedName("indentificadorUnico")
     private String indentificadorUnico ;
 
-    @ColumnInfo(name = "preco")
     @SerializedName("preco")
     private Float preco = 0f;
 
-    @ColumnInfo(name = "status")
     @SerializedName("status")
     private String status = Constantes.ATIVO;
 

@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        getSupportActionBar().setElevation(0);
-        getSupportActionBar().setTitle("");
+        /*getSupportActionBar().setElevation(0);
+        getSupportActionBar().setTitle("");*/
 
         preferences = new UsuarioPreferences(this);
         statusLogado = preferences.recuperarStatus();
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 if(resposta.getStatus()){
 
                 }else{
+                    binding.progressBarLogin.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
 
                 }
@@ -90,18 +91,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_controle_de_acesso,menu);
-        //return super.onCreateOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onResume() {

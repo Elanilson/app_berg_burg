@@ -92,6 +92,7 @@ public class MesaViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Não foi possível carregar"));
             }
         };
@@ -108,6 +109,7 @@ public class MesaViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Não foi possível Abrir Mesa"));
             }
         };
@@ -116,6 +118,7 @@ public class MesaViewModel extends AndroidViewModel {
     }
 
     public void getPedidosAbertos(Long idMesa){
+        System.out.println("getPedidosAbertos idRecebido "+idMesa);
         APIListener<Dados> listener = new APIListener<Dados>() {
             @Override
             public void onSuccess(Dados result) {
@@ -124,6 +127,7 @@ public class MesaViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
             }
         };
@@ -138,13 +142,14 @@ public class MesaViewModel extends AndroidViewModel {
                 if(result.getStatus()){
                     _Resposta.setValue(new Resposta(Constantes.ATUALIZADO,true));
                 }else{
-                    _Resposta.setValue(new Resposta("Não foi possível Abrir Mesa"));
+                    _Resposta.setValue(new Resposta(Constantes.NAO_ATUALIZADO));
                 }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.VERIFIQUE_CONEXAO));
             }
         };
 
@@ -155,15 +160,16 @@ public class MesaViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(Dados result) {
                 if(result.getStatus()){
-                    _Resposta.setValue(new Resposta("Mesa aberta!",true));
+                    _Resposta.setValue(new Resposta(Constantes.MESA_ABERTA,true));
                 }else{
-                    _Resposta.setValue(new Resposta("não conseguir abrir a mesa"));
+                    _Resposta.setValue(new Resposta(Constantes.NAO_CONSEGUIR_ABRIR_MESA));
                 }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.VERIFIQUE_CONEXAO));
             }
         };
 
@@ -176,13 +182,14 @@ public class MesaViewModel extends AndroidViewModel {
                 if(result.getStatus()){
                     _Resposta.setValue(new Resposta(Constantes.REMOVIDO,true));
                 }else{
-                    _Resposta.setValue(new Resposta("Não foi possível remover"));
+                    _Resposta.setValue(new Resposta(Constantes.NAO_REMOVIDO));
                 }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.VERIFIQUE_CONEXAO));
             }
         };
 
@@ -197,6 +204,7 @@ public class MesaViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Não foi possível carregar os itens da comanda"));
             }
         };
@@ -210,14 +218,15 @@ public class MesaViewModel extends AndroidViewModel {
                if(result.getStatus()){
                    _Resposta.setValue(new Resposta(Constantes.CANCELADO,true));
                }else{
-                   _Resposta.setValue(new Resposta("Não foi possível cancelar"));
+                   _Resposta.setValue(new Resposta(Constantes.NAO_CANCELADO));
 
                }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.VERIFIQUE_CONEXAO));
             }
         };
 
@@ -234,6 +243,7 @@ public class MesaViewModel extends AndroidViewModel {
 
                 @Override
                 public void onFailures(String mensagem) {
+                    System.out.println("Error: "+mensagem);
                     _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
                 }
             };
@@ -249,15 +259,16 @@ public class MesaViewModel extends AndroidViewModel {
             @Override
             public void onSuccess(Dados result) {
                 if(result.getStatus()){
-                    _Resposta.setValue(new Resposta("Adicionado.",true));
+                    _Resposta.setValue(new Resposta(Constantes.ADICIONADO,true));
                 }else{
-                    _Resposta.setValue(new Resposta("não conseguir adicionar!"));
+                    _Resposta.setValue(new Resposta(Constantes.NAO_ADICIONADO));
                 }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.VERIFIQUE_CONEXAO));
             }
         };
         mesaRepositorio.adicionarItemComanda(listener,idMesa,idProduto,observacao,quantidade);
@@ -270,13 +281,14 @@ public class MesaViewModel extends AndroidViewModel {
                 if(result.getStatus()){
                     _Resposta.setValue(new Resposta(Constantes.ENVIADO,true));
                 }else{
-                    _Resposta.setValue(new Resposta("Não foi possível enviar!"));
+                    _Resposta.setValue(new Resposta(Constantes.PEDIDO_NAO_ENVIADO));
                 }
             }
 
             @Override
             public void onFailures(String mensagem) {
-                _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                System.out.println("Error: "+mensagem);
+                _Resposta.setValue(new Resposta(Constantes.PEDIDO_NAO_ENVIADO));
             }
         };
         pedidoRepositorio.criarPedido(listener,idMesa,idUsuario,total);

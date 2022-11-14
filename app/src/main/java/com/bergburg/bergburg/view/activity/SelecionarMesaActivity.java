@@ -102,8 +102,12 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         viewModel.resposta.observe(this, new Observer<Resposta>() {
             @Override
             public void onChanged(Resposta resposta) {
-                if(!resposta.getStatus()){
+                if(resposta.getStatus()){
+                    //Toast.makeText(SelecionarMesaActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+                    binding.progressBarGimesasd.setVisibility(View.GONE);
+                }else{
                     Toast.makeText(SelecionarMesaActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

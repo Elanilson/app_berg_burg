@@ -49,6 +49,7 @@ public class ExibirPedidoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };
@@ -65,6 +66,7 @@ public class ExibirPedidoViewModel extends AndroidViewModel {
 
             @Override
             public void onFailures(String mensagem) {
+                System.out.println("Error: "+mensagem);
                 _Resposta.setValue(new Resposta("Falha ao conectar"));
             }
         };

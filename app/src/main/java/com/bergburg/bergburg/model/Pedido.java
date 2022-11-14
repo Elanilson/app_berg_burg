@@ -7,33 +7,38 @@ import androidx.room.PrimaryKey;
 import com.bergburg.bergburg.constantes.Constantes;
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "pedidos")
 public class Pedido {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
     @SerializedName("id")
     private Long id;
-    @ColumnInfo(name = "idUsuario")
     @SerializedName("idUsuario")
     private Long idUsuario;
-    @ColumnInfo(name = "idMesa")
     @SerializedName("idMesa")
     private int idMesa;
-    @ColumnInfo(name = "total")
     @SerializedName("total")
     private Float total = 0f;
-    @ColumnInfo(name = "aberturaPedido")
     @SerializedName("aberturaPedido")
     private String aberturaPedido = Constantes.FECHADO; // ( 0 ) fechado ( 1 ) aberto
-    @ColumnInfo(name = "status")
     @SerializedName("status")
     private String status = Constantes.NAO_ENVIADO;
-    @ColumnInfo(name = "identificadorUnico")
     @SerializedName("identificadorUnico")
     private String identificadorUnico ;
-    @ColumnInfo(name = "sincronizado")
     private String sincronizado = Constantes.NAO;
     private String  data_create;
+
+    @Override
+    public String toString() {
+        return "Pedido{" +
+                "id=" + id +
+                ", idUsuario=" + idUsuario +
+                ", idMesa=" + idMesa +
+                ", total=" + total +
+                ", aberturaPedido='" + aberturaPedido + '\'' +
+                ", status='" + status + '\'' +
+                ", identificadorUnico='" + identificadorUnico + '\'' +
+                ", sincronizado='" + sincronizado + '\'' +
+                ", data_create='" + data_create + '\'' +
+                '}';
+    }
 
     public Pedido() {
     }

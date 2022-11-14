@@ -48,6 +48,7 @@ public class MainViewModel extends AndroidViewModel {
                 }
                 @Override
                 public void onFailures(String mensagem) {
+                    System.out.println("Error: "+mensagem);
                     _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
                 }
             };
@@ -71,12 +72,13 @@ public class MainViewModel extends AndroidViewModel {
                 }
                 @Override
                 public void onFailures(String mensagem) {
-                    _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
+                    System.out.println("Error: "+mensagem);
+                    //_Resposta.setValue(new Resposta("Falha ao tentar conectar"));
                 }
             };
             repositorio.verificarUsuarioLogado(listener,id);
         }else{
-            _Resposta.setValue(new Resposta("Usuário sem ID"));
+          //  _Resposta.setValue(new Resposta("Usuário sem ID"));
         }
     }
 
@@ -93,6 +95,7 @@ public class MainViewModel extends AndroidViewModel {
                     }
                     @Override
                     public void onFailures(String mensagem) {
+                        System.out.println("Error: "+mensagem);
                         _Resposta.setValue(new Resposta("Falha ao tentar conectar"));
                     }
                 };

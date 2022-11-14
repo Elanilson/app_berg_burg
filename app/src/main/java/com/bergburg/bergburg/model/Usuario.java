@@ -8,18 +8,13 @@ import com.bergburg.bergburg.constantes.Constantes;
 
 import java.io.Serializable;
 
-@Entity(tableName = "usuarios")
+
 public class Usuario implements Serializable {
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
+
     private Long id;
-    @ColumnInfo(name = "nome")
     private String nome;
-    @ColumnInfo(name = "senha")
     private String senha;
-    @ColumnInfo(name = "cargo")
     private String cargo;
-    @ColumnInfo(name = "status")
     private String status = Constantes.USUARIO_DESLOGADO;
 
 

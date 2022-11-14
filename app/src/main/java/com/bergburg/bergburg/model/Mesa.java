@@ -12,16 +12,11 @@ import java.io.Serializable;
 @Entity(tableName = "mesas")
 public class Mesa implements Serializable {
     @SerializedName("id")
-    @ColumnInfo(name = "id")
-    @PrimaryKey(autoGenerate = true)
     private Long id;
     @SerializedName("numero")
-    @ColumnInfo(name = "numero")
     private int numero;
-    @ColumnInfo(name = "status")
     private String status = Constantes.LIVRE; // ( 0 ) fechado ( 1 ) aberto
     private Float total;
-
 
     @Override
     public String toString() {
@@ -29,6 +24,7 @@ public class Mesa implements Serializable {
                 "id=" + id +
                 ", numero=" + numero +
                 ", status='" + status + '\'' +
+                ", total=" + total +
                 '}';
     }
 

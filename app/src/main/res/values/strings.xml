@@ -42,4 +42,6 @@
     <string name="pedido">Pedido</string>
     <string name="itens">Itens</string>
     <string name="pedidos">Pedidos</string>
+    <string name="sem_pedidos">Sem pedidos</string>
+    <string name="agradecimento">Obrigado pela preferência!</string>
 </resources>

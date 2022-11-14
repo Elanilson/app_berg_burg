@@ -8,13 +8,10 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-@Entity(tableName = "categorias")
+
 public class Categoria  implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
     @SerializedName("id")
     private Long id;
-    @ColumnInfo(name = "titulo")
     @SerializedName("titulo")
     private String titulo;
 

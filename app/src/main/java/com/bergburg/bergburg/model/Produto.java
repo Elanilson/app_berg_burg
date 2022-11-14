@@ -9,39 +9,32 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-@Entity(tableName = "produtos")
 public class Produto implements Serializable {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
+
     @SerializedName("id")
     private Long id;
 
-    @ColumnInfo(name = "idCategoria")
     @SerializedName("idCategoria")
     private int idCategoria;
 
-    @ColumnInfo(name = "titulo")
     @SerializedName("titulo")
     private String titulo;
 
-    @ColumnInfo(name = "descricao")
     @SerializedName("descricao")
     private String descricao;
 
-    @ColumnInfo(name = "urlImagem")
     @SerializedName("urlImagem")
     private String urlImagem;
 
-    @ColumnInfo(name = "preco")
+
     @SerializedName("preco")
     private Float preco;
 
-    @ColumnInfo(name = "quantidade")
+
     @SerializedName("quantidade")
     private int quantidade ;
 
-    @ColumnInfo(name = "observacao")
     @SerializedName("observacao")
     private String observacao;
     @Ignore

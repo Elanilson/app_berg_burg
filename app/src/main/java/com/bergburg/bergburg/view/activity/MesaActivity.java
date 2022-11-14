@@ -75,14 +75,17 @@ public class MesaActivity extends AppCompatActivity {
     private CoordinatorLayout layout;
     private TextView textViewTotalDaMesa;
     private BottomSheetBehavior bottomSheetBehavior;
+    private BottomSheetBehavior bottomSheetBehaviorPedidos;
     private FrameLayout frameLayoutEditarItemPedido;
+    private FrameLayout frameLayoutPedidos;
 
     private Runnable runnable;
     private Handler handler = new Handler();
     private Boolean ticker = false;
     private  int totalPedidos = 0;
     private UsuarioPreferences preferences;
-
+    private AlertDialog alertDialogCarregamento;
+    private Boolean esconderPedidos = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +93,17 @@ public class MesaActivity extends AppCompatActivity {
         binding = ActivityMesaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        alertaDeCarregando();
+
 
 
         viewModel = new ViewModelProvider(this).get(MesaViewModel.class);
         layout = binding.constraintMesa;
         textViewTotalDaMesa = binding.textViewTotalDaMesa;
         frameLayoutEditarItemPedido = binding.frameSheetEditarItemPedido;
+        frameLayoutPedidos = binding.frameSheetPedidosAbertos;
         bottomSheetBehavior =BottomSheetBehavior.from(frameLayoutEditarItemPedido);
+        bottomSheetBehaviorPedidos =BottomSheetBehavior.from(frameLayoutPedidos);
 
         preferences = new UsuarioPreferences(this);
 
@@ -221,9 +228,13 @@ public class MesaActivity extends AppCompatActivity {
                 // mesaViewModel.getMesa(pedido.getIdMesa());
                 // idParaProximaTela();
 
+
+
                 Bundle bundle = new Bundle();
                 bundle.putLong(Constantes.ID_PEDIDO,pedido.getId());
+               // Intent intent = new Intent(MesaActivity.this,TesteImpremirActivity.class);
                 Intent intent = new Intent(MesaActivity.this,ExibirPedidoctivity.class);
+              // Intent intent = new Intent(MesaActivity.this,EmitirPedidoActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
 
@@ -257,17 +268,21 @@ public class MesaActivity extends AppCompatActivity {
                 if(pedidos != null){
                     if(pedidos.size() > 0){
                         binding.progressBarMesaPedido.setVisibility(View.GONE);
+                        binding.textViewInfoPedidos.setVisibility(View.GONE);
                         totalPedidos = pedidos.size();
                         binding.frameSheetPedidosAbertos.setVisibility(View.VISIBLE);
                         pedidoAdapter.attackPedidos(pedidos);
                     }else{
+                        if(esconderPedidos == false){
+                            bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                            esconderPedidos = true;
+                        }
                         binding.frameSheetPedidosAbertos.setVisibility(View.GONE);
                         binding.progressBarMesaPedido.setVisibility(View.VISIBLE);
-
+                        binding.textViewInfoPedidos.setVisibility(View.VISIBLE);
                     }
                 }else{
                         binding.progressBarMesaPedido.setVisibility(View.GONE);
-
                 }
             }
         });
@@ -277,7 +292,11 @@ public class MesaActivity extends AppCompatActivity {
                 if(mesa != null){
                     if(mesa.getStatus().equalsIgnoreCase(Constantes.LIVRE)){
                         System.out.println(mesa.toString());
+                        System.out.println("Livre ? "+mesa.getStatus().equalsIgnoreCase(Constantes.LIVRE));
+                        alertDialogCarregamento.dismiss();
                         solicitarAberturaDoPedido();
+                    }else{
+                        alertDialogCarregamento.dismiss();
                     }
                 }
             }
@@ -288,14 +307,19 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(List<ItensComanda> itensComanda) {
                 if(itensComanda != null){
                     if(itensComanda.size() > 0){
-
+                        //bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         listItens.addAll(itensComanda);
+                        binding.progressBarMesa.setVisibility(View.GONE);
                         binding.layoutImagemFazPed.setVisibility(View.GONE);
                         binding.linearLayoutTotal.setVisibility(View.VISIBLE);
                         binding.buttonEnviarComnda.setVisibility(View.VISIBLE);
                     }else{
+                        if(totalPedidos > 0){
+                             bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_EXPANDED);
+                        }
                         System.out.println("sem itens");
 
+                        binding.progressBarMesa.setVisibility(View.GONE);
                         binding.layoutImagemFazPed.setVisibility(View.VISIBLE);
                         binding.buttonEnviarComnda.setVisibility(View.GONE);
                         binding.linearLayoutTotal.setVisibility(View.GONE);
@@ -304,6 +328,8 @@ public class MesaActivity extends AppCompatActivity {
                     calcularTotalDaMesa(itensComanda);
                     adapter.attackProdutos(itensComanda);
                 }else{
+                    binding.layoutImagemFazPed.setVisibility(View.VISIBLE);
+                    binding.progressBarMesa.setVisibility(View.VISIBLE);
 
                 }
             }
@@ -333,7 +359,19 @@ public class MesaActivity extends AppCompatActivity {
                     Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
 
                 }else{
-                    Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_ATUALIZADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_REMOVIDO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_ADICIONADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.PEDIDO_NAO_ENVIADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_CONSEGUIR_ABRIR_MESA) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_CANCELADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
+                        Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                    }
                 }
 
 
@@ -478,6 +516,20 @@ public class MesaActivity extends AppCompatActivity {
                 })
                 .show();
     }
+
+    private void alertaDeCarregando(){
+        alertDialogCarregamento = new AlertDialog.Builder(this)
+                .setTitle("Carregando")
+                .setCancelable(false)
+                .setMessage("Processando informações...")
+                .setNeutralButton(getString(R.string.cancelar), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                })
+                .show();
+    }
     private void calcularTotalDaMesa(List<ItensComanda> itensComanda){
         if(itensComanda != null){
             Float total = 0f;
@@ -507,6 +559,7 @@ public class MesaActivity extends AppCompatActivity {
                 try {
                     calendar.setTimeInMillis(System.currentTimeMillis());
                     System.out.println("Mesa -Milisegundos: "+System.currentTimeMillis());
+                    System.out.println(mesa.toString());
 
                     viewModel.itensComanda(mesa.getId());
                     viewModel.getPedidosAbertos(mesa.getId());
@@ -566,7 +619,7 @@ public class MesaActivity extends AppCompatActivity {
 
         recuperar();
 
-        viewModel.getMesa(preferences.recuperarIDUSuario());
+       // viewModel.getMesa(preferences.recuperarIDUSuario());
         viewModel.getUsuario(preferences.recuperarIDUSuario());
 
 

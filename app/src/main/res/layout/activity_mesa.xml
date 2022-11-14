@@ -22,6 +22,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <ProgressBar
+            android:id="@+id/progressBarMesa"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:indeterminateTint="@color/grey11" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -33,7 +41,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/background_sheet_pedidos"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:behavior_peekHeight="45dp"
                     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
                     tools:visibility="visible">
@@ -116,6 +124,16 @@
                             android:text="@string/pedidos"
                             android:textColor="@color/grey11"
                             android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/textViewInfoPedidos"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:gravity="center"
+                            android:text="@string/sem_pedidos"
+                            android:textColor="@color/grey11"
+                            android:textSize="16sp" />
 
                         <ProgressBar
                             android:id="@+id/progressBarMesaPedido"
