@@ -141,7 +141,8 @@ public class MesaViewModel extends AndroidViewModel {
             public void onSuccess(Dados result) {
                 if(result.getStatus()){
                     _Resposta.setValue(new Resposta(Constantes.ATUALIZADO,true));
-                }else{
+                }
+                else{
                     _Resposta.setValue(new Resposta(Constantes.NAO_ATUALIZADO));
                 }
             }

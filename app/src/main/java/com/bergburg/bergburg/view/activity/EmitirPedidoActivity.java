@@ -14,6 +14,7 @@ import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +44,7 @@ public class EmitirPedidoActivity extends AppCompatActivity {
         binding = ActivityEmitirPedidoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         textView = binding.textViewDetalhesPedido;
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //validar Permissao
         Permissoes.validarPermissoes(permissoes, this, 1);
 

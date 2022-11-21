@@ -269,7 +269,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerviewItensPedido"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
@@ -283,6 +283,7 @@
                 android:layout_height="5dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
+                android:layout_weight="1"
                 android:background="@drawable/dotted" />
 
             <LinearLayout
@@ -290,6 +291,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
@@ -312,24 +315,7 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/textView32"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="50dp"
-                android:text="@string/agradecimento"
-                android:textAlignment="center"
-                android:textColor="@color/grey11"
-                android:textSize="13sp" />
-
         </LinearLayout>
-
-        <Button
-            android:id="@+id/buttonSalvar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Salvar" />
 
     </LinearLayout>
 </ScrollView>

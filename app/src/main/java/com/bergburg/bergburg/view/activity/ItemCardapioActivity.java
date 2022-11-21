@@ -20,6 +20,7 @@ import android.content.DialogInterface;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -73,6 +74,8 @@ public class ItemCardapioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityItemCardapioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         viewModel = new ViewModelProvider(this).get(ItemCardapioViewModel.class);
         mesaViewModel = new ViewModelProvider(this).get(MesaViewModel.class);

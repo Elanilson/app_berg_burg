@@ -1,10 +1,15 @@
 package com.bergburg.bergburg.repositorio.remoto;
 
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private RetrofitClient(){}
+
+
 
     private static Retrofit INSTACE;
     private static Retrofit getINSTACE(){

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
@@ -40,7 +41,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityConsultarPedidoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
         viewModel = new ViewModelProvider(this).get(ConsultaPedidoViewModel.class);
@@ -159,5 +160,11 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
 
         adapter.limparPedidos();
         viewModel.getTodosOsPedidos();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        //finish();
     }
 }

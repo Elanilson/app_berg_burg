@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         /*getSupportActionBar().setElevation(0);
         getSupportActionBar().setTitle("");*/
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         preferences = new UsuarioPreferences(this);
         statusLogado = preferences.recuperarStatus();

@@ -2,11 +2,13 @@ package com.bergburg.bergburg.repositorio;
 
 import android.content.Context;
 
+import com.bergburg.bergburg.helpers.VerificadorDeConexao;
 import com.bergburg.bergburg.listeners.APIListener;
 import com.bergburg.bergburg.model.Dados;
 
 import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.repositorio.remoto.services.BergburgService;
+import com.bergburg.bergburg.view.activity.SelecionarMesaActivity;
 
 import java.util.List;
 
@@ -41,6 +43,7 @@ public class MesaRepositorio {
 
             @Override
             public void onFailure(Call<Dados> call, Throwable t) {
+                System.out.println("mesa TEM INTERNET ? "+ VerificadorDeConexao.isConnectionAvailable(context));
                 listener.onFailures(t.getMessage());
             }
         });
@@ -59,6 +62,7 @@ public class MesaRepositorio {
 
             @Override
             public void onFailure(Call<Dados> call, Throwable t) {
+
                 listener.onFailures(t.getMessage());
             }
         });

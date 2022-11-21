@@ -23,14 +23,20 @@
                 android:id="@+id/textViewNumeroDaMesa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:background="@color/laranja"
                 android:gravity="center"
-                android:padding="10dp"
                 android:text="2"
                 android:textColor="@color/black"
                 android:textSize="34sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView32"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/mesa"
+                android:textAlignment="center"
+                android:textColor="@color/grey11" />
         </LinearLayout>
 
         <LinearLayout
@@ -39,15 +45,28 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                android:id="@+id/textViewDataPedido"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
                 android:layout_weight="1"
-                android:gravity="right"
-                android:text="00:00"
-                android:textSize="13sp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textViewNumeroPedido"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="N° 0"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textViewDataPedido"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:gravity="right"
+                    android:text="00:00"
+                    android:textSize="13sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"

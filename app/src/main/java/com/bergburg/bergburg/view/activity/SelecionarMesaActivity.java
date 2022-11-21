@@ -12,6 +12,7 @@ import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.bergburg.bergburg.R;
@@ -60,7 +61,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
 
         mesasAdapte = new SelecionarMesaGridAdapter(getApplicationContext());
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         onListenerAcao = new OnListenerAcao<Mesa>() {
             @Override
             public void onClick(Mesa mesa) {
@@ -133,6 +134,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
                             System.out.println("SelecionarMesa -Milisegundos: "+System.currentTimeMillis());
 
                              mesaViewModel.carregarMesas();
+                             System.out.println("Selecionar mesa ==");
 
                             Long now = SystemClock.uptimeMillis();
                             Long next = now + (1000 - (now % 1000));
@@ -169,6 +171,8 @@ public class SelecionarMesaActivity extends AppCompatActivity {
 
         ticker = true;
         startClock();
+        System.out.println("onResume");
+        System.out.println("TEM INTERNET ? "+VerificadorDeConexao.isConnectionAvailable(SelecionarMesaActivity.this));
 
 
         mesasAdapte.limparMesas();
@@ -179,17 +183,21 @@ public class SelecionarMesaActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         ticker = false;
+        System.out.println("onPause");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         ticker = false;
+        System.out.println("onStop");
+       // finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ticker = false;
+        System.out.println("onDestroy");
     }
 }

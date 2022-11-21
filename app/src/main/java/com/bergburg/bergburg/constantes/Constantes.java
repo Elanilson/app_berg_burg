@@ -30,7 +30,7 @@ public class Constantes {
     public static String ADICIONADO = "Adicionado!";
     public static String NAO_ADICIONADO = "Não foi possível Adicionar!";
     public static String ATUALIZADO = "ATUALIZADO";
-    public static String NAO_ATUALIZADO = "Não atualizado tente novamente!";
+    public static String NAO_ATUALIZADO = "Não atualizado, tente novamente!";
 
 
     public static String ENVIADO      = "Enviado";

@@ -204,6 +204,8 @@
                 android:gravity="start"
                 android:hint="..."
                 android:inputType="textMultiLine"
+                android:maxLength="224"
+                android:maxLines="7"
                 android:padding="10dp"
                 android:textSize="20sp"
                 android:textStyle="normal" />

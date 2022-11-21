@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         preferences = new UsuarioPreferences(this);
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
         viewModel = new ViewModelProvider(this).get(MainViewModel.class);

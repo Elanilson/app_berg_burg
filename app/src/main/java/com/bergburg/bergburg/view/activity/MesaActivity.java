@@ -24,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -86,6 +87,8 @@ public class MesaActivity extends AppCompatActivity {
     private UsuarioPreferences preferences;
     private AlertDialog alertDialogCarregamento;
     private Boolean esconderPedidos = false;
+    private Boolean carregarUmaVez = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +97,7 @@ public class MesaActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         alertaDeCarregando();
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
 
         viewModel = new ViewModelProvider(this).get(MesaViewModel.class);
@@ -188,7 +191,7 @@ public class MesaActivity extends AppCompatActivity {
 
                     viewModel.atualizarItemComanda(itensComanda.getId(),quantidade,observacao);
 
-                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                   // bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
                 }else{
                     configurarSnackBar(layout,"Informe a quantidade nescessária");
@@ -307,7 +310,10 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(List<ItensComanda> itensComanda) {
                 if(itensComanda != null){
                     if(itensComanda.size() > 0){
-                        //bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        if(carregarUmaVez == false){
+                            carregarUmaVez = true;
+                            bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                        }
                         listItens.addAll(itensComanda);
                         binding.progressBarMesa.setVisibility(View.GONE);
                         binding.layoutImagemFazPed.setVisibility(View.GONE);
@@ -340,6 +346,7 @@ public class MesaActivity extends AppCompatActivity {
             public void onChanged(Resposta resposta) {
                 if(resposta.getStatus()){
                     if(resposta.getMensagem().equalsIgnoreCase(Constantes.ATUALIZADO)){
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                         viewModel.itensComanda(mesa.getId());
                         binding.recyclerViewDetalhesMesa.setVisibility(View.VISIBLE);
                         binding.linearLayoutTotal.setVisibility(View.VISIBLE);
@@ -361,6 +368,7 @@ public class MesaActivity extends AppCompatActivity {
                 }else{
                     if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_ATUALIZADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
                         Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                     }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_REMOVIDO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
                         Toast.makeText(MesaActivity.this, resposta.getMensagem(), Toast.LENGTH_LONG).show();
                     }else if(resposta.getMensagem().equalsIgnoreCase(Constantes.NAO_ADICIONADO) || resposta.getMensagem().equalsIgnoreCase(Constantes.VERIFIQUE_CONEXAO)){
@@ -622,6 +630,12 @@ public class MesaActivity extends AppCompatActivity {
        // viewModel.getMesa(preferences.recuperarIDUSuario());
         viewModel.getUsuario(preferences.recuperarIDUSuario());
 
+       /* if(listItens != null){
+            if(listItens.size() > 0){
+                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+            }
+        }*/
+
 
         adapter.limparProdutos();
 
@@ -633,12 +647,14 @@ public class MesaActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         ticker = false;
+        carregarUmaVez = false;
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         ticker = false;
+        carregarUmaVez = false;
     }
 
     @Override

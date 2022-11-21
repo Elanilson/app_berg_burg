@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.constantes.Constantes;
@@ -43,7 +44,7 @@ public class CardapioActivity extends AppCompatActivity {
         binding = ActivityCardapioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         viewModel = new ViewModelProvider(this).get(CardapioViewModel.class);
         configuracaoToolbar();
