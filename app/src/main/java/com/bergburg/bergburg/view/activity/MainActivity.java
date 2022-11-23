@@ -21,6 +21,7 @@ import com.bergburg.bergburg.databinding.ActivityMainBinding;
 import com.bergburg.bergburg.helpers.UsuarioPreferences;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.model.Usuario;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.viewmodel.MainViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -99,5 +100,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        RetrofitClient.CancelarRequisicoes();
     }
 }

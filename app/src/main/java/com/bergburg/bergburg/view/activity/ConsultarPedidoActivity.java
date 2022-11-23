@@ -23,6 +23,7 @@ import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.PedidoAdapter;
 import com.bergburg.bergburg.viewmodel.ConsultaPedidoViewModel;
 import com.bergburg.bergburg.viewmodel.MesaViewModel;
@@ -165,6 +166,7 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        RetrofitClient.CancelarRequisicoes();
         //finish();
     }
 }

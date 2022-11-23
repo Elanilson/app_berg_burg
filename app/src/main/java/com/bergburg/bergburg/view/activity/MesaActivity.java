@@ -44,6 +44,7 @@ import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.model.Usuario;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.MesaAdapter;
 import com.bergburg.bergburg.view.adapter.PedidoAdapter;
 import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
@@ -655,6 +656,7 @@ public class MesaActivity extends AppCompatActivity {
         super.onStop();
         ticker = false;
         carregarUmaVez = false;
+        RetrofitClient.CancelarRequisicoes();
     }
 
     @Override

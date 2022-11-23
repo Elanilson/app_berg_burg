@@ -43,6 +43,7 @@ import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.ItemPedidoAdapter;
 import com.bergburg.bergburg.view.adapter.ItemPedidoInfoAdapter;
 import com.bergburg.bergburg.viewmodel.ExibirPedidoViewModel;
@@ -158,11 +159,20 @@ public class ExibirPedidoctivity extends AppCompatActivity {
         viewModel.itensDoPedido.observe(this, new Observer<List<ItemDePedido>>() {
             @Override
             public void onChanged(List<ItemDePedido> itemDePedidos) {
+                String observacao = "";
 
                 if(itemDePedidos != null){
                     itensPedidoLocal = itemDePedidos;
                     binding.progressBarPedidoItem.setVisibility(View.GONE);
+                    for(ItemDePedido item : itemDePedidos){
+                        if(!item.getObservacao().isEmpty()){
+                            observacao += ""+item.getTitulo()
+                                    +": \n" +
+                                    item.getObservacao()+"\n";
+                        }
+                    }
                    // adapter.attackProdutos(itemDePedidos);
+                    binding.textViewObservacoes.setText(observacao);
                     itemPedidoInfoAdapter.attackProdutos(itemDePedidos);
                 }else{
                     binding.progressBarPedidoItem.setVisibility(View.VISIBLE);
@@ -575,6 +585,7 @@ public class ExibirPedidoctivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         ticker = false;
+        RetrofitClient.CancelarRequisicoes();
     }
 
     @Override

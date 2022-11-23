@@ -22,6 +22,7 @@ import com.bergburg.bergburg.databinding.ActivityCardapioBinding;
 import com.bergburg.bergburg.helpers.VerificadorDeConexao;
 import com.bergburg.bergburg.listeners.OnListenerAcao;
 import com.bergburg.bergburg.model.Categoria;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.CardapioAdapter;
 import com.bergburg.bergburg.viewmodel.CardapioViewModel;
 
@@ -132,4 +133,9 @@ public class CardapioActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+      //  RetrofitClient.CancelarRequisicoes();
+    }
 }

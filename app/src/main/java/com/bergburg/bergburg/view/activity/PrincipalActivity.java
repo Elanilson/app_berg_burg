@@ -24,6 +24,7 @@ import com.bergburg.bergburg.helpers.VerificadorDeConexao;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.model.Usuario;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.viewmodel.MainViewModel;
 
 public class PrincipalActivity extends AppCompatActivity {
@@ -109,5 +110,11 @@ public class PrincipalActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        RetrofitClient.CancelarRequisicoes();
     }
 }

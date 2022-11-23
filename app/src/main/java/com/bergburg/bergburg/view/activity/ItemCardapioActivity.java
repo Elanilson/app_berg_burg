@@ -36,6 +36,7 @@ import com.bergburg.bergburg.model.Categoria;
 import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Produto;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.ItemCardapioAdapter;
 import com.bergburg.bergburg.viewmodel.CardapioViewModel;
 import com.bergburg.bergburg.viewmodel.ItemCardapioViewModel;
@@ -265,5 +266,9 @@ public class ItemCardapioActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+      //  RetrofitClient.CancelarRequisicoes();
+    }
 }

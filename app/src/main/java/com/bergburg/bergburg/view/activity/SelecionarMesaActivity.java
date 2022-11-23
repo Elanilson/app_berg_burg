@@ -24,6 +24,7 @@ import com.bergburg.bergburg.model.ItemDePedido;
 import com.bergburg.bergburg.model.Mesa;
 import com.bergburg.bergburg.model.Pedido;
 import com.bergburg.bergburg.model.Resposta;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.view.adapter.SelecionarMesaGridAdapter;
 import com.bergburg.bergburg.viewmodel.MesaViewModel;
 import com.bergburg.bergburg.viewmodel.SelecionarMesaViewModel;
@@ -191,6 +192,7 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         super.onStop();
         ticker = false;
         System.out.println("onStop");
+        RetrofitClient.CancelarRequisicoes();
        // finish();
     }
 

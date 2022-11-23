@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.bergburg.bergburg.R;
 import com.bergburg.bergburg.databinding.ActivityEmitirPedidoBinding;
 import com.bergburg.bergburg.helpers.Permissoes;
+import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -147,5 +148,11 @@ public class EmitirPedidoActivity extends AppCompatActivity {
 
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
 
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        RetrofitClient.CancelarRequisicoes();
     }
 }
