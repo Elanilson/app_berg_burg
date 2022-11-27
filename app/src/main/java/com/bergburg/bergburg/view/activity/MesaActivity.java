@@ -656,12 +656,13 @@ public class MesaActivity extends AppCompatActivity {
         super.onStop();
         ticker = false;
         carregarUmaVez = false;
-        RetrofitClient.CancelarRequisicoes();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
         ticker = false;
     }
 

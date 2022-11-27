@@ -585,12 +585,13 @@ public class ExibirPedidoctivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         ticker = false;
-        RetrofitClient.CancelarRequisicoes();
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
         ticker = false;
     }
 

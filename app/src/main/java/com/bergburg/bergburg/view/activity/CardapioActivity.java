@@ -138,4 +138,10 @@ public class CardapioActivity extends AppCompatActivity {
         super.onStop();
       //  RetrofitClient.CancelarRequisicoes();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
+    }
 }

@@ -166,7 +166,13 @@ public class ConsultarPedidoActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        RetrofitClient.CancelarRequisicoes();
+
         //finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
     }
 }

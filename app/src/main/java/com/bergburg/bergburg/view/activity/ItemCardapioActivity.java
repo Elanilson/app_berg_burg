@@ -269,6 +269,12 @@ public class ItemCardapioActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-      //  RetrofitClient.CancelarRequisicoes();
+      //
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
     }
 }

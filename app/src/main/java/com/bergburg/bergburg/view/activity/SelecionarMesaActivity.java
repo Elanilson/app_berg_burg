@@ -192,13 +192,14 @@ public class SelecionarMesaActivity extends AppCompatActivity {
         super.onStop();
         ticker = false;
         System.out.println("onStop");
-        RetrofitClient.CancelarRequisicoes();
+
        // finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        RetrofitClient.CancelarRequisicoes();
         ticker = false;
         System.out.println("onDestroy");
     }
