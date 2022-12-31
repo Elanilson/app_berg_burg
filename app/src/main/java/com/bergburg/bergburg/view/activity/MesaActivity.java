@@ -270,6 +270,7 @@ public class MesaActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Pedido> pedidos) {
                 if(pedidos != null){
+                    System.out.println("Total de pedidos: "+pedidos.size());
                     if(pedidos.size() > 0){
                         binding.progressBarMesaPedido.setVisibility(View.GONE);
                         binding.textViewInfoPedidos.setVisibility(View.GONE);
@@ -277,6 +278,7 @@ public class MesaActivity extends AppCompatActivity {
                         binding.frameSheetPedidosAbertos.setVisibility(View.VISIBLE);
                         pedidoAdapter.attackPedidos(pedidos);
                     }else{
+
                         if(esconderPedidos == false){
                             bottomSheetBehaviorPedidos.setState(BottomSheetBehavior.STATE_COLLAPSED);
                             esconderPedidos = true;
@@ -286,6 +288,8 @@ public class MesaActivity extends AppCompatActivity {
                         binding.textViewInfoPedidos.setVisibility(View.VISIBLE);
                     }
                 }else{
+                    pedidoAdapter.limparPedidos();
+                    binding.textViewInfoPedidos.setVisibility(View.VISIBLE);
                         binding.progressBarMesaPedido.setVisibility(View.GONE);
                 }
             }
