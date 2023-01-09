@@ -44,6 +44,7 @@ public class ConsultaPedidoViewHolder extends RecyclerView.ViewHolder {
         }else if(pedido.getStatus().equalsIgnoreCase(Constantes.NAO_ENVIADO)){
             status = view.getContext().getString(R.string.naoEnviado);
         }*/
+        System.out.println(pedido.toString());
         textViewNumeroPedido.setText("N° "+pedido.getId());
         textViewAberturaPedido.setText(pedido.getAberturaPedido());
         textViewData.setText(pedido.getData_create());

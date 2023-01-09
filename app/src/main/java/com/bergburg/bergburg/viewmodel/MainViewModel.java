@@ -89,9 +89,17 @@ public class MainViewModel extends AndroidViewModel {
                 APIListener<Dados> listener = new APIListener<Dados>() {
                     @Override
                     public void onSuccess(Dados result) {
-                        preferences.salvar(result.getUsuario().getId(),result.getUsuario().getNome(),result.getUsuario().getStatus() );
-                        _Usuario.setValue(result.getUsuario());
-                        _Resposta.setValue(new Resposta("Autenticado",true));
+
+                            if(!result.getError().isEmpty()){
+                                _Resposta.setValue(new Resposta(result.getError()));
+                            }else{
+                                _Usuario.setValue(result.getUsuario());
+                                _Resposta.setValue(new Resposta("Autenticado",true));
+                                preferences.salvar(result.getUsuario().getId(),result.getUsuario().getNome(),result.getUsuario().getStatus() );
+
+                            }
+
+
                     }
                     @Override
                     public void onFailures(String mensagem) {

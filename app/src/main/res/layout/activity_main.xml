@@ -12,110 +12,110 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/black_transparente"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
-    <EditText
-        android:id="@+id/editCampoLogin"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
         android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_campo"
-        android:drawableLeft="@drawable/ic_usuario_24"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Usuário"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:text="suporte"
-        android:textColor="@color/grey31"
-        app:layout_constraintBottom_toTopOf="@+id/editCampoSenha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/editCampoSenha"
-        android:layout_width="347dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/background_campo"
-        android:drawableLeft="@drawable/ic_lock_24"
-        android:drawablePadding="10dp"
-        android:ems="10"
-        android:hint="Senha"
-        android:inputType="textPersonName"
-        android:padding="10dp"
-        android:text="suporte"
-        android:textColor="@color/grey31"
-        app:layout_constraintBottom_toTopOf="@+id/frame"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCampoLogin" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="250dp"
-        android:layout_height="150dp"
-        android:background="@android:color/transparent"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:srcCompat="@drawable/logoburgs" />
-
-    <FrameLayout
-        android:id="@+id/frame"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editCampoSenha">
+        app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/buttonLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableRight="@drawable/ic_baseline_login_24"
-            android:paddingLeft="20dp"
-            android:paddingTop="6dp"
-            android:paddingRight="20dp"
-            android:paddingBottom="6dp"
-            android:text="@string/entrar"
-            android:theme="@style/button_custom" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-        <ProgressBar
-            android:id="@+id/progressBarLogin"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:elevation="5dp"
-            android:indeterminateTint="@color/grey11"
-            android:visibility="gone"
-            tools:visibility="visible" />
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="250dp"
+                android:layout_height="150dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerCrop"
+                app:srcCompat="@drawable/logoburgs" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="411dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="24dp"
-        android:gravity="center"
-        android:text="@string/controle_de_acesso"
-        android:textColor="@color/purple_500"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/editCampoLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@string/controle_de_acesso"
+                android:textColor="@color/grey31"
+                android:textSize="16sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutLogin"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:hint="Digite seu login" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutSenha"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                app:boxBackgroundMode="outline"
+                app:endIconCheckable="true"
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputSenha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Digite sua senha" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <FrameLayout
+                android:id="@+id/frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:layout_marginBottom="25dp">
+
+                <Button
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableRight="@drawable/ic_baseline_login_24"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="6dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/entrar"
+                    android:theme="@style/button_custom" />
+
+                <ProgressBar
+                    android:id="@+id/progressBarLogin"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:elevation="5dp"
+                    android:indeterminateTint="@color/grey11"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

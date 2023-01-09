@@ -23,11 +23,12 @@ import com.bergburg.bergburg.model.Resposta;
 import com.bergburg.bergburg.model.Usuario;
 import com.bergburg.bergburg.repositorio.remoto.RetrofitClient;
 import com.bergburg.bergburg.viewmodel.MainViewModel;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private MainViewModel viewModel;
-    private EditText editTextUsuario,editTextSenha;
+    private TextInputEditText editTextUsuario,editTextSenha;
     private Usuario usuarioAtual = new Usuario();
     private UsuarioPreferences preferences;
     private String statusLogado;
@@ -51,8 +52,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 binding.progressBarLogin.setVisibility(View.VISIBLE);
-               editTextUsuario = binding.editCampoLogin;
-               editTextSenha = binding.editCampoSenha;
+               editTextUsuario = binding.textInputLogin;
+               editTextSenha = binding.textInputSenha;
                String usuario  = editTextUsuario.getText().toString().trim();
                String senha  = editTextSenha.getText().toString().trim();
                 viewModel.login(usuario,senha);
@@ -86,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 if(resposta.getStatus()){
 
                 }else{
+                    binding.textInputLayoutLogin.setError("Dados incorretos");
+                    binding.textInputLayoutSenha.setError("Dados incorretos");
+                    binding.textInputLayoutLogin.setErrorEnabled(true);
+                    binding.textInputLayoutSenha.setErrorEnabled(true);
+
+                  //  binding.textInputLayoutLogin.setcolo( getResources().getColor(R.color.laranja));
                     binding.progressBarLogin.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, resposta.getMensagem(), Toast.LENGTH_SHORT).show();
 
